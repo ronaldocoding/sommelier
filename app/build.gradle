@@ -1,6 +1,7 @@
 plugins {
     id "com.android.application"
     id "org.jetbrains.kotlin.android"
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -53,7 +54,6 @@ android {
 def coreKtxVersion = "1.8.0"
 def kotlinBomVersion = "1.8.0"
 def lifeCycleRuntimeKtxVersion = "2.3.1"
-
 def activityComposeVersion = "1.5.1"
 def composeBomVersion = "2022.10.00"
 def junitVersion = "4.13.2"
@@ -65,6 +65,7 @@ def lifeCycleViewModelKtxVersion = "2.6.1"
 def lifeCycleLiveDataKtxVersion = "2.3.1"
 def coilVersion = "2.2.2"
 def koinVersion = "3.2.2"
+def firebaseBomVersion = "32.2.0"
 
 dependencies {
 
@@ -115,4 +116,8 @@ dependencies {
     implementation "io.insert-koin:koin-android-compat:$koinVersion"
     implementation "io.insert-koin:koin-androidx-workmanager:$koinVersion"
     implementation "io.insert-koin:koin-androidx-navigation:$koinVersion"
+
+    // Firebase
+    implementation platform("com.google.firebase:firebase-bom:$firebaseBomVersion")
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }

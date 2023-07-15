@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "688834474551",
+    "project_id": "sommelier-application",
+    "storage_bucket": "sommelier-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688834474551:android:b37c9a5b438679e9bbc5b2",
+        "android_client_info": {
+          "package_name": "br.com.sommelier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688834474551-omppa92ee5irm5s5v1jtfsvkrt62dp1v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJTIManhIaU3LUMvvUO__pYpyz56b6O-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688834474551-omppa92ee5irm5s5v1jtfsvkrt62dp1v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
