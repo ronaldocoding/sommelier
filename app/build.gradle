@@ -7,6 +7,10 @@ android {
     namespace "br.com.sommelier"
     compileSdk 33
 
+    viewBinding {
+        enabled true
+    }
+
     defaultConfig {
         applicationId "br.com.sommelier"
         minSdk 24
