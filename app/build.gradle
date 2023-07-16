@@ -117,6 +117,8 @@ dependencies {
     implementation "io.insert-koin:koin-android-compat:$koinVersion"
     implementation "io.insert-koin:koin-androidx-workmanager:$koinVersion"
     implementation "io.insert-koin:koin-androidx-navigation:$koinVersion"
+    testImplementation "io.insert-koin:koin-test:$koinVersion"
+    testImplementation "io.insert-koin:koin-test-junit4:$koinVersion"
 
     // Firebase
     implementation platform("com.google.firebase:firebase-bom:$firebaseBomVersion")
