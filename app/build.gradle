@@ -125,6 +125,7 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:$firebaseBomVersion")
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
     // Arrow
     implementation platform("io.arrow-kt:arrow-stack:$arrowVersion")
