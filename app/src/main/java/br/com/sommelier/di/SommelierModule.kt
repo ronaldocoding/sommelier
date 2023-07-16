@@ -1,5 +1,7 @@
 package br.com.sommelier.di
 
+import br.com.sommelier.data.repository.UserRepositoryImpl
+import br.com.sommelier.domain.repository.UserRepository
 import br.com.sommelier.util.FirestoreCollections
 import br.com.sommelier.util.FirestoreCollections.USERS
 import com.google.firebase.firestore.CollectionReference
@@ -13,6 +15,7 @@ object SommelierModule {
     private val dataModule = module {
         factory { provideFirestore() }
         factory { provideUsersCollection(get()) }
+        factory<UserRepository> { UserRepositoryImpl(get()) }
     }
 
     private fun provideUsersCollection(firestore: FirebaseFirestore): CollectionReference {
