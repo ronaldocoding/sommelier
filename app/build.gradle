@@ -66,6 +66,7 @@ def lifeCycleLiveDataKtxVersion = "2.3.1"
 def coilVersion = "2.2.2"
 def koinVersion = "3.2.2"
 def firebaseBomVersion = "32.2.0"
+def arrowVersion = "1.2.0"
 
 dependencies {
 
@@ -120,4 +121,9 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:$firebaseBomVersion")
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    // Arrow
+    implementation platform("io.arrow-kt:arrow-stack:$arrowVersion")
+    implementation 'io.arrow-kt:arrow-core'
+    implementation 'io.arrow-kt:arrow-fx-coroutines'
 }
