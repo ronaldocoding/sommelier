@@ -2,7 +2,6 @@ package br.com.sommelier.di
 
 import br.com.sommelier.data.repository.UserRepositoryImpl
 import br.com.sommelier.domain.repository.UserRepository
-import br.com.sommelier.util.FirestoreCollections
 import br.com.sommelier.util.FirestoreCollections.USERS
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -13,8 +12,8 @@ import org.koin.dsl.module
 object SommelierModule {
 
     private val dataModule = module {
-        factory { provideFirestore() }
-        factory { provideUsersCollection(get()) }
+        single { provideFirestore() }
+        single { provideUsersCollection(get()) }
         factory<UserRepository> { UserRepositoryImpl(get()) }
     }
 
