@@ -1,6 +1,7 @@
 package br.com.sommelier.di
 
 import br.com.sommelier.util.FirestoreCollections
+import br.com.sommelier.util.FirestoreCollections.USERS
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -15,7 +16,7 @@ object SommelierModule {
     }
 
     private fun provideUsersCollection(firestore: FirebaseFirestore): CollectionReference {
-        return firestore.collection(FirestoreCollections.USERS)
+        return firestore.collection(USERS)
     }
 
     private fun provideFirestore(): FirebaseFirestore {
