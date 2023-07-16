@@ -66,6 +66,8 @@ def lifeCycleLiveDataKtxVersion = "2.3.1"
 def coilVersion = "2.2.2"
 def koinVersion = "3.2.2"
 def firebaseBomVersion = "32.2.0"
+def arrowVersion = "1.2.0"
+def mockkVersion = "1.13.5"
 
 dependencies {
 
@@ -100,6 +102,7 @@ dependencies {
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifeCycleViewModelKtxVersion"
@@ -115,8 +118,20 @@ dependencies {
     implementation "io.insert-koin:koin-android-compat:$koinVersion"
     implementation "io.insert-koin:koin-androidx-workmanager:$koinVersion"
     implementation "io.insert-koin:koin-androidx-navigation:$koinVersion"
+    testImplementation "io.insert-koin:koin-test:$koinVersion"
+    testImplementation "io.insert-koin:koin-test-junit4:$koinVersion"
 
     // Firebase
     implementation platform("com.google.firebase:firebase-bom:$firebaseBomVersion")
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    // Arrow
+    implementation platform("io.arrow-kt:arrow-stack:$arrowVersion")
+    implementation 'io.arrow-kt:arrow-core'
+    implementation 'io.arrow-kt:arrow-fx-coroutines'
+
+    // Mockk
+    testImplementation "io.mockk:mockk-android:${mockkVersion}"
+    testImplementation "io.mockk:mockk-agent:${mockkVersion}"
 }
