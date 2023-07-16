@@ -1,4 +1,4 @@
-package br.com.sommelier
+package br.com.sommelier.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
