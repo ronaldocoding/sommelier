@@ -52,7 +52,7 @@ class UserRepositoryImpl(private val usersCollection: CollectionReference) : Use
     override suspend fun updateUser(user: UserDomain): Either<Problem, Unit> {
         return withContext(Dispatchers.IO) {
             val userData = user.toData()
-            val task = usersCollection.whereEqualTo(UID_FIELD, user.uid).get()
+            val task = usersCollection.whereEqualTo(UID_FIELD, userData.uid).get()
             if (task.isSuccessful) {
                 val document = task.result.documents.firstOrNull()
                 if (document != null) {
