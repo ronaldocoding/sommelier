@@ -51,8 +51,8 @@ android {
     }
 }
 
-def coreKtxVersion = "1.8.0"
 def kotlinBomVersion = "1.8.0"
+def coreKtxVersion = "1.8.0"
 def lifeCycleRuntimeKtxVersion = "2.3.1"
 def activityComposeVersion = "1.5.1"
 def composeBomVersion = "2022.10.00"
@@ -133,6 +133,6 @@ dependencies {
     implementation 'io.arrow-kt:arrow-fx-coroutines'
 
     // Mockk
-    testImplementation "io.mockk:mockk-android:${mockkVersion}"
-    testImplementation "io.mockk:mockk-agent:${mockkVersion}"
+    testImplementation "io.mockk:mockk-android:$mockkVersion"
+    testImplementation "io.mockk:mockk-agent:$mockkVersion"
 }
