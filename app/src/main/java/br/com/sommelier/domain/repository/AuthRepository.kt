@@ -1,7 +1,7 @@
 package br.com.sommelier.domain.repository
 
 import arrow.core.Either
-import br.com.sommelier.util.Problem
+import br.com.sommelier.base.result.Problem
 import com.google.firebase.auth.FirebaseUser
 
 interface AuthRepository {
