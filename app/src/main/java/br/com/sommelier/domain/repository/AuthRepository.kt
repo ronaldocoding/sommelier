@@ -11,10 +11,10 @@ interface AuthRepository {
     suspend fun updateUserEmail(email: String): Either<Problem, Unit>
     suspend fun updateUserPassword(password: String): Either<Problem, Unit>
     suspend fun reauthenticateUser(email: String, password: String): Either<Problem, Unit>
+    suspend fun sendEmailVerification(): Either<Problem, Unit>
+    suspend fun sendPasswordResetEmail(email: String): Either<Problem, Unit>
     fun signOutUser(): Either<Problem, Unit>
     fun isUserSignedIn(): Boolean
     fun isUserEmailVerified(): Either<Problem, Boolean>
     fun getCurrentUser(): Either<Problem, FirebaseUser>
-    suspend fun sendEmailVerification(): Either<Problem, Unit>
-    suspend fun sendPasswordResetEmail(email: String): Either<Problem, Unit>
 }
