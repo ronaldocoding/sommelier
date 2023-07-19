@@ -3,12 +3,12 @@ package br.com.sommelier.data
 import br.com.sommelier.data.model.UserData
 import br.com.sommelier.data.repository.UserRepositoryImpl
 import br.com.sommelier.domain.model.UserDomain
-import br.com.sommelier.util.AddDocumentProblem
-import br.com.sommelier.util.DeleteDocumentProblem
+import br.com.sommelier.base.result.AddDocumentProblem
+import br.com.sommelier.base.result.DeleteDocumentProblem
 import br.com.sommelier.util.FirestoreCollections.UID_FIELD
-import br.com.sommelier.util.GetDocumentProblem
-import br.com.sommelier.util.NotFoundDocumentProblem
-import br.com.sommelier.util.UpdateDocumentProblem
+import br.com.sommelier.base.result.GetDocumentProblem
+import br.com.sommelier.base.result.NotFoundDocumentProblem
+import br.com.sommelier.base.result.UpdateDocumentProblem
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference

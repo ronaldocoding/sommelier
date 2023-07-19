@@ -1,4 +1,4 @@
-package br.com.sommelier.util
+package br.com.sommelier.base.result
 
 interface Problem
 
@@ -18,3 +18,4 @@ data class ReauthenticateUserProblem(val message: String): Problem
 data class AlreadySignedOutUserProblem(val message: String): Problem
 data class SendEmailVerificationProblem(val message: String): Problem
 data class SendPasswordResetEmailProblem(val message: String): Problem
+data class GenericProblem(val message: String): Problem
