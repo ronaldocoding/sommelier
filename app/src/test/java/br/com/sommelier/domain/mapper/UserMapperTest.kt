@@ -1,4 +1,4 @@
-package br.com.sommelier.domain
+package br.com.sommelier.domain.mapper
 
 import br.com.sommelier.data.model.UserData
 import br.com.sommelier.domain.mapper.toData
