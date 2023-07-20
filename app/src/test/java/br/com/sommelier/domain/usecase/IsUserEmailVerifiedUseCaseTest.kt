@@ -60,7 +60,7 @@ class IsUserEmailVerifiedUseCaseTest {
         }
 
     @Test
-    fun `GIVEN a unsuccessful result WHEN execute use case THEN must return the expected failure result`() =
+    fun `GIVEN an unsuccessful result WHEN execute use case THEN must return the expected failure result`() =
         runTest(coroutinesDispatcher) {
             val errorMessage = "Generic problem occurred"
             val problem: Either<Problem, Boolean> = GenericProblem(errorMessage).left()

@@ -4,6 +4,10 @@ import br.com.sommelier.data.model.UserData
 import br.com.sommelier.domain.mapper.toData
 import br.com.sommelier.domain.mapper.toDomain
 import br.com.sommelier.domain.model.UserDomain
+import br.com.sommelier.domain.model.UserFirebase
+import com.google.firebase.auth.FirebaseUser
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -31,5 +35,19 @@ class UserMapperTest {
         assertEquals(expectedUserData.email, actualUserData.email)
         assertEquals(expectedUserData.name, actualUserData.name)
         assertEquals(expectedUserData.uid, actualUserData.uid)
+    }
+
+    @Test
+    fun `GIVEN an FirebaseUser WHEN toDomain is called THEN must return the expected UserFirebase`() {
+        val firebaseUser = mockk<FirebaseUser>().apply {
+            every { email } returns "email"
+            every { uid } returns "uid"
+        }
+
+        val expectedUserFirebase = UserFirebase(email = "email", uid = "uid")
+        val actualUserFirebase = firebaseUser.toDomain()
+
+        assertEquals(expectedUserFirebase.email, actualUserFirebase.email)
+        assertEquals(expectedUserFirebase.uid, actualUserFirebase.uid)
     }
 }
