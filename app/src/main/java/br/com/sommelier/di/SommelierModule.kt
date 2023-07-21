@@ -5,6 +5,7 @@ import br.com.sommelier.data.repository.UserRepositoryImpl
 import br.com.sommelier.domain.repository.AuthRepository
 import br.com.sommelier.domain.repository.UserRepository
 import br.com.sommelier.domain.usecase.GetCurrentUserUseCase
+import br.com.sommelier.domain.usecase.GetUserDocumentUseCase
 import br.com.sommelier.domain.usecase.IsUserEmailVerifiedUseCase
 import br.com.sommelier.domain.usecase.IsUserSignedInUseCase
 import br.com.sommelier.domain.usecase.SignOutUserUseCase
@@ -32,6 +33,7 @@ object SommelierModule {
     private val domainModule = module {
         factory { provideCoroutinesDispatcherIO() }
         factory { GetCurrentUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
+        factory { GetUserDocumentUseCase(userRepository = get(), coroutineDispatcher = get()) }
         factory { IsUserEmailVerifiedUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { IsUserSignedInUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { SignOutUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
