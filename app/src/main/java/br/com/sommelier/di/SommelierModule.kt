@@ -37,6 +37,7 @@ object SommelierModule {
         factory { GetCurrentUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { GetUserDocumentUseCase(userRepository = get(), coroutineDispatcher = get()) }
         factory { IsUserEmailVerifiedUseCase(authRepository = get(), coroutineDispatcher = get()) }
+        factory { SignInUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { IsUserSignedInUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory {
             SendEmailVerificationUseCase(

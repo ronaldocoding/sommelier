@@ -34,7 +34,7 @@ class SignInUserUseCaseTest {
     }
 
     @Test
-    fun `GIVEN a successful result WHEN execute use case THEN must return Unit`() =
+    fun `GIVEN a successful result WHEN call signInUser THEN must return Unit`() =
         runTest(coroutineDispatcher) {
             val successfulResult: Either<Problem, Unit> = Unit.right()
 
@@ -53,7 +53,7 @@ class SignInUserUseCaseTest {
         }
 
     @Test
-    fun `GIVEN an unsuccessful result WHEN execute use case THEN must return the expected failure`() =
+    fun `GIVEN an unsuccessful result WHEN call signInUser THEN must return the expected failure`() =
         runTest(coroutineDispatcher) {
             val errorMessage = "Generic problem occurred"
             val unsuccessfulResult: Either<Problem, Unit> = GenericProblem(errorMessage).left()
