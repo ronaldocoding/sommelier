@@ -14,11 +14,11 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class UseCaseTest {
 
-    private val coroutinesDispatcher = StandardTestDispatcher()
+    private val coroutineDispatcher = StandardTestDispatcher()
 
     @Test
     fun `GIVEN use case completes normally WHEN get result THEN must return the expected success result`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val successResult: Either<Problem, Boolean> = true.right()
 
             val useCase = givenUseCase<Boolean, Boolean> { successResult }
@@ -32,7 +32,7 @@ class UseCaseTest {
 
     @Test
     fun `GIVEN use case completes normally but with failure WHEN get result THEN must return the expected failure result`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val failureResult: Either<Problem, Boolean> = GenericProblem("error").left()
 
             val useCase = givenUseCase<Boolean, Boolean> { failureResult }
@@ -46,7 +46,7 @@ class UseCaseTest {
 
     @Test
     fun `GIVEn use case throws an exception WHEN get result THEN must the return the expected failure result`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val useCase = givenUseCase<Boolean, Boolean> { throw Exception("error") }
 
             val output = useCase(false)
@@ -58,7 +58,7 @@ class UseCaseTest {
 
     @Test
     fun `GIVEn use case throws an exception with null message WHEN get result THEN must the return the expected failure result`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val useCase = givenUseCase<Boolean, Boolean> { throw Exception() }
 
             val output = useCase(false)
@@ -70,7 +70,7 @@ class UseCaseTest {
         }
 
     private fun <P, R> givenUseCase(executeFunction: suspend (P) -> Either<Problem, R>): UseCase<P, R> {
-        return object : UseCase<P, R>(coroutinesDispatcher) {
+        return object : UseCase<P, R>(coroutineDispatcher) {
             override suspend fun execute(parameters: P): Either<Problem, R> {
                 return executeFunction(parameters).let { result ->
                     when (result) {
