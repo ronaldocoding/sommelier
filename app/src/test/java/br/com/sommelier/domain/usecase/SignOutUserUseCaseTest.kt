@@ -1,7 +1,6 @@
 package br.com.sommelier.domain.usecase
 
 import arrow.core.left
-import arrow.core.prependTo
 import arrow.core.right
 import br.com.sommelier.base.result.AlreadySignedOutUserProblem
 import br.com.sommelier.base.usecase.UseCase
@@ -20,18 +19,18 @@ class SignOutUserUseCaseTest {
 
     private val authRepository = mockk<AuthRepository>()
 
-    private val coroutinesDispatcher = StandardTestDispatcher()
+    private val coroutineDispatcher = StandardTestDispatcher()
 
     private lateinit var signOutUserUseCase: SignOutUserUseCase
 
     @Before
     fun setUp() {
-        signOutUserUseCase = SignOutUserUseCase(authRepository, coroutinesDispatcher)
+        signOutUserUseCase = SignOutUserUseCase(authRepository, coroutineDispatcher)
     }
 
     @Test
     fun `GIVEN a successful result WHEN execute use case THEN must return the expected success result`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             every { authRepository.signOutUser() } returns Unit.right()
 
             val output = signOutUserUseCase(UseCase.None())
@@ -43,7 +42,7 @@ class SignOutUserUseCaseTest {
 
     @Test
     fun `GIVEN an unsuccessful result WHEN execute use case THEN must return the expected failure result`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val errorMessage = "Already signed out user problem occurred"
             every {
                 authRepository.signOutUser()

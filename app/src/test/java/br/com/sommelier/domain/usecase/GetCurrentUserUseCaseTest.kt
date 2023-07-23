@@ -21,18 +21,18 @@ class GetCurrentUserUseCaseTest {
 
     private val authRepository = mockk<AuthRepository>()
 
-    private val coroutinesDispatcher = StandardTestDispatcher()
+    private val coroutineDispatcher = StandardTestDispatcher()
 
     private lateinit var useCase: GetCurrentUserUseCase
 
     @Before
     fun setUp() {
-        useCase = GetCurrentUserUseCase(authRepository, coroutinesDispatcher)
+        useCase = GetCurrentUserUseCase(authRepository, coroutineDispatcher)
     }
 
     @Test
     fun `GIVEN a successful result and non-null user WHEN execute use case THEN must return the expected user`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val firebaseUser = mockk<FirebaseUser>().apply {
                 every { email } returns "email"
                 every { uid } returns "uid"
@@ -51,7 +51,7 @@ class GetCurrentUserUseCaseTest {
 
     @Test
     fun `GIVEN a successful result and null user WHEN execute use case THEN must return the expected failure result`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val nullFirebaseUser = null
             val errorMessage = "Null user problem occurred"
 

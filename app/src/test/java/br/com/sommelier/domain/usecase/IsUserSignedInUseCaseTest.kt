@@ -17,18 +17,18 @@ class IsUserSignedInUseCaseTest {
 
     private val authRepository = mockk<AuthRepository>()
 
-    private val coroutinesDispatcher = StandardTestDispatcher()
+    private val coroutineDispatcher = StandardTestDispatcher()
 
     private lateinit var useCase: IsUserSignedInUseCase
 
     @Before
     fun setUp() {
-        useCase = IsUserSignedInUseCase(authRepository, coroutinesDispatcher)
+        useCase = IsUserSignedInUseCase(authRepository, coroutineDispatcher)
     }
 
     @Test
     fun `GIVEN a signed in user WHEN execute use case THEN must return true`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val isUserSignedIn = true
 
             every { authRepository.isUserSignedIn() } returns isUserSignedIn
@@ -40,7 +40,7 @@ class IsUserSignedInUseCaseTest {
 
     @Test
     fun `GIVEN a not signed in user WHEN execute use case THEN must return true`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val isUserSignedIn = false
 
             every { authRepository.isUserSignedIn() } returns isUserSignedIn

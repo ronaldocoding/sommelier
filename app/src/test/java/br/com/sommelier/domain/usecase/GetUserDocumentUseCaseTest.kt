@@ -21,18 +21,18 @@ class GetUserDocumentUseCaseTest {
 
     private val userRepository = mockk<UserRepository>()
 
-    private val coroutinesDispatcher = StandardTestDispatcher()
+    private val coroutineDispatcher = StandardTestDispatcher()
 
     private lateinit var useCase: GetUserDocumentUseCase
 
     @Before
     fun setUp() {
-        useCase = GetUserDocumentUseCase(userRepository, coroutinesDispatcher)
+        useCase = GetUserDocumentUseCase(userRepository, coroutineDispatcher)
     }
 
     @Test
     fun `GIVEN  a successful result WHEN execute use case THEN return the expected user`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val expectedUser = UserDomain("email", "name", "uid")
             val successfulResult: Either<Problem, UserDomain> = expectedUser.right()
 
@@ -49,7 +49,7 @@ class GetUserDocumentUseCaseTest {
 
     @Test
     fun `GIVEN  an unsuccessful result WHEN execute use case THEN return the expected failure result`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val errorMessage = "Generic problem occurred"
 
             coEvery { userRepository.getUser(any()) } returns GenericProblem(errorMessage).left()

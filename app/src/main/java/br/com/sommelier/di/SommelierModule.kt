@@ -38,7 +38,7 @@ object SommelierModule {
     }
 
     private val domainModule = module {
-        factory { provideCoroutinesDispatcherIO() }
+        factory { provideCoroutineDispatcherIO() }
         factory {
             CreateUserUseCase(
                 authRepository = get(),
@@ -87,7 +87,7 @@ object SommelierModule {
         return Firebase.firestore
     }
 
-    private fun provideCoroutinesDispatcherIO(): CoroutineDispatcher {
+    private fun provideCoroutineDispatcherIO(): CoroutineDispatcher {
         return Dispatchers.IO
     }
 

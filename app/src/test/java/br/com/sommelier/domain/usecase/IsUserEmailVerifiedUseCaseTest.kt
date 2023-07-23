@@ -22,18 +22,18 @@ class IsUserEmailVerifiedUseCaseTest {
 
     private val authRepository = mockk<AuthRepository>()
 
-    private val coroutinesDispatcher = StandardTestDispatcher()
+    private val coroutineDispatcher = StandardTestDispatcher()
 
     private lateinit var useCase: IsUserEmailVerifiedUseCase
 
     @Before
     fun setUp() {
-        useCase = IsUserEmailVerifiedUseCase(authRepository, coroutinesDispatcher)
+        useCase = IsUserEmailVerifiedUseCase(authRepository, coroutineDispatcher)
     }
 
     @Test
     fun `GIVEN a successful result and a user with verified email WHEN execute use case THEN must return true`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val isUserEmailVerified: Either<Problem, Boolean> = true.right()
 
             every { authRepository.isUserEmailVerified() } returns isUserEmailVerified
@@ -47,7 +47,7 @@ class IsUserEmailVerifiedUseCaseTest {
 
     @Test
     fun `GIVEN a successful result and a user with unverified email WHEN execute use case THEN must return false`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val isUserEmailVerified: Either<Problem, Boolean> = false.right()
 
             every { authRepository.isUserEmailVerified() } returns isUserEmailVerified
@@ -61,7 +61,7 @@ class IsUserEmailVerifiedUseCaseTest {
 
     @Test
     fun `GIVEN an unsuccessful result WHEN execute use case THEN must return the expected failure result`() =
-        runTest(coroutinesDispatcher) {
+        runTest(coroutineDispatcher) {
             val errorMessage = "Generic problem occurred"
             val problem: Either<Problem, Boolean> = GenericProblem(errorMessage).left()
 

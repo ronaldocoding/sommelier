@@ -10,13 +10,13 @@ import br.com.sommelier.base.result.Success
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-abstract class UseCase<in P, R>(private val coroutinesDispatcher: CoroutineDispatcher) {
+abstract class UseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
 
     protected abstract suspend fun execute(parameters: P): Either<Problem, R>
 
     suspend operator fun invoke(parameters: P): Either<Failure, Success<R>> {
         return try {
-            withContext(coroutinesDispatcher) {
+            withContext(coroutineDispatcher) {
                 execute(parameters).let { result ->
                     when (result) {
                         is Either.Left -> Failure(result.value).left()
