@@ -8,6 +8,7 @@ import br.com.sommelier.domain.usecase.GetCurrentUserUseCase
 import br.com.sommelier.domain.usecase.GetUserDocumentUseCase
 import br.com.sommelier.domain.usecase.IsUserEmailVerifiedUseCase
 import br.com.sommelier.domain.usecase.IsUserSignedInUseCase
+import br.com.sommelier.domain.usecase.SignInUserUseCase
 import br.com.sommelier.domain.usecase.SignOutUserUseCase
 import br.com.sommelier.util.FirestoreCollections.USERS
 import com.google.firebase.auth.FirebaseAuth
@@ -35,6 +36,7 @@ object SommelierModule {
         factory { GetCurrentUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { GetUserDocumentUseCase(userRepository = get(), coroutineDispatcher = get()) }
         factory { IsUserEmailVerifiedUseCase(authRepository = get(), coroutineDispatcher = get()) }
+        factory { SignInUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { IsUserSignedInUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { SignOutUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
     }
