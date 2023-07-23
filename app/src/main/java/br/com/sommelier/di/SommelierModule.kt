@@ -48,7 +48,6 @@ object SommelierModule {
                 coroutineDispatcher = get()
             )
         }
-        factory { GetCurrentUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory {
             DeleteUserUseCase(
                 authRepository = get(),
@@ -56,9 +55,9 @@ object SommelierModule {
                 coroutineDispatcher = get()
             )
         }
+        factory { GetCurrentUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { GetUserDocumentUseCase(userRepository = get(), coroutineDispatcher = get()) }
         factory { IsUserEmailVerifiedUseCase(authRepository = get(), coroutineDispatcher = get()) }
-        factory { SignInUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { IsUserSignedInUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { ReauthenticateUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory {
@@ -73,6 +72,7 @@ object SommelierModule {
                 coroutineDispatcher = get()
             )
         }
+        factory { SignInUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { SignOutUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { UpdateUserDocumentUseCase(userRepository = get(), coroutineDispatcher = get()) }
         factory {
