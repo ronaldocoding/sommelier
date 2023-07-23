@@ -5,6 +5,7 @@ import br.com.sommelier.data.repository.UserRepositoryImpl
 import br.com.sommelier.domain.repository.AuthRepository
 import br.com.sommelier.domain.repository.UserRepository
 import br.com.sommelier.domain.usecase.CreateUserUseCase
+import br.com.sommelier.domain.usecase.DeleteUserUseCase
 import br.com.sommelier.domain.usecase.GetCurrentUserUseCase
 import br.com.sommelier.domain.usecase.GetUserDocumentUseCase
 import br.com.sommelier.domain.usecase.IsUserEmailVerifiedUseCase
@@ -46,6 +47,13 @@ object SommelierModule {
             )
         }
         factory { GetCurrentUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
+        factory {
+            DeleteUserUseCase(
+                authRepository = get(),
+                userRepository = get(),
+                coroutineDispatcher = get()
+            )
+        }
         factory { GetUserDocumentUseCase(userRepository = get(), coroutineDispatcher = get()) }
         factory { IsUserEmailVerifiedUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { SignInUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
