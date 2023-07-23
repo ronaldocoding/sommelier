@@ -13,6 +13,7 @@ import br.com.sommelier.domain.usecase.SendEmailVerificationUseCase
 import br.com.sommelier.domain.usecase.SendPasswordResetEmailUseCase
 import br.com.sommelier.domain.usecase.SignInUserUseCase
 import br.com.sommelier.domain.usecase.SignOutUserUseCase
+import br.com.sommelier.domain.usecase.UpdateUserDocumentUseCase
 import br.com.sommelier.util.FirestoreCollections.USERS
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -55,6 +56,7 @@ object SommelierModule {
             )
         }
         factory { SignOutUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
+        factory { UpdateUserDocumentUseCase(userRepository = get(), coroutineDispatcher = get()) }
     }
 
     private fun provideFirebaseAuth(): FirebaseAuth {
