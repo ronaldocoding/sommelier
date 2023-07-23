@@ -10,6 +10,7 @@ import br.com.sommelier.domain.usecase.IsUserEmailVerifiedUseCase
 import br.com.sommelier.domain.usecase.IsUserSignedInUseCase
 import br.com.sommelier.domain.usecase.ReauthenticateUserUseCase
 import br.com.sommelier.domain.usecase.SendEmailVerificationUseCase
+import br.com.sommelier.domain.usecase.SendPasswordResetEmailUseCase
 import br.com.sommelier.domain.usecase.SignInUserUseCase
 import br.com.sommelier.domain.usecase.SignOutUserUseCase
 import br.com.sommelier.util.FirestoreCollections.USERS
@@ -43,6 +44,12 @@ object SommelierModule {
         factory { ReauthenticateUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory {
             SendEmailVerificationUseCase(
+                authRepository = get(),
+                coroutineDispatcher = get()
+            )
+        }
+        factory {
+            SendPasswordResetEmailUseCase(
                 authRepository = get(),
                 coroutineDispatcher = get()
             )
