@@ -5,7 +5,6 @@ import arrow.core.left
 import arrow.core.right
 import br.com.sommelier.base.result.GenericProblem
 import br.com.sommelier.base.result.Problem
-import br.com.sommelier.base.usecase.UseCase
 import br.com.sommelier.domain.repository.AuthRepository
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -17,17 +16,21 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class SendEmailVerificationUseCaseTest {
+class ReauthenticateUserUseCaseTest {
 
     private val authRepository = mockk<AuthRepository>()
 
     private val coroutineDispatcher = StandardTestDispatcher()
 
-    private lateinit var useCase: SendEmailVerificationUseCase
+    private lateinit var useCase: ReauthenticateUserUseCase
+
+    private val dummyEmail = "email"
+
+    private val dummyPassword = "password"
 
     @Before
     fun setUp() {
-        useCase = SendEmailVerificationUseCase(
+        useCase = ReauthenticateUserUseCase(
             authRepository = authRepository,
             coroutineDispatcher = coroutineDispatcher
         )
@@ -38,9 +41,14 @@ class SendEmailVerificationUseCaseTest {
         runTest(coroutineDispatcher) {
             val successfulResult: Either<Problem, Unit> = Unit.right()
 
-            coEvery { authRepository.sendEmailVerification() } returns successfulResult
+            coEvery {
+                authRepository.reauthenticateUser(
+                    dummyEmail,
+                    dummyPassword
+                )
+            } returns successfulResult
 
-            val output = useCase(UseCase.None())
+            val output = useCase(ReauthenticateUserUseCase.Params(dummyEmail, dummyPassword))
 
             assertTrue(output.isRight {
                 it.data == Unit
@@ -53,13 +61,17 @@ class SendEmailVerificationUseCaseTest {
             val errorMessage = "Generic problem occurred"
             val unsuccessfulResult: Either<Problem, Unit> = GenericProblem(errorMessage).left()
 
-            coEvery { authRepository.sendEmailVerification() } returns unsuccessfulResult
+            coEvery {
+                authRepository.reauthenticateUser(
+                    dummyEmail,
+                    dummyPassword
+                )
+            } returns unsuccessfulResult
 
-            val output = useCase(UseCase.None())
+            val output = useCase(ReauthenticateUserUseCase.Params(dummyEmail, dummyPassword))
 
             assertTrue(output.isLeft {
-                it.problem is GenericProblem
-                        && (it.problem as GenericProblem).message == errorMessage
+                it.problem is GenericProblem && (it.problem as GenericProblem).message == errorMessage
             })
         }
 }

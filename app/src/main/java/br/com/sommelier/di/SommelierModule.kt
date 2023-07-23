@@ -8,6 +8,7 @@ import br.com.sommelier.domain.usecase.GetCurrentUserUseCase
 import br.com.sommelier.domain.usecase.GetUserDocumentUseCase
 import br.com.sommelier.domain.usecase.IsUserEmailVerifiedUseCase
 import br.com.sommelier.domain.usecase.IsUserSignedInUseCase
+import br.com.sommelier.domain.usecase.ReauthenticateUserUseCase
 import br.com.sommelier.domain.usecase.SendEmailVerificationUseCase
 import br.com.sommelier.domain.usecase.SignInUserUseCase
 import br.com.sommelier.domain.usecase.SignOutUserUseCase
@@ -39,13 +40,13 @@ object SommelierModule {
         factory { IsUserEmailVerifiedUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { SignInUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { IsUserSignedInUseCase(authRepository = get(), coroutineDispatcher = get()) }
+        factory { ReauthenticateUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory {
             SendEmailVerificationUseCase(
                 authRepository = get(),
                 coroutineDispatcher = get()
             )
         }
-        factory { SignInUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
         factory { SignOutUserUseCase(authRepository = get(), coroutineDispatcher = get()) }
     }
 
