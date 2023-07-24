@@ -1,14 +1,14 @@
 package br.com.sommelier.data
 
-import br.com.sommelier.data.model.UserData
-import br.com.sommelier.data.repository.UserRepositoryImpl
-import br.com.sommelier.domain.model.UserDomain
 import br.com.sommelier.base.result.AddDocumentProblem
 import br.com.sommelier.base.result.DeleteDocumentProblem
-import br.com.sommelier.util.FirestoreCollections.UID_FIELD
 import br.com.sommelier.base.result.GetDocumentProblem
 import br.com.sommelier.base.result.NotFoundDocumentProblem
 import br.com.sommelier.base.result.UpdateDocumentProblem
+import br.com.sommelier.data.model.UserData
+import br.com.sommelier.data.repository.UserRepositoryImpl
+import br.com.sommelier.domain.model.UserDomain
+import br.com.sommelier.util.FirestoreCollections.UID_FIELD
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
@@ -50,9 +50,11 @@ class UserRepositoryImplTest {
 
         val result = userRepository.saveUser(dummyUserDomain)
 
-        assertTrue(result.isRight {
-            it == Unit
-        })
+        assertTrue(
+            result.isRight {
+                it == Unit
+            }
+        )
     }
 
     @Test
@@ -71,9 +73,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.saveUser(dummyUserDomain)
 
-            assertTrue(result.isLeft { problem ->
-                problem is AddDocumentProblem && problem.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is AddDocumentProblem && problem.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -92,9 +96,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.saveUser(dummyUserDomain)
 
-            assertTrue(result.isLeft { problem ->
-                problem is AddDocumentProblem && problem.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is AddDocumentProblem && problem.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -117,9 +123,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.getUser(dummyUid)
 
-            assertTrue(result.isRight { userDomain ->
-                userDomain == dummyUserDomain
-            })
+            assertTrue(
+                result.isRight { userDomain ->
+                    userDomain == dummyUserDomain
+                }
+            )
         }
 
     @Test
@@ -139,9 +147,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.getUser(dummyUid)
 
-            assertTrue(result.isLeft { problem ->
-                problem is NotFoundDocumentProblem && problem.message == "User not found"
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is NotFoundDocumentProblem && problem.message == "User not found"
+                }
+            )
         }
 
     @Test
@@ -162,9 +172,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.getUser(dummyUid)
 
-            assertTrue(result.isLeft { problem ->
-                problem is GetDocumentProblem && problem.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is GetDocumentProblem && problem.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -185,9 +197,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.getUser(dummyUid)
 
-            assertTrue(result.isLeft { problem ->
-                problem is GetDocumentProblem && problem.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is GetDocumentProblem && problem.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -226,9 +240,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.updateUser(dummyUserDomain)
 
-            assertTrue(result.isRight {
-                it == Unit
-            })
+            assertTrue(
+                result.isRight {
+                    it == Unit
+                }
+            )
         }
 
     @Test
@@ -268,9 +284,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.updateUser(dummyUserDomain)
 
-            assertTrue(result.isLeft { problem ->
-                problem is UpdateDocumentProblem && problem.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is UpdateDocumentProblem && problem.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -290,9 +308,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.updateUser(dummyUserDomain)
 
-            assertTrue(result.isLeft { problem ->
-                problem is NotFoundDocumentProblem && problem.message == "User not found"
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is NotFoundDocumentProblem && problem.message == "User not found"
+                }
+            )
         }
 
     @Test
@@ -313,9 +333,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.updateUser(dummyUserDomain)
 
-            assertTrue(result.isLeft { problem ->
-                problem is UpdateDocumentProblem && problem.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is UpdateDocumentProblem && problem.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -336,9 +358,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.updateUser(dummyUserDomain)
 
-            assertTrue(result.isLeft { problem ->
-                problem is UpdateDocumentProblem && problem.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is UpdateDocumentProblem && problem.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -377,9 +401,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.deleteUser(dummyUid)
 
-            assertTrue(result.isRight {
-                it == Unit
-            })
+            assertTrue(
+                result.isRight {
+                    it == Unit
+                }
+            )
         }
 
     @Test
@@ -419,9 +445,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.deleteUser(dummyUid)
 
-            assertTrue(result.isLeft { problem ->
-                problem is DeleteDocumentProblem && problem.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is DeleteDocumentProblem && problem.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -441,9 +469,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.deleteUser(dummyUid)
 
-            assertTrue(result.isLeft { problem ->
-                problem is NotFoundDocumentProblem && problem.message == "User not found"
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is NotFoundDocumentProblem && problem.message == "User not found"
+                }
+            )
         }
 
     @Test
@@ -464,9 +494,11 @@ class UserRepositoryImplTest {
 
             val result = userRepository.deleteUser(dummyUid)
 
-            assertTrue(result.isLeft { problem ->
-                problem is DeleteDocumentProblem && problem.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is DeleteDocumentProblem && problem.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -487,8 +519,10 @@ class UserRepositoryImplTest {
 
             val result = userRepository.deleteUser(dummyUid)
 
-            assertTrue(result.isLeft { problem ->
-                problem is DeleteDocumentProblem && problem.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft { problem ->
+                    problem is DeleteDocumentProblem && problem.message == errorMessage
+                }
+            )
         }
 }

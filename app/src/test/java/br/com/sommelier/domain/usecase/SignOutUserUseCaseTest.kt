@@ -35,9 +35,11 @@ class SignOutUserUseCaseTest {
 
             val output = signOutUserUseCase(UseCase.None())
 
-            assertTrue(output.isRight {
-                it.data == Unit
-            })
+            assertTrue(
+                output.isRight {
+                    it.data == Unit
+                }
+            )
         }
 
     @Test
@@ -50,10 +52,11 @@ class SignOutUserUseCaseTest {
 
             val output = signOutUserUseCase(UseCase.None())
 
-            assertTrue(output.isLeft() {
-                it.problem is AlreadySignedOutUserProblem
-                        && (it.problem as AlreadySignedOutUserProblem).message == errorMessage
-            })
+            assertTrue(
+                output.isLeft() {
+                    it.problem is AlreadySignedOutUserProblem &&
+                        (it.problem as AlreadySignedOutUserProblem).message == errorMessage
+                }
+            )
         }
-
 }

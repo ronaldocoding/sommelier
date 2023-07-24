@@ -25,9 +25,11 @@ class UseCaseTest {
 
             val output = useCase(false)
 
-            assertTrue(output.isRight {
-                it.data
-            })
+            assertTrue(
+                output.isRight {
+                    it.data
+                }
+            )
         }
 
     @Test
@@ -39,9 +41,11 @@ class UseCaseTest {
 
             val output = useCase(false)
 
-            assertTrue(output.isLeft {
-                it.problem is GenericProblem && (it.problem as GenericProblem).message == "error"
-            })
+            assertTrue(
+                output.isLeft {
+                    it.problem is GenericProblem && (it.problem as GenericProblem).message == "error"
+                }
+            )
         }
 
     @Test
@@ -51,9 +55,11 @@ class UseCaseTest {
 
             val output = useCase(false)
 
-            assertTrue(output.isLeft {
-                it.problem is GenericProblem && (it.problem as GenericProblem).message == "error"
-            })
+            assertTrue(
+                output.isLeft {
+                    it.problem is GenericProblem && (it.problem as GenericProblem).message == "error"
+                }
+            )
         }
 
     @Test
@@ -63,10 +69,12 @@ class UseCaseTest {
 
             val output = useCase(false)
 
-            assertTrue(output.isLeft {
-                it.problem is GenericProblem
-                        && (it.problem as GenericProblem).message == "Generic problem occurred"
-            })
+            assertTrue(
+                output.isLeft {
+                    it.problem is GenericProblem &&
+                        (it.problem as GenericProblem).message == "Generic problem occurred"
+                }
+            )
         }
 
     private fun <P, R> givenUseCase(executeFunction: suspend (P) -> Either<Problem, R>): UseCase<P, R> {

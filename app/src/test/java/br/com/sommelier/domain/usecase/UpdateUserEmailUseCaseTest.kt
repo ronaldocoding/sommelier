@@ -86,9 +86,11 @@ class UpdateUserEmailUseCaseTest {
 
             val output = useCase(dummyUserDomain)
 
-            assertTrue(output.isRight {
-                it.data == Unit
-            })
+            assertTrue(
+                output.isRight {
+                    it.data == Unit
+                }
+            )
         }
 
     @Test
@@ -109,9 +111,11 @@ class UpdateUserEmailUseCaseTest {
 
             val output = useCase(dummyUserDomain)
 
-            assertTrue(output.isRight {
-                it.data == Unit
-            })
+            assertTrue(
+                output.isRight {
+                    it.data == Unit
+                }
+            )
         }
 
     @Test
@@ -126,9 +130,11 @@ class UpdateUserEmailUseCaseTest {
 
             val output = useCase(dummyUserDomain)
 
-            assertTrue(output.isLeft {
-                it.problem is GenericProblem &&
+            assertTrue(
+                output.isLeft {
+                    it.problem is GenericProblem &&
                         (it.problem as GenericProblem).message == "Generic problem occurred"
-            })
+                }
+            )
         }
 }

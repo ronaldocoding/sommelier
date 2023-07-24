@@ -5,7 +5,6 @@ import arrow.core.left
 import arrow.core.right
 import br.com.sommelier.base.result.GenericProblem
 import br.com.sommelier.base.result.Problem
-import br.com.sommelier.base.usecase.UseCase
 import br.com.sommelier.domain.repository.AuthRepository
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -44,9 +43,11 @@ class SendPasswordResetEmailUseCaseTest {
 
             val output = useCase(SendPasswordResetEmailUseCase.Params(dummyEmail))
 
-            assertTrue(output.isRight {
-                it.data == Unit
-            })
+            assertTrue(
+                output.isRight {
+                    it.data == Unit
+                }
+            )
         }
 
     @Test
@@ -59,9 +60,11 @@ class SendPasswordResetEmailUseCaseTest {
 
             val output = useCase(SendPasswordResetEmailUseCase.Params(dummyEmail))
 
-            assertTrue(output.isLeft {
-                it.problem is GenericProblem
-                        && (it.problem as GenericProblem).message == errorMessage
-            })
+            assertTrue(
+                output.isLeft {
+                    it.problem is GenericProblem &&
+                        (it.problem as GenericProblem).message == errorMessage
+                }
+            )
         }
 }

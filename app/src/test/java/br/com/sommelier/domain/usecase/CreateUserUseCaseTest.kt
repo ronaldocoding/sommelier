@@ -79,9 +79,11 @@ class CreateUserUseCaseTest {
 
             val output = useCase(dummyUserInfo)
 
-            assertTrue(output.isRight {
-                it.data == Unit
-            })
+            assertTrue(
+                output.isRight {
+                    it.data == Unit
+                }
+            )
         }
 
     @Test
@@ -98,9 +100,11 @@ class CreateUserUseCaseTest {
 
             val output = useCase(dummyUserInfo)
 
-            assertTrue(output.isRight {
-                it.data == Unit
-            })
+            assertTrue(
+                output.isRight {
+                    it.data == Unit
+                }
+            )
         }
 
     @Test
@@ -113,10 +117,11 @@ class CreateUserUseCaseTest {
 
             val output = useCase(dummyUserInfo)
 
-            assertTrue(output.isLeft {
-                it.problem is GenericProblem &&
+            assertTrue(
+                output.isLeft {
+                    it.problem is GenericProblem &&
                         (it.problem as GenericProblem).message == errorMessage
-            })
+                }
+            )
         }
-
 }

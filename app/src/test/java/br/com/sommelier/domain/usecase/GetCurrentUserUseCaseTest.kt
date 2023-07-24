@@ -44,9 +44,11 @@ class GetCurrentUserUseCaseTest {
 
             val output = useCase(UseCase.None())
 
-            assertTrue(output.isRight {
-                it.data.email == firebaseUser.email && it.data.uid == firebaseUser.uid
-            })
+            assertTrue(
+                output.isRight {
+                    it.data.email == firebaseUser.email && it.data.uid == firebaseUser.uid
+                }
+            )
         }
 
     @Test
@@ -59,9 +61,11 @@ class GetCurrentUserUseCaseTest {
 
             val output = useCase(UseCase.None())
 
-            assertTrue(output.isLeft {
-                it.problem is NullUserProblem
-                        && (it.problem as NullUserProblem).message == errorMessage
-            })
+            assertTrue(
+                output.isLeft {
+                    it.problem is NullUserProblem &&
+                        (it.problem as NullUserProblem).message == errorMessage
+                }
+            )
         }
 }

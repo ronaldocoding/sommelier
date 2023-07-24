@@ -41,9 +41,11 @@ class UpdateUserDocumentUseCaseTest {
 
             val output = useCase(dummyUserDomain)
 
-            assertTrue(output.isRight {
-                it.data == Unit
-            })
+            assertTrue(
+                output.isRight {
+                    it.data == Unit
+                }
+            )
         }
 
     @Test
@@ -56,8 +58,10 @@ class UpdateUserDocumentUseCaseTest {
 
             val output = useCase(dummyUserDomain)
 
-            assertTrue(output.isLeft {
-                it.problem is GenericProblem && (it.problem as GenericProblem).message == errorMessage
-            })
+            assertTrue(
+                output.isLeft {
+                    it.problem is GenericProblem && (it.problem as GenericProblem).message == errorMessage
+                }
+            )
         }
 }

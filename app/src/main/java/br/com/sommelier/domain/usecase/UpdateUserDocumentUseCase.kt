@@ -7,7 +7,6 @@ import br.com.sommelier.domain.model.UserDomain
 import br.com.sommelier.domain.repository.UserRepository
 import kotlinx.coroutines.CoroutineDispatcher
 
-
 class UpdateUserDocumentUseCase(
     private val userRepository: UserRepository,
     coroutineDispatcher: CoroutineDispatcher

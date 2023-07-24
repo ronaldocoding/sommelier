@@ -1,7 +1,6 @@
 package br.com.sommelier.data
 
 import android.text.TextUtils
-import br.com.sommelier.data.repository.AuthRepositoryImpl
 import br.com.sommelier.base.result.AlreadySignedOutUserProblem
 import br.com.sommelier.base.result.DeleteUserProblem
 import br.com.sommelier.base.result.NullResultProblem
@@ -13,6 +12,7 @@ import br.com.sommelier.base.result.SendPasswordResetEmailProblem
 import br.com.sommelier.base.result.SignInUserProblem
 import br.com.sommelier.base.result.UpdateUserEmailProblem
 import br.com.sommelier.base.result.UpdateUserPasswordProblem
+import br.com.sommelier.data.repository.AuthRepositoryImpl
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.EmailAuthCredential
@@ -66,9 +66,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.registerUser(dummyEmail, dummyPassword)
 
-        assertTrue(result.isRight {
-            it == Unit
-        })
+        assertTrue(
+            result.isRight {
+                it == Unit
+            }
+        )
     }
 
     @Test
@@ -94,9 +96,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.registerUser(dummyEmail, dummyPassword)
 
-            assertTrue(result.isLeft {
-                it is NullUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is NullUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -119,9 +123,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.registerUser(dummyEmail, dummyPassword)
 
-            assertTrue(result.isLeft {
-                it is RegisterUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is RegisterUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -146,9 +152,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.registerUser(dummyEmail, dummyPassword)
 
-            assertTrue(result.isLeft {
-                it is RegisterUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is RegisterUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -167,9 +175,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.deleteUser()
 
-        assertTrue(result.isRight {
-            it == Unit
-        })
+        assertTrue(
+            result.isRight {
+                it == Unit
+            }
+        )
     }
 
     @Test
@@ -189,9 +199,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.deleteUser()
 
-            assertTrue(result.isLeft {
-                it is DeleteUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is DeleteUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -213,9 +225,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.deleteUser()
 
-            assertTrue(result.isLeft {
-                it is DeleteUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is DeleteUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -231,9 +245,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.deleteUser()
 
-            assertTrue(result.isLeft {
-                it is NullResultProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is NullResultProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -255,9 +271,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.signInUser(dummyEmail, dummyPassword)
 
-        assertTrue(result.isRight {
-            it == Unit
-        })
+        assertTrue(
+            result.isRight {
+                it == Unit
+            }
+        )
     }
 
     @Test
@@ -281,9 +299,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.signInUser(dummyEmail, dummyPassword)
 
-            assertTrue(result.isLeft {
-                it is NullUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is NullUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -306,9 +326,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.signInUser(dummyEmail, dummyPassword)
 
-            assertTrue(result.isLeft {
-                it is SignInUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is SignInUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -333,9 +355,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.signInUser(dummyEmail, dummyPassword)
 
-            assertTrue(result.isLeft {
-                it is SignInUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is SignInUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -354,9 +378,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.updateUserEmail(dummyEmail)
 
-        assertTrue(result.isRight {
-            it == Unit
-        })
+        assertTrue(
+            result.isRight {
+                it == Unit
+            }
+        )
     }
 
     @Test
@@ -368,9 +394,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.updateUserEmail(dummyEmail)
 
-            assertTrue(result.isLeft {
-                it is NullUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is NullUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -390,9 +418,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.updateUserEmail(dummyEmail)
 
-            assertTrue(result.isLeft {
-                it is UpdateUserEmailProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is UpdateUserEmailProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -414,9 +444,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.updateUserEmail(dummyEmail)
 
-            assertTrue(result.isLeft {
-                it is UpdateUserEmailProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is UpdateUserEmailProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -435,9 +467,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.updateUserPassword(dummyPassword)
 
-        assertTrue(result.isRight {
-            it == Unit
-        })
+        assertTrue(
+            result.isRight {
+                it == Unit
+            }
+        )
     }
 
     @Test
@@ -449,9 +483,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.updateUserPassword(dummyPassword)
 
-            assertTrue(result.isLeft {
-                it is NullUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is NullUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -472,9 +508,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.updateUserPassword(dummyPassword)
 
-            assertTrue(result.isLeft {
-                it is UpdateUserPasswordProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is UpdateUserPasswordProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -496,9 +534,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.updateUserPassword(dummyPassword)
 
-            assertTrue(result.isLeft {
-                it is UpdateUserPasswordProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is UpdateUserPasswordProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -519,9 +559,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.reauthenticateUser(dummyEmail, dummyPassword)
 
-        assertTrue(result.isRight {
-            it == Unit
-        })
+        assertTrue(
+            result.isRight {
+                it == Unit
+            }
+        )
     }
 
     @Test
@@ -533,9 +575,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.reauthenticateUser(dummyEmail, dummyPassword)
 
-            assertTrue(result.isLeft {
-                it is NullUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is NullUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -558,9 +602,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.reauthenticateUser(dummyEmail, dummyPassword)
 
-            assertTrue(result.isLeft {
-                it is ReauthenticateUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is ReauthenticateUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -584,9 +630,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.reauthenticateUser(dummyEmail, dummyPassword)
 
-            assertTrue(result.isLeft {
-                it is ReauthenticateUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is ReauthenticateUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -606,9 +654,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.sendEmailVerification()
 
-            assertTrue(result.isRight {
-                it == Unit
-            })
+            assertTrue(
+                result.isRight {
+                    it == Unit
+                }
+            )
         }
 
     @Test
@@ -629,9 +679,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.sendEmailVerification()
 
-            assertTrue(result.isLeft {
-                it is SendEmailVerificationProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is SendEmailVerificationProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -651,9 +703,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.sendEmailVerification()
 
-            assertTrue(result.isLeft {
-                it is SendEmailVerificationProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is SendEmailVerificationProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -665,9 +719,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.sendEmailVerification()
 
-            assertTrue(result.isLeft {
-                it is NullUserProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is NullUserProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -687,9 +743,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.sendPasswordResetEmail(dummyEmail)
 
-            assertTrue(result.isRight {
-                it == Unit
-            })
+            assertTrue(
+                result.isRight {
+                    it == Unit
+                }
+            )
         }
 
     @Test
@@ -710,9 +768,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.sendPasswordResetEmail(dummyEmail)
 
-            assertTrue(result.isLeft {
-                it is SendPasswordResetEmailProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is SendPasswordResetEmailProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -734,9 +794,11 @@ class AuthRepositoryImplTest {
 
             val result = authRepositoryImpl.sendPasswordResetEmail(dummyEmail)
 
-            assertTrue(result.isLeft {
-                it is SendPasswordResetEmailProblem && it.message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it is SendPasswordResetEmailProblem && it.message == errorMessage
+                }
+            )
         }
 
     @Test
@@ -746,9 +808,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.signOutUser()
 
-        assertTrue(result.isRight {
-            it == Unit
-        })
+        assertTrue(
+            result.isRight {
+                it == Unit
+            }
+        )
     }
 
     @Test
@@ -759,9 +823,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.signOutUser()
 
-        assertTrue(result.isLeft {
-            it is AlreadySignedOutUserProblem && it.message == errorMessage
-        })
+        assertTrue(
+            result.isLeft {
+                it is AlreadySignedOutUserProblem && it.message == errorMessage
+            }
+        )
     }
 
     @Test
@@ -790,9 +856,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.isUserEmailVerified()
 
-        assertTrue(result.isRight { isUserEmailVerified ->
-            isUserEmailVerified
-        })
+        assertTrue(
+            result.isRight { isUserEmailVerified ->
+                isUserEmailVerified
+            }
+        )
     }
 
     @Test
@@ -803,9 +871,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.isUserEmailVerified()
 
-        assertFalse(result.isRight { isUserEmailVerified ->
-            isUserEmailVerified
-        })
+        assertFalse(
+            result.isRight { isUserEmailVerified ->
+                isUserEmailVerified
+            }
+        )
     }
 
     @Test
@@ -816,9 +886,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.isUserEmailVerified()
 
-        assertTrue(result.isLeft {
-            it is NullUserProblem && it.message == errorMessage
-        })
+        assertTrue(
+            result.isLeft {
+                it is NullUserProblem && it.message == errorMessage
+            }
+        )
     }
 
     @Test
@@ -832,9 +904,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.getCurrentUser()
 
-        assertTrue(result.isRight { actualUser ->
-            actualUser.uid == expectedUser.uid && actualUser.email == expectedUser.email
-        })
+        assertTrue(
+            result.isRight { actualUser ->
+                actualUser.uid == expectedUser.uid && actualUser.email == expectedUser.email
+            }
+        )
     }
 
     @Test
@@ -845,9 +919,11 @@ class AuthRepositoryImplTest {
 
         val result = authRepositoryImpl.getCurrentUser()
 
-        assertTrue(result.isLeft {
-            it is NullUserProblem && it.message == errorMessage
-        })
+        assertTrue(
+            result.isLeft {
+                it is NullUserProblem && it.message == errorMessage
+            }
+        )
     }
 
     @After
