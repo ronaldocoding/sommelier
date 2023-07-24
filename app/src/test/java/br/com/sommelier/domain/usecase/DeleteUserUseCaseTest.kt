@@ -73,9 +73,11 @@ class DeleteUserUseCaseTest {
 
             val output = useCase(DeleteUserUseCase.Params(dummyUid))
 
-            assertTrue(output.isRight {
-                it.data == Unit
-            })
+            assertTrue(
+                output.isRight {
+                    it.data == Unit
+                }
+            )
         }
 
     @Test
@@ -93,9 +95,11 @@ class DeleteUserUseCaseTest {
 
             val output = useCase(DeleteUserUseCase.Params(dummyUid))
 
-            assertTrue(output.isRight {
-                it.data == Unit
-            })
+            assertTrue(
+                output.isRight {
+                    it.data == Unit
+                }
+            )
         }
 
     @Test
@@ -109,9 +113,11 @@ class DeleteUserUseCaseTest {
 
             val output = useCase(DeleteUserUseCase.Params(dummyUid))
 
-            assertTrue(output.isLeft {
-                it.problem is GenericProblem &&
+            assertTrue(
+                output.isLeft {
+                    it.problem is GenericProblem &&
                         (it.problem as GenericProblem).message == errorMessage
-            })
+                }
+            )
         }
 }

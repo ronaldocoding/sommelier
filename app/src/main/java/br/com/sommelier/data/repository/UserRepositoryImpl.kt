@@ -3,18 +3,18 @@ package br.com.sommelier.data.repository
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import br.com.sommelier.base.result.AddDocumentProblem
+import br.com.sommelier.base.result.DeleteDocumentProblem
+import br.com.sommelier.base.result.GetDocumentProblem
+import br.com.sommelier.base.result.NotFoundDocumentProblem
+import br.com.sommelier.base.result.Problem
+import br.com.sommelier.base.result.UpdateDocumentProblem
 import br.com.sommelier.data.model.UserData
 import br.com.sommelier.domain.mapper.toData
 import br.com.sommelier.domain.mapper.toDomain
 import br.com.sommelier.domain.model.UserDomain
 import br.com.sommelier.domain.repository.UserRepository
-import br.com.sommelier.base.result.AddDocumentProblem
-import br.com.sommelier.base.result.DeleteDocumentProblem
 import br.com.sommelier.util.FirestoreCollections.UID_FIELD
-import br.com.sommelier.base.result.GetDocumentProblem
-import br.com.sommelier.base.result.NotFoundDocumentProblem
-import br.com.sommelier.base.result.Problem
-import br.com.sommelier.base.result.UpdateDocumentProblem
 import com.google.firebase.firestore.CollectionReference
 import kotlinx.coroutines.tasks.await
 

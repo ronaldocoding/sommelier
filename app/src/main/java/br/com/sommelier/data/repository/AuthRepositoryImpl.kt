@@ -3,7 +3,6 @@ package br.com.sommelier.data.repository
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import br.com.sommelier.domain.repository.AuthRepository
 import br.com.sommelier.base.result.AlreadySignedOutUserProblem
 import br.com.sommelier.base.result.DeleteUserProblem
 import br.com.sommelier.base.result.NullResultProblem
@@ -16,6 +15,7 @@ import br.com.sommelier.base.result.SendPasswordResetEmailProblem
 import br.com.sommelier.base.result.SignInUserProblem
 import br.com.sommelier.base.result.UpdateUserEmailProblem
 import br.com.sommelier.base.result.UpdateUserPasswordProblem
+import br.com.sommelier.domain.repository.AuthRepository
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

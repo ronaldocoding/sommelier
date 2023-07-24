@@ -40,9 +40,11 @@ class IsUserEmailVerifiedUseCaseTest {
 
             val result = useCase(UseCase.None())
 
-            assertTrue(result.isRight {
-                it.data
-            })
+            assertTrue(
+                result.isRight {
+                    it.data
+                }
+            )
         }
 
     @Test
@@ -54,9 +56,11 @@ class IsUserEmailVerifiedUseCaseTest {
 
             val result = useCase(UseCase.None())
 
-            assertFalse(result.isRight {
-                it.data
-            })
+            assertFalse(
+                result.isRight {
+                    it.data
+                }
+            )
         }
 
     @Test
@@ -69,9 +73,11 @@ class IsUserEmailVerifiedUseCaseTest {
 
             val result = useCase(UseCase.None())
 
-            assertTrue(result.isLeft {
-                it.problem is GenericProblem
-                        && (it.problem as GenericProblem).message == errorMessage
-            })
+            assertTrue(
+                result.isLeft {
+                    it.problem is GenericProblem &&
+                        (it.problem as GenericProblem).message == errorMessage
+                }
+            )
         }
 }

@@ -47,9 +47,11 @@ class SignInUserUseCaseTest {
 
             val output = useCase(SignInUserUseCase.Params(dummyEmail, dummyPassword))
 
-            assertTrue(output.isRight {
-                it.data == Unit
-            })
+            assertTrue(
+                output.isRight {
+                    it.data == Unit
+                }
+            )
         }
 
     @Test
@@ -67,9 +69,11 @@ class SignInUserUseCaseTest {
 
             val output = useCase(SignInUserUseCase.Params(dummyEmail, dummyPassword))
 
-            assertTrue(output.isLeft {
-                it.problem is GenericProblem
-                        && (it.problem as GenericProblem).message == errorMessage
-            })
+            assertTrue(
+                output.isLeft {
+                    it.problem is GenericProblem &&
+                        (it.problem as GenericProblem).message == errorMessage
+                }
+            )
         }
 }

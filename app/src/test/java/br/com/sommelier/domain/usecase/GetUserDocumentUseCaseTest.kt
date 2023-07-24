@@ -40,11 +40,13 @@ class GetUserDocumentUseCaseTest {
 
             val output = useCase(GetUserDocumentUseCase.Params(expectedUser.uid))
 
-            assertTrue(output.isRight {
-                it.data.email == expectedUser.email
-                        && it.data.name == expectedUser.name
-                        && it.data.uid == expectedUser.uid
-            })
+            assertTrue(
+                output.isRight {
+                    it.data.email == expectedUser.email &&
+                        it.data.name == expectedUser.name &&
+                        it.data.uid == expectedUser.uid
+                }
+            )
         }
 
     @Test
@@ -56,10 +58,11 @@ class GetUserDocumentUseCaseTest {
 
             val output = useCase(GetUserDocumentUseCase.Params("uid"))
 
-            assertTrue(output.isLeft {
-                it.problem is GenericProblem
-                        && (it.problem as GenericProblem).message == errorMessage
-            })
+            assertTrue(
+                output.isLeft {
+                    it.problem is GenericProblem &&
+                        (it.problem as GenericProblem).message == errorMessage
+                }
+            )
         }
-
 }
