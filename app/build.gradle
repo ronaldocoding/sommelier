@@ -34,6 +34,21 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == "debug") {
+            variant.outputs.all { output ->
+                def outputFile = output.outputFile
+                def destinationDir = file("app/build/outputs/apk/debug/")
+
+                task deploy(type: Copy) {
+                    from(outputFile)
+                    into(destinationDir)
+                }
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
