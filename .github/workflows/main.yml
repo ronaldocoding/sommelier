@@ -72,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: unit_test_coverage_report
-          path: app/build/reports/coverage/test/debug/index.html
+          path: app/build/reports/coverage/test/debug/
       
   upload:
     name: Upload APK
