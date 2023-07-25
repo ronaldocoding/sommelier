@@ -85,7 +85,7 @@ jobs:
         run: ./gradlew sonar --rerun-tasks --info
 
   ktlint:
-    name: Run ktlint check
+    name: Ktlint check
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
@@ -93,6 +93,8 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
+
+      - name: Run ktlintCheck
         run: ./gradlew ktlintCheck
         
   test:
