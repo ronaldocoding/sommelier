@@ -1,4 +1,4 @@
-name: Android Build, Test, and Deployment Pipeline
+name: Build, Test, and Deployment
 
 on:
   push:
@@ -17,7 +17,7 @@ on:
         
 jobs:
   build:
-    name: Setup Environment and build
+    name: Setup Env and build
     runs-on: macos-latest
     steps:
       - name: Checkout the code to specific branch
