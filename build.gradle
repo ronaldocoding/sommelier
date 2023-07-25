@@ -78,7 +78,7 @@ sonar {
         property "sonar.java.test.binaries", "build/intermediates/classes/debug"
         property "sonar.tests", ["src/test/java", "src/test/kotlin"]
         property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/app/build/reports/coverage/test/debug/report.xml"
+        property "sonar.coverage.jacoco.xmlReportPaths", "app/build/reports/coverage/test/debug/"
         property "sonar.test.inclusions", "**/*Test*/**"
         property "sonar.sourceEncoding", "UTF-8"
     }
