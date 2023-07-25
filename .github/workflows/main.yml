@@ -75,8 +75,12 @@ jobs:
   upload:
     name: Upload APK
     runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: ./app
     steps:
       - uses: actions/upload-artifact@v2
         with:
           name: sommelier-debug.apk
           path: app/build/outputs/apk/debug/sommelier-debug.apk
+          if-no-files-found: error
