@@ -70,7 +70,7 @@ sonar {
         property "sonar.projectKey", "ronaldocoding_sommelier"
         property "sonar.organization", "ronaldocoding"
         property "sonar.variant", "debug"
-        property "sonar.token", "sqp_4e570d70060d5247e6097127eaaa31efa5b38691"
+        property "sonar.token", "91692d1f843ebfa19dad3778009c41985e8ade26"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.sources", "src/main/java"
         property "sonar.binaries", "build/intermediates/classes/debug"
