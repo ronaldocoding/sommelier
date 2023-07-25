@@ -67,11 +67,11 @@ tasks.getByPath('app:preBuild').dependsOn installGitHook
 
 sonar {
     properties {
-        property "sonar.projectKey", "Sommelier"
-        property "sonar.projectName", "Sommelier"
+        property "sonar.projectKey", "ronaldocoding_sommelier"
+        property "sonar.organization", "ronaldocoding"
         property "sonar.variant", "debug"
         property "sonar.token", "sqp_4e570d70060d5247e6097127eaaa31efa5b38691"
-        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.sources", "src/main/java"
         property "sonar.binaries", "build/intermediates/classes/debug"
         property "sonar.java.binaries", "build/intermediates/classes/debug"
