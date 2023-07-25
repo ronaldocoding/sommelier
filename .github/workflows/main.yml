@@ -60,6 +60,7 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
       - run: ./gradlew test
+      - run: ./gradlew createDebugCoverageReport
       
       - name: Upload test report
         uses: actions/upload-artifact@v2
@@ -70,7 +71,6 @@ jobs:
       - name: Upload test coverage report
         uses: actions/upload-artifact@v2
         with:
-          run: ./gradlew createDebugCoverageReport
           name: unit_test_coverage_report
           path: app/build/reports/coverage/test/debug/index.html
       
