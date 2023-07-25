@@ -84,8 +84,17 @@ jobs:
     name: Upload APK
     runs-on: macos-latest
     steps:
+      - name: Checkout the code to specific branch
+        uses: actions/checkout@v2
+        
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+        
       - uses: actions/upload-artifact@v2
         with:
           name: app-debug.apk
-          path: app/build/outputs/apk/debug/
+          path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
