@@ -1,0 +1,98 @@
+name: Android Build, Test, and Deployment Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    
+  workflow_dispatch:
+    inputs:
+      app_id:
+        description: 'The application Id of the current build'
+        required: true
+      branch:
+        description: 'The branch from which we have to build'
+        required: true
+        
+jobs:
+  build:
+    name: Setup Environment and build
+    runs-on: macos-latest
+    steps:
+      - name: Checkout the code to specific branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.branch }}
+      
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        
+      - name: Gradle caching
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+            
+      - name: Make gradlew executable
+        run: chmod + ./gradlew
+        
+      - name: Build
+        run: ./gradlew build
+        
+  test:
+    name: Run Unit tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - run: ./gradlew test
+      - run: ./gradlew createDebugCoverageReport
+      
+      - name: Upload test report
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit_test_report
+          path: app/build/reports/tests/testDebugUnitTest/
+          
+      - name: Upload test coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit_test_coverage_report
+          path: app/build/reports/coverage/test/debug/
+      
+  upload:
+    name: Upload APK
+    runs-on: macos-latest
+    steps:
+      - name: Checkout the code to specific branch
+        uses: actions/checkout@v2
+        
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      
+      - name: Build debug apk
+        run: ./gradlew assembleDebug --stacktrace
+      
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
