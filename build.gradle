@@ -71,5 +71,17 @@ sonar {
     properties {
         property "sonar.projectKey", "Sommelier"
         property "sonar.projectName", "Sommelier"
+        property "sonar.tests", ["src/test/java", "src/test/kotlin"]
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.jacoco.reportPath", "**/jacoco/*.exec"
+        property "sonar.test.inclusions", "**/*Test*/**"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.sources", "src/main/java"
+        property "sonar.exclusions", '**/*Test*/**,' +
+                '*.json,' +
+                '**/*test*/**,' +
+                '**/.gradle/**,' +
+                '**/R.class,' +
+                '**/R$*.class'
     }
 }
