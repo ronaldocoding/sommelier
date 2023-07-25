@@ -48,7 +48,7 @@ jobs:
         run: chmod + ./gradlew
         
       - name: Build
-        run: ./gradlew build
+        run: ./gradlew assembleDebug
         
   test:
     name: Run Unit tests
@@ -83,6 +83,6 @@ jobs:
     steps:
       - uses: actions/upload-artifact@v2
         with:
-          name: sommelier-debug.apk
-          path: app/build/outputs/apk/debug/sommelier-debug.apk
+          name: debug.apk
+          path: app/build/outputs/apk/debug/debug.apk
           if-no-files-found: error
