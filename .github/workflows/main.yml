@@ -1,0 +1,80 @@
+name: Android Build, Test, and Deployment Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    
+  workflow_dispatch:
+    inputs:
+      app_id:
+        description: 'The application Id of the current build'
+        required: true
+      branch:
+        description: 'The branch from which we have to build'
+        required: true
+        
+jobs:
+  build:
+    name: Setup Environment and build
+    runs-on: macos-latest
+    steps:
+      - name: Checkout the code to specific branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.branch }}
+      
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        
+      - name: Gradle caching
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+            
+      - name: Make gradlew executable
+        run: chmod + ./gradlew
+        
+      - name: Build
+        run: ./gradlew build
+        
+  test:
+    name: Run Unit tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          java-version: 1.8
+      - run: ./gradlew test
+      
+  deploy:
+    name: Deploy application
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          java-version: 1.8
+      - run: ./gradlew deploy
+      
+  upload:
+    name: Upload APK
+    runs-on: macos-latest
+    steps:
+      - uses: actions/upload-artifact@v2
+        with:
+          name: sommelier-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
