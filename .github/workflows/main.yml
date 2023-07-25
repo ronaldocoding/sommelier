@@ -48,7 +48,7 @@ jobs:
         run: chmod + ./gradlew
         
       - name: Build
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew build
         
   test:
     name: Run Unit tests
@@ -75,7 +75,6 @@ jobs:
           path: app/build/reports/coverage/test/debug/index.html
       
   upload:
-    needs: [ build ]
     name: Upload APK
     runs-on: macos-latest
     steps:
@@ -87,8 +86,12 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-        
-      - uses: actions/upload-artifact@v2
+      
+      - name: Build debug apk
+        run: ./gradlew assembleDebug --stacktrace
+      
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
         with:
           name: app-debug.apk
           path: app/build/outputs/apk/debug/app-debug.apk
