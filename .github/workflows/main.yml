@@ -74,7 +74,7 @@ jobs:
       - run: ./gradlew deploy
       
   upload:
-    needs: [ deploy ]
+    needs: [ build ]
     name: Upload APK
     runs-on: macos-latest
     defaults:
