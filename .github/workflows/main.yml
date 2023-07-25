@@ -74,7 +74,7 @@ jobs:
       - run: ./gradlew deploy
       
   upload:
-    needs: [ build ]
+    needs: [ deploy ]
     name: Upload APK
     runs-on: macos-latest
     defaults:
@@ -83,6 +83,6 @@ jobs:
     steps:
       - uses: actions/upload-artifact@v2
         with:
-          name: debug.apk
-          path: app/build/outputs/apk/debug/debug.apk
+          name: app-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
