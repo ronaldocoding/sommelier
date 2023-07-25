@@ -17,6 +17,7 @@ plugins {
     id 'com.google.gms.google-services' version '4.3.15' apply false
     id 'jacoco' apply true
     id 'org.jlleitschuh.gradle.ktlint' version '11.5.0' apply true
+    id "org.sonarqube" version "4.3.0.3225" apply true
 }
 
 allprojects {
@@ -28,11 +29,9 @@ tasks.create(name: "unitTestCoverageReport", type: JacocoReport, dependsOn: "tes
     description = "Generate Jacoco coverage reports for the 'local' debug build."
 
     reports {
-        // human readable (written into './build/reports/jacoco/unitTestCoverageReport/html')
         html {
             enabled true
         }
-        // CI-readable (written into './build/reports/jacoco/unitTestCoverageReport/unitTestCoverageReport.xml')
         xml {
             enabled true
         }
@@ -64,3 +63,23 @@ task installGitHook(type: Copy) {
 }
 
 tasks.getByPath('app:preBuild').dependsOn installGitHook
+
+
+sonar {
+    properties {
+        property "sonar.projectKey", "ronaldocoding_sommelier"
+        property "sonar.organization", "ronaldocoding"
+        property "sonar.variant", "debug"
+        property "sonar.token", "91692d1f843ebfa19dad3778009c41985e8ade26"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.sources", "src/main/java"
+        property "sonar.binaries", "build/intermediates/classes/debug"
+        property "sonar.java.binaries", "build/intermediates/classes/debug"
+        property "sonar.java.test.binaries", "build/intermediates/classes/debug"
+        property "sonar.tests", ["src/test/java", "src/test/kotlin"]
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/app/build/reports/coverage/test/debug/report.xml"
+        property "sonar.test.inclusions", "**/*Test*/**"
+        property "sonar.sourceEncoding", "UTF-8"
+    }
+}

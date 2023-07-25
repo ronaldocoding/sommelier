@@ -21,9 +21,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout the code to specific branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.branch }}
+          fetch-depth: 0
       
       - name: Set up JDK
         uses: actions/setup-java@v2
@@ -46,15 +47,39 @@ jobs:
             
       - name: Make gradlew executable
         run: chmod + ./gradlew
-        
-      - name: Build
-        run: ./gradlew build
+
+      - name: Cache SonarQube packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew build sonar --info
         
   test:
     name: Run Unit tests
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
@@ -79,7 +104,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout the code to specific branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         
       - name: Set up JDK
         uses: actions/setup-java@v2
