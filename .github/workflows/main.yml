@@ -69,9 +69,6 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: ./gradlew build sonar --info
         
-      - name: Build
-        run: ./gradlew build
-        
   test:
     name: Run Unit tests
     runs-on: macos-latest
