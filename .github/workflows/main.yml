@@ -70,6 +70,7 @@ jobs:
       - name: Upload test coverage report
         uses: actions/upload-artifact@v2
         with:
+          run: ./gradlew createDebugCoverageReport
           name: unit_test_coverage_report
           path: app/build/reports/coverage/test/debug/index.html
       
