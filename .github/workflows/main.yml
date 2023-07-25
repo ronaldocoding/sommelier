@@ -62,6 +62,7 @@ jobs:
       - run: ./gradlew test
       
   deploy:
+    needs: [ build ]
     name: Deploy application
     runs-on: macos-latest
     steps:
@@ -73,6 +74,7 @@ jobs:
       - run: ./gradlew deploy
       
   upload:
+    needs: [ deploy ]
     name: Upload APK
     runs-on: macos-latest
     defaults:
