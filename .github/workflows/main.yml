@@ -71,9 +71,10 @@ jobs:
 
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar --rerun-tasks --info
+      - run: ./gradlew build sonar --rerun-tasks --info
+      - run: ./gradlew sonar --rerun-tasks
         
   test:
     name: Run Unit tests
