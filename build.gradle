@@ -34,6 +34,7 @@ tasks.create(name: "unitTestCoverageReport", type: JacocoReport, dependsOn: "tes
         }
         xml {
             enabled true
+            outputLocation =  file("${project.rootDir}/app/build/reports/coverage/test/debug/report.xml")
         }
     }
 
@@ -63,7 +64,6 @@ task installGitHook(type: Copy) {
 }
 
 tasks.getByPath('app:preBuild').dependsOn installGitHook
-
 
 sonar {
     properties {
