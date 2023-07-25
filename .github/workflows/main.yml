@@ -89,6 +89,7 @@ jobs:
           java-version: '17'
       - run: ./gradlew test
       - run: ./gradlew createDebugCoverageReport
+      - run: ./gradlew unitTestCoverageReport
       
       - name: Upload test report
         uses: actions/upload-artifact@v3
