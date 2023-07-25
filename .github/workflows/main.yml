@@ -48,7 +48,7 @@ jobs:
         run: chmod + ./gradlew
         
       - name: Build
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --stacktrace
         
   test:
     name: Run Unit tests
@@ -66,21 +66,15 @@ jobs:
         with:
           name: unit_test_report
           path: app/build/reports/tests/testDebugUnitTest/
-      
-  deploy:
-    needs: [ build ]
-    name: Deploy application
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
+          
+      - name: Upload test coverage report
+        uses: actions/upload-artifact@v2
         with:
-          distribution: 'zulu'
-          java-version: '17'
-      - run: ./gradlew deploy
+          name: unit_test_coverage_report
+          path: app/build/reports/coverage/test/debug/index.html
       
   upload:
-    needs: [ deploy ]
+    needs: [ build ]
     name: Upload APK
     runs-on: macos-latest
     steps:
