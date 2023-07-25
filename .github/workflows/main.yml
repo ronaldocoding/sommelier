@@ -74,6 +74,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew build sonar --info
+
+      - name: Rerun Sonarqube tasks
+        run: ./gradlew sonar --rerun-tasks --info
         
   test:
     name: Run Unit tests
