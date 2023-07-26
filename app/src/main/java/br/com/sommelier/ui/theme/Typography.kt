@@ -52,6 +52,13 @@ object Typography {
         letterSpacing = LetterSpacing.smallest
     )
 
+    val bodyLargeBold = TextStyle(
+        fontFamily = FontStyle.poppinsBold,
+        fontSize = FontSize.normal,
+        lineHeight = LineHeight.medium,
+        letterSpacing = LetterSpacing.smallest
+    )
+
     val bodyNormal = TextStyle(
         fontFamily = FontStyle.poppinsRegular,
         fontSize = FontSize.small,

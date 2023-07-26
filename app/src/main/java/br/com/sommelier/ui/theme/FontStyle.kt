@@ -11,4 +11,5 @@ object FontStyle {
     val poppinsRegular = FontFamily(Font(R.font.poppins_regular, FontWeight.Normal))
     val poppinsMedium = FontFamily(Font(R.font.poppins_medium, FontWeight.Medium))
     val poppinsSemiBold = FontFamily(Font(R.font.poppins_semi_bold, FontWeight.SemiBold))
+    val poppinsBold = FontFamily(Font(R.font.poppins_bold, FontWeight.Bold))
 }
