@@ -2,6 +2,7 @@ package br.com.sommelier.ui.theme
 
 import androidx.compose.ui.text.TextStyle
 
+@Suppress("unused")
 object Typography {
     val display = TextStyle(
         fontFamily = FontStyle.poppinsMedium,
