@@ -20,7 +20,7 @@ object ColorReference {
     val chineseSilver = Color(0xffcacaca)
     val frenchFuchsia = Color(0xffff4893)
     val antiFlashWhite = Color(0xfff0f0f0)
-    val brightGray  = Color(0xffeeeeee)
+    val brightGray = Color(0xffeeeeee)
     val eerieBlack = Color(0xff1f1f1f)
     val black = Color(0xff000000)
     val lightSilver = Color(0xffd6d6d6)
