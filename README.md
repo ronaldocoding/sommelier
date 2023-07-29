@@ -155,7 +155,7 @@ Rules to follow while contributing:
 > In case you have questions check this guide about [how to contribute to GitHub](https://github.com/firstcontributions/first-contributions).
 
 ## License 📝
-This project is under the MIT license.
+This project is under the [MIT License](https://github.com/ronaldocoding/sommelier/blob/main/LICENSE).
 
 ## Contributors 🤝
 Here are our project contributors:
