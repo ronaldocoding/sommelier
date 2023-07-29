@@ -60,6 +60,13 @@ object Typography {
         letterSpacing = LetterSpacing.smallest
     )
 
+    val bodyMedium = TextStyle(
+        fontFamily = FontStyle.poppinsMedium,
+        fontSize = FontSize.small,
+        lineHeight = LineHeight.normal,
+        letterSpacing = LetterSpacing.smallest
+    )
+
     val bodyNormal = TextStyle(
         fontFamily = FontStyle.poppinsRegular,
         fontSize = FontSize.small,
