@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     ActionButton(
                         text = "Login",
-                        onClick = { /*TODO*/ },
+                        onClick = {},
                         modifier = Modifier.padding(horizontal = Spacing.small)
                     )
                 }
