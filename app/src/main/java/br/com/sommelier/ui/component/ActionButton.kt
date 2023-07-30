@@ -66,13 +66,13 @@ fun ActionButton(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 fun ActionButtonPreviewPrimary() {
     ActionButton()
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 fun ActionButtonPreviewSecondary() {
     ActionButton(
@@ -80,7 +80,7 @@ fun ActionButtonPreviewSecondary() {
     )
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 fun ActionButtonPreviewTertiary() {
     ActionButton(
