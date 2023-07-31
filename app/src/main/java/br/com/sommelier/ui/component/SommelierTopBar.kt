@@ -32,7 +32,7 @@ fun SommelierTopBar(
         containerColor = ColorReference.white
     ),
     leftButton: SommelierTopBarButton = SommelierTopBarButton.Disabled,
-    rightButton: SommelierTopBarButton = SommelierTopBarButton.Disabled,
+    rightButton: SommelierTopBarButton = SommelierTopBarButton.Disabled
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -93,7 +93,7 @@ sealed class SommelierTopBarButton {
         val icon: ImageVector,
         val color: Color = ColorReference.royalPurple,
         val contentDescription: String,
-        val onClick: () -> Unit = {},
+        val onClick: () -> Unit = {}
     ) : SommelierTopBarButton()
 
     object Disabled : SommelierTopBarButton()

@@ -44,7 +44,7 @@ class SommelierTopBarTest {
             SommelierTopBar(
                 leftButton = SommelierTopBarButton.Enabled(
                     icon = Icons.Filled.ArrowBack,
-                    contentDescription = "Back",
+                    contentDescription = "Back"
                 )
             )
         }
@@ -68,7 +68,7 @@ class SommelierTopBarTest {
             SommelierTopBar(
                 rightButton = SommelierTopBarButton.Enabled(
                     icon = ImageVector.vectorResource(id = R.drawable.ic_edit),
-                    contentDescription = "Edit",
+                    contentDescription = "Edit"
                 )
             )
         }
