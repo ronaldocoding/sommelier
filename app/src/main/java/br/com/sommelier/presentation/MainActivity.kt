@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SommelierTheme {
-               Content()
+                Content()
             }
         }
     }
