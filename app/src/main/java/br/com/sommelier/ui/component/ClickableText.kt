@@ -61,7 +61,6 @@ fun ClickableText(
             )
         }
     }
-
 }
 
 @Preview(showBackground = true)
