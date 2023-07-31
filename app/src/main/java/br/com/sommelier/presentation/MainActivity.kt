@@ -21,6 +21,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.ui.component.ActionButton
+import br.com.sommelier.ui.component.ClickableText
 import br.com.sommelier.ui.component.QuickActionButton
 import br.com.sommelier.ui.component.SommelierTopBar
 import br.com.sommelier.ui.component.SommelierTopBarButton
@@ -69,6 +70,11 @@ fun Content() {
                 )
                 Spacer(modifier = Modifier.padding(Spacing.small))
                 QuickActionButton()
+                Spacer(modifier = Modifier.padding(Spacing.small))
+                ClickableText(
+                    nonClickableText = "Don't have an account? ",
+                    clickableText = "Sign up"
+                )
             }
         }
     }
