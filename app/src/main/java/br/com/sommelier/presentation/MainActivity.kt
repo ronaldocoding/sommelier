@@ -29,48 +29,19 @@ import br.com.sommelier.ui.theme.SommelierTheme
 import br.com.sommelier.ui.theme.Spacing
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SommelierTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = ColorReference.white
-                ) {
-                    Box {
-                        SommelierTopBar(
-                            leftButton = SommelierTopBarButton.Enabled(
-                                icon = Icons.Default.ArrowBack,
-                                contentDescription = "Back"
-                            ),
-                            rightButton = SommelierTopBarButton.Enabled(
-                                icon = ImageVector.vectorResource(id = R.drawable.ic_edit),
-                                contentDescription = "Edit"
-                            )
-                        )
-                    }
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        ActionButton(
-                            text = "Login",
-                            modifier = Modifier.padding(horizontal = Spacing.small)
-                        )
-                        Spacer(modifier = Modifier.padding(Spacing.small))
-                        QuickActionButton()
-                    }
-                }
+               Content()
             }
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
 @Composable
-fun SommelierPreview() {
+fun Content() {
     SommelierTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -99,6 +70,19 @@ fun SommelierPreview() {
                 Spacer(modifier = Modifier.padding(Spacing.small))
                 QuickActionButton()
             }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SommelierPreview() {
+    SommelierTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = ColorReference.white
+        ) {
+            Content()
         }
     }
 }
