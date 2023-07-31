@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,14 +36,22 @@ fun SommelierTopBar(
 ) {
     CenterAlignedTopAppBar(
         title = {
-            Text(text = title, color = titleColor, style = titleStyle)
+            Text(
+                text = title,
+                color = titleColor,
+                style = titleStyle,
+                modifier = modifier.testTag("SommelierTopBarTitle")
+            )
         },
-        modifier = modifier,
+        modifier = modifier.testTag("SommelierTopBar"),
         colors = color,
         navigationIcon = {
             when (leftButton) {
                 is SommelierTopBarButton.Enabled -> {
-                    IconButton(onClick = leftButton.onClick) {
+                    IconButton(
+                        onClick = leftButton.onClick,
+                        modifier = modifier.testTag("SommelierTopBarLeftButton")
+                    ) {
                         Icon(
                             imageVector = leftButton.icon,
                             contentDescription = leftButton.contentDescription,
@@ -59,7 +68,10 @@ fun SommelierTopBar(
         actions = {
             when (rightButton) {
                 is SommelierTopBarButton.Enabled -> {
-                    IconButton(onClick = rightButton.onClick) {
+                    IconButton(
+                        onClick = rightButton.onClick,
+                        modifier = modifier.testTag("SommelierTopBarRightButton")
+                    ) {
                         Icon(
                             imageVector = rightButton.icon,
                             contentDescription = rightButton.contentDescription,
@@ -117,7 +129,7 @@ fun SommelierTopBarWithNavigationAndActionPreview() {
         ),
         rightButton = SommelierTopBarButton.Enabled(
             icon = ImageVector.vectorResource(id = R.drawable.ic_edit),
-            contentDescription = "Back"
+            contentDescription = "Edit"
         )
     )
 }

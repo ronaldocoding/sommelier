@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -47,7 +46,7 @@ class MainActivity : ComponentActivity() {
                             ),
                             rightButton = SommelierTopBarButton.Enabled(
                                 icon = ImageVector.vectorResource(id = R.drawable.ic_edit),
-                                contentDescription = "Back"
+                                contentDescription = "Edit"
                             )
                         )
                     }
@@ -85,7 +84,7 @@ fun SommelierPreview() {
                     ),
                     rightButton = SommelierTopBarButton.Enabled(
                         icon = ImageVector.vectorResource(id = R.drawable.ic_edit),
-                        contentDescription = "Back"
+                        contentDescription = "Edit"
                     )
                 )
             }
