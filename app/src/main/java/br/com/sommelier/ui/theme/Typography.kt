@@ -71,7 +71,7 @@ object Typography {
         fontFamily = FontStyle.openSansRegular,
         fontSize = FontSize.small,
         lineHeight = LineHeight.normal,
-        letterSpacing = LetterSpacing.small
+        letterSpacing = LetterSpacing.smallest
     )
 
     val bodySmall = TextStyle(
