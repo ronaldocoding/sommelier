@@ -13,11 +13,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -31,6 +35,8 @@ import br.com.sommelier.ui.component.ClickableText
 import br.com.sommelier.ui.component.OutlinedPasswordInput
 import br.com.sommelier.ui.component.OutlinedTextInput
 import br.com.sommelier.ui.component.QuickActionButton
+import br.com.sommelier.ui.component.SommelierSnackbar
+import br.com.sommelier.ui.component.SommelierSnackbarType
 import br.com.sommelier.ui.component.SommelierTopBar
 import br.com.sommelier.ui.component.SommelierTopBarButton
 import br.com.sommelier.ui.component.TextView
@@ -39,6 +45,7 @@ import br.com.sommelier.ui.theme.SommelierTheme
 import br.com.sommelier.ui.theme.Spacing
 import br.com.sommelier.ui.theme.Typography
 import br.com.sommelier.util.emptyString
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +61,12 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Content() {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    var isSnackbarSuccess by rememberSaveable { mutableStateOf(true) }
+    var snackbarText by rememberSaveable {
+        mutableStateOf("Action successfully completed")
+    }
     SommelierTheme {
         Scaffold(
             topBar = {
@@ -68,8 +81,34 @@ fun Content() {
                     )
                 )
             },
+            snackbarHost = {
+                SnackbarHost(snackbarHostState) {
+                    SommelierSnackbar(
+                        modifier = Modifier.padding(Spacing.mediumLarge),
+                        text = snackbarText,
+                        type = if (isSnackbarSuccess) {
+                            SommelierSnackbarType.Success
+                        } else {
+                            SommelierSnackbarType.Error
+                        }
+                    )
+                }
+            },
             floatingActionButton = {
-                QuickActionButton()
+                QuickActionButton(
+                    onClick = {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(snackbarText)
+                        }
+                        if (isSnackbarSuccess) {
+                            isSnackbarSuccess = false
+                            snackbarText = "This action could not be done. Please, try again."
+                        } else {
+                            isSnackbarSuccess = true
+                            snackbarText = "Action successfully completed"
+                        }
+                    }
+                )
             },
             containerColor = ColorReference.white
         ) {
