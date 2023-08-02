@@ -8,8 +8,8 @@ import br.com.sommelier.R
 
 @Immutable
 object FontStyle {
-    val poppinsRegular = FontFamily(Font(R.font.poppins_regular, FontWeight.Normal))
-    val poppinsMedium = FontFamily(Font(R.font.poppins_medium, FontWeight.Medium))
-    val poppinsSemiBold = FontFamily(Font(R.font.poppins_semi_bold, FontWeight.SemiBold))
-    val poppinsBold = FontFamily(Font(R.font.poppins_bold, FontWeight.Bold))
+    val openSansRegular = FontFamily(Font(R.font.open_sans_regular, FontWeight.Normal))
+    val openSansMedium = FontFamily(Font(R.font.open_sans_medium, FontWeight.Medium))
+    val openSansSemiBold = FontFamily(Font(R.font.open_sans_semi_bold, FontWeight.SemiBold))
+    val openSansBold = FontFamily(Font(R.font.open_sans_bold, FontWeight.Bold))
 }
