@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.ui.component.ActionButton
 import br.com.sommelier.ui.component.ClickableText
+import br.com.sommelier.ui.component.OutlinedPasswordInput
 import br.com.sommelier.ui.component.OutlinedTextInput
 import br.com.sommelier.ui.component.QuickActionButton
 import br.com.sommelier.ui.component.SommelierTopBar
@@ -90,14 +91,25 @@ fun Content() {
                     onValueChange = { changedValue ->
                         text = changedValue
                     },
-                    placeholder = "Type your name",
-                    label = "Name",
-                    leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_user),
+                    placeholder = "Type your email",
+                    label = "Email",
+                    leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_mail),
                     isError = textInputIsError,
                     supportingText = {
                         Text(text = textInputErrorMessage, style = Typography.label)
                     },
                     isEnabled = textInputIsEnabled
+                )
+                var password by rememberSaveable { mutableStateOf(emptyString()) }
+                OutlinedPasswordInput(
+                    modifier = Modifier.padding(horizontal = Spacing.mediumLarge),
+                    value = password,
+                    onValueChange = { changedValue ->
+                        password = changedValue
+                    },
+                    placeholder = "Type your password",
+                    label = "Password",
+                    leadingIconContentDescription = "Password",
                 )
                 Spacer(modifier = Modifier.padding(Spacing.small))
                 ActionButton(
