@@ -79,7 +79,6 @@ fun Content() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 var text by rememberSaveable { mutableStateOf(emptyString()) }
                 var textInputErrorMessage by rememberSaveable { mutableStateOf(emptyString()) }
                 var textInputIsError by rememberSaveable { mutableStateOf(false) }
@@ -109,7 +108,7 @@ fun Content() {
                     },
                     placeholder = "Type your password",
                     label = "Password",
-                    leadingIconContentDescription = "Password",
+                    leadingIconContentDescription = "Password"
                 )
                 Spacer(modifier = Modifier.padding(Spacing.small))
                 ActionButton(
