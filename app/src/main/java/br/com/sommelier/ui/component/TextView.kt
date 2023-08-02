@@ -33,7 +33,6 @@ fun TextView(
     leadingIcon: ImageVector? = null,
     leadingIconContentDescription: String? = null
 ) {
-
     TextField(
         value = value,
         onValueChange = {},
@@ -46,7 +45,7 @@ fun TextView(
         singleLine = true,
         label = { Text(label, color = labelColor, style = labelStyle) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            unfocusedBorderColor = ColorReference.brightGray,
+            unfocusedBorderColor = ColorReference.brightGray
         ),
         leadingIcon = if (leadingIcon != null) {
             {
@@ -59,7 +58,7 @@ fun TextView(
             }
         } else {
             null
-        },
+        }
     )
 }
 
