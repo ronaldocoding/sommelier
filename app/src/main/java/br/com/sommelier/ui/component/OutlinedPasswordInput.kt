@@ -33,6 +33,7 @@ fun OutlinedPasswordInput(
     modifier: Modifier = Modifier,
     value: String = emptyString(),
     valueStyle: TextStyle = Typography.bodyLarge,
+    valueColor: Color = ColorReference.eerieBlack,
     onValueChange: (String) -> Unit = {},
     placeholder: String = emptyString(),
     placeholderStyle: TextStyle = Typography.bodyLarge,
@@ -67,7 +68,7 @@ fun OutlinedPasswordInput(
                 isTextFieldFocused = it.isFocused
             }
             .testTag("OutlinedPasswordInput"),
-        textStyle = valueStyle,
+        textStyle = valueStyle.copy(color = valueColor),
         enabled = isEnabled,
         isError = isError,
         singleLine = singleLine,

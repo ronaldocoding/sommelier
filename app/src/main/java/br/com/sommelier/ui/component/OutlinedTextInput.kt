@@ -31,6 +31,7 @@ fun OutlinedTextInput(
     modifier: Modifier = Modifier,
     value: String = emptyString(),
     valueStyle: TextStyle = Typography.bodyLarge,
+    valueColor: Color = ColorReference.eerieBlack,
     onValueChange: (String) -> Unit = {},
     placeholder: String = emptyString(),
     placeholderStyle: TextStyle = Typography.bodyLarge,
@@ -59,7 +60,7 @@ fun OutlinedTextInput(
                 isTextFieldFocused = it.isFocused
             }
             .testTag("OutlinedTextField"),
-        textStyle = valueStyle,
+        textStyle = valueStyle.copy(color = valueColor),
         enabled = isEnabled,
         isError = isError,
         singleLine = singleLine,
