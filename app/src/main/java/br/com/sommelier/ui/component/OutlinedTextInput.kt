@@ -24,6 +24,7 @@ import br.com.sommelier.R
 import br.com.sommelier.ui.theme.ColorReference
 import br.com.sommelier.ui.theme.Typography
 import br.com.sommelier.util.emptyString
+import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,6 +44,8 @@ fun OutlinedTextInput(
     leadingIconContentDescription: String? = null,
     isError: Boolean = false,
     isEnabled: Boolean = true,
+    singleLine: Boolean = true,
+    maxLines: Int = 1,
     supportingText: (@Composable () -> Unit)? = null,
 ) {
 
@@ -61,9 +64,11 @@ fun OutlinedTextInput(
         textStyle = valueStyle,
         enabled = isEnabled,
         isError = isError,
+        singleLine = singleLine,
+        maxLines = maxLines,
         supportingText = supportingText,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = ColorReference.royalPurple,
+            focusedBorderColor = ColorReference.taupeGray,
             unfocusedBorderColor = ColorReference.taupeGray,
         ),
         label = {
