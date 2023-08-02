@@ -33,6 +33,7 @@ import br.com.sommelier.ui.component.OutlinedTextInput
 import br.com.sommelier.ui.component.QuickActionButton
 import br.com.sommelier.ui.component.SommelierTopBar
 import br.com.sommelier.ui.component.SommelierTopBarButton
+import br.com.sommelier.ui.component.TextView
 import br.com.sommelier.ui.theme.ColorReference
 import br.com.sommelier.ui.theme.SommelierTheme
 import br.com.sommelier.ui.theme.Spacing
@@ -79,6 +80,21 @@ fun Content() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                TextView(
+                    modifier = Modifier.padding(horizontal = Spacing.mediumLarge),
+                    value = "Ronaldo Costa de Freitas",
+                    label = "Name",
+                    leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_user)
+                )
+                Spacer(modifier = Modifier.padding(Spacing.small))
+                TextView(
+                    modifier = Modifier.padding(horizontal = Spacing.mediumLarge),
+                    value = "ronaldocosta.developer@gmail.com",
+                    label = "Email",
+                    leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_mail)
+                )
+                Spacer(modifier = Modifier.padding(Spacing.small))
+
                 var text by rememberSaveable { mutableStateOf(emptyString()) }
                 var textInputErrorMessage by rememberSaveable { mutableStateOf(emptyString()) }
                 var textInputIsError by rememberSaveable { mutableStateOf(false) }
