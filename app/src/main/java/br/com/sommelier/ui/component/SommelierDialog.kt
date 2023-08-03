@@ -31,7 +31,7 @@ fun SommelierDialog(
     dismissButtonText: String = "Dismiss",
     dismissButtonStyle: TextStyle = Typography.bodyLarge,
     dismissButtonColor: Color = ColorReference.royalPurple,
-    onDismissButtonClicked: () -> Unit = {},
+    onDismissButtonClicked: () -> Unit = {}
 ) {
     AlertDialog(
         modifier = modifier.testTag("SommelierDialog"),
@@ -47,7 +47,7 @@ fun SommelierDialog(
             Text(
                 text = text,
                 style = textStyle,
-                modifier = Modifier.testTag("SommelierDialogText"),
+                modifier = Modifier.testTag("SommelierDialogText")
             )
         },
         shape = RoundedCornerShape(Sizing.medium),
