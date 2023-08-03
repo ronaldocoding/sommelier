@@ -52,7 +52,7 @@ fun SearchBar(
     searchIconTint: Color = ColorReference.quartz,
     shape: Shape = RoundedCornerShape(Sizing.normal),
     onQueryChange: (String) -> Unit = {},
-    onSearch: () -> Unit = {},
+    onSearch: () -> Unit = {}
 ) {
     BasicTextField(
         singleLine = true,
