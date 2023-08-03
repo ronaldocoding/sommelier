@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.dp
 @Immutable
 object Sizing {
     val none = 0.dp
+    val almostNone = 1.dp
     val smallest = 2.dp
     val extraSmaller = 4.dp
     val smaller = 8.dp
