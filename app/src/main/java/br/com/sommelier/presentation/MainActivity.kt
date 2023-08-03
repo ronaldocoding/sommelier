@@ -35,6 +35,7 @@ import br.com.sommelier.ui.component.ClickableText
 import br.com.sommelier.ui.component.OutlinedPasswordInput
 import br.com.sommelier.ui.component.OutlinedTextInput
 import br.com.sommelier.ui.component.QuickActionButton
+import br.com.sommelier.ui.component.SommelierDialog
 import br.com.sommelier.ui.component.SommelierSnackbar
 import br.com.sommelier.ui.component.SommelierSnackbarType
 import br.com.sommelier.ui.component.SommelierTopBar
@@ -67,13 +68,17 @@ fun Content() {
     var snackbarText by rememberSaveable {
         mutableStateOf("Action successfully completed")
     }
+    var showDialog by rememberSaveable { mutableStateOf(false) }
     SommelierTheme {
         Scaffold(
             topBar = {
                 SommelierTopBar(
                     leftButton = SommelierTopBarButton.Enabled(
                         icon = Icons.Default.ArrowBack,
-                        contentDescription = "Back"
+                        contentDescription = "Back",
+                        onClick = {
+                            showDialog = true
+                        }
                     ),
                     rightButton = SommelierTopBarButton.Enabled(
                         icon = ImageVector.vectorResource(id = R.drawable.ic_edit),
@@ -119,6 +124,23 @@ fun Content() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                if (showDialog) {
+                    SommelierDialog(
+                        title = "Exit app",
+                        text = "Are you sure you want to exit the app? This action cannot be undone.",
+                        confirmButtonText = "Yes",
+                        dismissButtonText = "No",
+                        onConfirmButtonClicked = {
+                            showDialog = false
+                        },
+                        onDismissButtonClicked = {
+                            showDialog = false
+                        },
+                        onDismissRequest = {
+                            showDialog = false
+                        }
+                    )
+                }
                 TextView(
                     modifier = Modifier.padding(horizontal = Spacing.mediumLarge),
                     value = "Ronaldo Costa de Freitas",
