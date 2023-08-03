@@ -35,6 +35,7 @@ import br.com.sommelier.ui.component.ClickableText
 import br.com.sommelier.ui.component.OutlinedPasswordInput
 import br.com.sommelier.ui.component.OutlinedTextInput
 import br.com.sommelier.ui.component.QuickActionButton
+import br.com.sommelier.ui.component.SearchBar
 import br.com.sommelier.ui.component.SommelierDialog
 import br.com.sommelier.ui.component.SommelierSnackbar
 import br.com.sommelier.ui.component.SommelierSnackbarType
@@ -124,6 +125,14 @@ fun Content() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                var query by rememberSaveable { mutableStateOf(emptyString()) }
+                SearchBar(
+                    query = query,
+                    hint = "Search a restaurant",
+                    onQueryChange = { changedQuery -> query = changedQuery },
+                    modifier = Modifier.padding(horizontal = Spacing.mediumLarge)
+                )
+                Spacer(modifier = Modifier.padding(Spacing.small))
                 if (showDialog) {
                     SommelierDialog(
                         title = "Exit app",
