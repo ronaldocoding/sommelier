@@ -17,7 +17,7 @@ import br.com.sommelier.util.emptyString
 import org.junit.Rule
 import org.junit.Test
 
-class SearchBarTest() {
+class SearchBarTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
