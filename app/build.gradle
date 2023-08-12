@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "br.com.sommelier"
-        minSdk 24
+        minSdk 31
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -80,6 +80,7 @@ def koinVersion = "3.2.2"
 def firebaseBomVersion = "32.2.0"
 def arrowVersion = "1.2.0"
 def mockkVersion = "1.13.5"
+def splashScreenVersion = "1.0.1"
 
 dependencies {
 
@@ -147,4 +148,7 @@ dependencies {
     // Mockk
     testImplementation "io.mockk:mockk-android:$mockkVersion"
     testImplementation "io.mockk:mockk-agent:$mockkVersion"
+
+    // Splash Screen API
+    implementation "androidx.core:core-splashscreen:$splashScreenVersion"
 }
