@@ -1,6 +1,7 @@
 package br.com.sommelier.ui.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -9,7 +10,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.ui.theme.ColorReference
@@ -46,10 +47,11 @@ fun OutlinedTextInput(
     isEnabled: Boolean = true,
     singleLine: Boolean = true,
     maxLines: Int = 1,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     supportingText: (@Composable () -> Unit)? = null
 ) {
-    var isLabelFocused by remember { mutableStateOf(false) }
-    var isTextFieldFocused by remember { mutableStateOf(false) }
+    var isLabelFocused by rememberSaveable { mutableStateOf(false) }
+    var isTextFieldFocused by rememberSaveable { mutableStateOf(false) }
 
     OutlinedTextField(
         value = value,
@@ -70,6 +72,7 @@ fun OutlinedTextInput(
             focusedBorderColor = ColorReference.taupeGray,
             unfocusedBorderColor = ColorReference.taupeGray
         ),
+        keyboardOptions = keyboardOptions,
         label = {
             Text(
                 text = label,

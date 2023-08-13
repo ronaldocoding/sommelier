@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Sommelier</string>
+    <string name="cocktail_icon_description">Cocktail icon</string>
+    <string name="email_text_field_label">Email</string>
+    <string name="email_text_field_placeholder">Type your email</string>
+    <string name="password_text_field_label">Password</string>
+    <string name="password_text_field_placeholder">Type your password</string>
+    <string name="login_button_label">Login</string>
+    <string name="login_non_clickable_text">Don\'t have an account?</string>
+    <string name="login_first_clickable_text">Sign up</string>
+    <string name="login_second_clickable_text">Forgot your password?</string>
 </resources>
