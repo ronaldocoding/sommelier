@@ -49,7 +49,6 @@ import org.koin.androidx.compose.getViewModel
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LoginScreen() {
-
     val viewModel = getViewModel<LoginViewModel>()
     val uiState = checkNotNull(viewModel.uiState.observeAsState())
     val uiModel = checkNotNull(uiState.value?.uiModel)

@@ -17,7 +17,6 @@ open class SingleLiveEvent<T> : LiveData<T> {
     private var pending = AtomicBoolean(false)
 
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
-
         if (hasActiveObservers()) {
             Log.w(TAG, "Multiple observers registered but only one will be notified of changes.")
         }
