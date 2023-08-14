@@ -9,4 +9,8 @@
     <string name="login_non_clickable_text">Ainda não conta?</string>
     <string name="login_first_clickable_text">Cadastrar</string>
     <string name="login_second_clickable_text">Esqueceu a senha?</string>
+    <string name="blank_email_message">Email não pode ser vazio</string>
+    <string name="invalid_email_message">Email inválido</string>
+    <string name="blank_password_message">Senha não pode ser vazia</string>
+    <string name="invalid_password_message">A senha deve ter pelo menos 6 caracteres</string>
 </resources>
