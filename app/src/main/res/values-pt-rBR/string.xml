@@ -6,7 +6,7 @@
     <string name="password_text_field_label">Senha</string>
     <string name="password_text_field_placeholder">Digite sua senha</string>
     <string name="login_button_label">Entrar</string>
-    <string name="login_non_clickable_text">Ainda não conta?</string>
+    <string name="login_non_clickable_text">Ainda não tem conta?</string>
     <string name="login_first_clickable_text">Cadastrar</string>
     <string name="login_second_clickable_text">Esqueceu a senha?</string>
     <string name="blank_email_message">Email não pode ser vazio</string>
