@@ -81,6 +81,7 @@ def firebaseBomVersion = "32.2.0"
 def arrowVersion = "1.2.0"
 def mockkVersion = "1.13.5"
 def splashScreenVersion = "1.0.1"
+def coreTestingVersion = "2.2.0"
 
 dependencies {
 
@@ -153,4 +154,7 @@ dependencies {
 
     // Splash Screen API
     implementation "androidx.core:core-splashscreen:$splashScreenVersion"
+
+    // Core testing
+    testImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
 }

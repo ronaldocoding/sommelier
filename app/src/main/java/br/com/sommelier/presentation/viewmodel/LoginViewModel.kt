@@ -6,16 +6,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.sommelier.R
+import br.com.sommelier.base.event.MutableSingleLiveEvent
 import br.com.sommelier.domain.usecase.SignInUserUseCase
 import br.com.sommelier.presentation.login.action.LoginAction
 import br.com.sommelier.presentation.login.model.EmailUiState
-import br.com.sommelier.presentation.login.model.LoginUiModel
 import br.com.sommelier.presentation.login.model.PasswordUiState
+import br.com.sommelier.presentation.login.state.LoginUiEffect
 import br.com.sommelier.presentation.login.state.LoginUiState
 import br.com.sommelier.util.emptyString
 import br.com.sommelier.util.ext.asLiveData
 import br.com.sommelier.util.validator.isValidEmail
-import br.com.sommelier.util.validator.isValidPassword
 import kotlinx.coroutines.launch
 
 @SuppressLint("StaticFieldLeak")
@@ -27,19 +27,29 @@ class LoginViewModel(
     private val _uiState = MutableLiveData<LoginUiState>(LoginUiState.Initial)
     val uiState = _uiState.asLiveData()
 
+    private val _uiEffect = MutableSingleLiveEvent<LoginUiEffect>()
+    val uiEffect = _uiEffect.asSingleLiveEvent()
+
     override fun sendAction(action: LoginAction.Action) {
         viewModelScope.launch {
             when (action) {
                 is LoginAction.Action.OnTypeEmailField -> {
                     handleOnTypeEmailField(action)
                 }
-
                 is LoginAction.Action.OnTypePasswordField -> {
                     handleOnTypePasswordField(action)
                 }
-
                 is LoginAction.Action.OnClickLoginButton -> {
                     handleOnClickLoginButton()
+                }
+                is LoginAction.Action.TryToLogin -> {
+                    handleTryToLogin()
+                }
+                is LoginAction.Action.onClickSignUpButton -> {
+                    handleOnClickSignUpButton()
+                }
+                is LoginAction.Action.onClickForgotPasswordButton -> {
+                    handleOnClickForgotPasswordButton()
                 }
             }
         }
@@ -73,7 +83,7 @@ class LoginViewModel(
         _uiState.value = newUiState
     }
 
-    private suspend fun handleOnClickLoginButton() {
+    private fun handleOnClickLoginButton() {
         val state = checkNotNull(_uiState.value)
         val uiModel = state.uiModel
         val emailSupportingMessage = getEmailSupportingMessage(uiModel.emailUiState.text)
@@ -94,12 +104,31 @@ class LoginViewModel(
         if (newEmailUiState.isError || newPasswordUiState.isError) {
             _uiState.value = newUiState
         } else {
-            tryToLogin(uiModel)
+            _uiState.value = LoginUiState.Loading(uiModel = uiModel)
+            _uiEffect.value = LoginUiEffect.ShowLoading
         }
     }
 
-    private suspend fun tryToLogin(uiModel: LoginUiModel) {
-        _uiState.value = LoginUiState.Loading(uiModel = uiModel)
+    private fun getEmailSupportingMessage(email: String): String {
+        if (email.isBlank()) {
+            return context.getString(R.string.blank_email_message)
+        }
+        if (isValidEmail(context, email).not()) {
+            return context.getString(R.string.invalid_email_message)
+        }
+        return emptyString()
+    }
+
+    private fun getPasswordSupportingMessage(password: String): String {
+        if (password.isBlank()) {
+            return context.getString(R.string.blank_password_message)
+        }
+        return emptyString()
+    }
+
+    private suspend fun handleTryToLogin() {
+        val state = checkNotNull(_uiState.value)
+        val uiModel = state.uiModel
         signInUserUseCase(
             SignInUserUseCase.Params(
                 userEmail = uiModel.emailUiState.text,
@@ -119,28 +148,16 @@ class LoginViewModel(
                     .showSnackbar(newSnackBarUiState.text)
             },
             ifRight = {
-                // TODO: Navigate to Home screen
+                _uiEffect.value = LoginUiEffect.OpenHomeScreen
             }
         )
     }
 
-    private fun getEmailSupportingMessage(email: String): String {
-        if (email.isBlank()) {
-            return context.getString(R.string.blank_email_message)
-        }
-        if (isValidEmail(context, email).not()) {
-            return context.getString(R.string.invalid_email_message)
-        }
-        return emptyString()
+    private fun handleOnClickSignUpButton() {
+        _uiEffect.value = LoginUiEffect.OpenSignUpScreen
     }
 
-    private fun getPasswordSupportingMessage(password: String): String {
-        if (password.isBlank()) {
-            return context.getString(R.string.blank_password_message)
-        }
-        if (isValidPassword(password).not()) {
-            return context.getString(R.string.invalid_password_message)
-        }
-        return emptyString()
+    private fun handleOnClickForgotPasswordButton() {
+        _uiEffect.value = LoginUiEffect.OpenForgotPasswordScreen
     }
 }

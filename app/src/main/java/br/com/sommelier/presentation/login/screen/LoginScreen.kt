@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.presentation.login.action.LoginAction
+import br.com.sommelier.presentation.login.state.LoginUiEffect
 import br.com.sommelier.presentation.login.state.LoginUiState
 import br.com.sommelier.presentation.viewmodel.LoginViewModel
 import br.com.sommelier.ui.component.ActionButton
@@ -59,7 +61,7 @@ fun LoginScreen() {
                         modifier = Modifier.padding(
                             start = Spacing.mediumLarge,
                             end = Spacing.mediumLarge,
-                            bottom = Spacing.extraLarge
+                            bottom = Spacing.larger
                         ),
                         text = uiModel.snackBarUiState.text,
                         type = uiModel.snackBarUiState.type
@@ -67,6 +69,26 @@ fun LoginScreen() {
                 }
             }
         ) {
+            viewModel.uiEffect.observe(LocalLifecycleOwner.current) { effect ->
+                when (effect) {
+                    is LoginUiEffect.ShowLoading -> {
+                        viewModel.sendAction(LoginAction.Action.TryToLogin)
+                    }
+
+                    is LoginUiEffect.OpenHomeScreen -> {
+                        // TODO: Open Home Screen
+                    }
+
+                    is LoginUiEffect.OpenSignUpScreen -> {
+                        // TODO: Open Sign Up Screen
+                    }
+
+                    is LoginUiEffect.OpenForgotPasswordScreen -> {
+                        // TODO: Open Forgot Password Screen
+                    }
+                }
+            }
+
             when (uiState.value) {
                 is LoginUiState.Loading -> {
                     Box(
@@ -163,7 +185,7 @@ fun LoginScreen() {
                         Column(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.padding(bottom = Spacing.mediumLarge)
+                            modifier = Modifier.padding(bottom = Spacing.large)
                         ) {
                             ClickableText(
                                 nonClickableText = stringResource(id = R.string.login_non_clickable_text),
