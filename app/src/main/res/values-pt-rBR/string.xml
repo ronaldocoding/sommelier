@@ -13,4 +13,5 @@
     <string name="invalid_email_message">Email inválido</string>
     <string name="blank_password_message">Senha não pode ser vazia</string>
     <string name="invalid_password_message">A senha deve ter pelo menos 6 caracteres</string>
+    <string name="login_error_message">Occoreu um erro ao tentar entrar. Por favor, tente novamente.</string>
 </resources>

@@ -9,6 +9,7 @@ import br.com.sommelier.R
 import br.com.sommelier.domain.usecase.SignInUserUseCase
 import br.com.sommelier.presentation.login.action.LoginAction
 import br.com.sommelier.presentation.login.model.EmailUiState
+import br.com.sommelier.presentation.login.model.LoginUiModel
 import br.com.sommelier.presentation.login.model.PasswordUiState
 import br.com.sommelier.presentation.login.state.LoginUiState
 import br.com.sommelier.util.emptyString
@@ -93,21 +94,34 @@ class LoginViewModel(
         if (newEmailUiState.isError || newPasswordUiState.isError) {
             _uiState.value = newUiState
         } else {
-            _uiState.value = LoginUiState.Loading(uiModel = uiModel)
-            signInUserUseCase(
-                SignInUserUseCase.Params(
-                    userEmail = uiModel.emailUiState.text,
-                    userPassword = uiModel.passwordUiState.text
-                )
-            ).fold(
-                ifLeft = {
-
-                },
-                ifRight = {
-
-                }
-            )
+            tryToLogin(uiModel)
         }
+    }
+
+    private suspend fun tryToLogin(uiModel: LoginUiModel) {
+        _uiState.value = LoginUiState.Loading(uiModel = uiModel)
+        signInUserUseCase(
+            SignInUserUseCase.Params(
+                userEmail = uiModel.emailUiState.text,
+                userPassword = uiModel.passwordUiState.text
+            )
+        ).fold(
+            ifLeft = {
+                val newSnackBarUiState = uiModel.snackBarUiState.copy(
+                    text = context.getString(R.string.login_error_message)
+                )
+                val newUiModel = uiModel.copy(
+                    snackBarUiState = newSnackBarUiState
+                )
+                val newUiState = LoginUiState.Error(uiModel = newUiModel)
+                _uiState.value = newUiState
+                (_uiState.value as LoginUiState.Error).uiModel.snackBarUiState.hostState
+                    .showSnackbar(newSnackBarUiState.text)
+            },
+            ifRight = {
+                // TODO: Navigate to Home screen
+            }
+        )
     }
 
     private fun getEmailSupportingMessage(email: String): String {

@@ -6,6 +6,5 @@ sealed class LoginUiState(open val uiModel: LoginUiModel) {
     object Initial : LoginUiState(uiModel = LoginUiModel())
     data class Resume(override val uiModel: LoginUiModel) : LoginUiState(uiModel = uiModel)
     data class Loading(override val uiModel: LoginUiModel) : LoginUiState(uiModel = uiModel)
-    data class Error(override val uiModel: LoginUiModel, val errorMessage: String) :
-        LoginUiState(uiModel = uiModel)
+    data class Error(override val uiModel: LoginUiModel) : LoginUiState(uiModel = uiModel)
 }

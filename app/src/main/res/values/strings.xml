@@ -13,6 +13,7 @@
     <string name="invalid_email_message">Invalid email</string>
     <string name="blank_password_message">Password cannot be blank</string>
     <string name="invalid_password_message">Password must have at least 6 characters</string>
+    <string name="login_error_message">An error occurred while trying to log in. Please, try again</string>
 
     <!-- Patterns -->
     <string name="duplicated_com_pattern" translatable="false">(\\.com).*\\1</string>
