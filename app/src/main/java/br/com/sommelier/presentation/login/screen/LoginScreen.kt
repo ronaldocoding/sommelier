@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.presentation.login.action.LoginAction
+import br.com.sommelier.presentation.login.model.LoginUiModel
 import br.com.sommelier.presentation.login.state.LoginUiEffect
 import br.com.sommelier.presentation.login.state.LoginUiState
 import br.com.sommelier.presentation.viewmodel.LoginViewModel
@@ -69,134 +71,183 @@ fun LoginScreen() {
                 }
             }
         ) {
-            viewModel.uiEffect.observe(LocalLifecycleOwner.current) { effect ->
-                when (effect) {
-                    is LoginUiEffect.ShowLoading -> {
-                        viewModel.sendAction(LoginAction.Action.TryToLogin)
-                    }
-
-                    is LoginUiEffect.OpenHomeScreen -> {
-                        // TODO: Open Home Screen
-                    }
-
-                    is LoginUiEffect.OpenSignUpScreen -> {
-                        // TODO: Open Sign Up Screen
-                    }
-
-                    is LoginUiEffect.OpenForgotPasswordScreen -> {
-                        // TODO: Open Forgot Password Screen
-                    }
-                }
-            }
-
             when (uiState.value) {
                 is LoginUiState.Loading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(
-                            color = ColorReference.royalPurple
-                        )
-                    }
+                    LoadingScreen()
                 }
 
                 else -> {
-                    Column(
-                        modifier = Modifier
-                            .padding(it)
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.SpaceBetween,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Spacer(modifier = Modifier.padding(Spacing.large))
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_cocktail),
-                                contentDescription = stringResource(id = R.string.cocktail_icon_description)
-                            )
-                            Spacer(modifier = Modifier.padding(Spacing.extraSmaller))
-                            Text(
-                                text = stringResource(id = R.string.app_name),
-                                style = Typography.displayLarge
-                            )
-                        }
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            OutlinedTextInput(
-                                value = uiModel.emailUiState.text,
-                                onValueChange = { changedValue ->
-                                    viewModel.sendAction(
-                                        LoginAction.Action.OnTypeEmailField(
-                                            changedValue
-                                        )
-                                    )
-                                },
-                                leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_mail),
-                                label = stringResource(id = R.string.email_text_field_label),
-                                placeholder = stringResource(id = R.string.email_text_field_placeholder),
-                                supportingText = {
-                                    Text(
-                                        text = uiModel.emailUiState.errorSupportingMessage,
-                                        style = Typography.label
-                                    )
-                                },
-                                isError = uiModel.emailUiState.isError,
-                                keyboardOptions = KeyboardOptions(
-                                    keyboardType = KeyboardType.Email
-                                ),
-                                modifier = Modifier.padding(horizontal = Spacing.mediumLarge)
-                            )
-                            Spacer(modifier = Modifier.padding(Spacing.extraSmaller))
-                            OutlinedPasswordInput(
-                                value = uiModel.passwordUiState.text,
-                                onValueChange = { changedValue ->
-                                    viewModel.sendAction(
-                                        LoginAction.Action.OnTypePasswordField(
-                                            changedValue
-                                        )
-                                    )
-                                },
-                                label = stringResource(id = R.string.password_text_field_label),
-                                placeholder = stringResource(id = R.string.password_text_field_placeholder),
-                                supportingText = {
-                                    Text(
-                                        text = uiModel.passwordUiState.errorSupportingMessage,
-                                        style = Typography.label
-                                    )
-                                },
-                                isError = uiModel.passwordUiState.isError,
-                                modifier = Modifier.padding(horizontal = Spacing.mediumLarge)
-                            )
-                        }
-                        ActionButton(
-                            text = stringResource(id = R.string.login_button_label),
-                            modifier = Modifier.padding(horizontal = Spacing.small),
-                            onClick = {
-                                viewModel.sendAction(LoginAction.Action.OnClickLoginButton)
-                            }
-                        )
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.padding(bottom = Spacing.large)
-                        ) {
-                            ClickableText(
-                                nonClickableText = stringResource(id = R.string.login_non_clickable_text),
-                                clickableText = stringResource(id = R.string.login_first_clickable_text),
-                            )
-                            ClickableText(
-                                clickableText = stringResource(id = R.string.login_second_clickable_text)
-                            )
-                        }
-                    }
+                    Screen(it, uiModel, viewModel)
                 }
+            }
+            val localLifecycleOwner = LocalLifecycleOwner.current
+            handleUiEffect(viewModel, localLifecycleOwner)
+        }
+    }
+}
+
+@Composable
+private fun LoadingScreen() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(
+            color = ColorReference.royalPurple
+        )
+    }
+}
+
+@Composable
+private fun Screen(
+    it: PaddingValues,
+    uiModel: LoginUiModel,
+    viewModel: LoginViewModel
+) {
+    Column(
+        modifier = Modifier
+            .padding(it)
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Cocktail()
+        LoginFields(uiModel, viewModel)
+        LoginButton(viewModel)
+        LoginClickableTexts(viewModel)
+    }
+}
+
+@Composable
+private fun Cocktail() {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.padding(Spacing.large))
+        Image(
+            painter = painterResource(id = R.drawable.ic_cocktail),
+            contentDescription = stringResource(id = R.string.cocktail_icon_description)
+        )
+        Spacer(modifier = Modifier.padding(Spacing.extraSmaller))
+        Text(
+            text = stringResource(id = R.string.app_name),
+            style = Typography.displayLarge
+        )
+    }
+}
+
+@Composable
+private fun LoginFields(
+    uiModel: LoginUiModel,
+    viewModel: LoginViewModel
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        OutlinedTextInput(
+            value = uiModel.emailUiState.text,
+            onValueChange = { changedValue ->
+                viewModel.sendAction(
+                    LoginAction.Action.OnTypeEmailField(
+                        changedValue
+                    )
+                )
+            },
+            leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_mail),
+            label = stringResource(id = R.string.email_text_field_label),
+            placeholder = stringResource(id = R.string.email_text_field_placeholder),
+            supportingText = {
+                Text(
+                    text = uiModel.emailUiState.errorSupportingMessage,
+                    style = Typography.label
+                )
+            },
+            isError = uiModel.emailUiState.isError,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email
+            ),
+            modifier = Modifier.padding(horizontal = Spacing.mediumLarge)
+        )
+        Spacer(modifier = Modifier.padding(Spacing.extraSmaller))
+        OutlinedPasswordInput(
+            value = uiModel.passwordUiState.text,
+            onValueChange = { changedValue ->
+                viewModel.sendAction(
+                    LoginAction.Action.OnTypePasswordField(
+                        changedValue
+                    )
+                )
+            },
+            label = stringResource(id = R.string.password_text_field_label),
+            placeholder = stringResource(id = R.string.password_text_field_placeholder),
+            supportingText = {
+                Text(
+                    text = uiModel.passwordUiState.errorSupportingMessage,
+                    style = Typography.label
+                )
+            },
+            isError = uiModel.passwordUiState.isError,
+            modifier = Modifier.padding(horizontal = Spacing.mediumLarge)
+        )
+    }
+}
+
+@Composable
+private fun LoginButton(viewModel: LoginViewModel) {
+    ActionButton(
+        text = stringResource(id = R.string.login_button_label),
+        modifier = Modifier.padding(horizontal = Spacing.small),
+        onClick = {
+            viewModel.sendAction(LoginAction.Action.OnClickLoginButton)
+        }
+    )
+}
+
+@Composable
+private fun LoginClickableTexts(viewModel: LoginViewModel) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(bottom = Spacing.large)
+    ) {
+        ClickableText(
+            nonClickableText = stringResource(id = R.string.login_non_clickable_text),
+            clickableText = stringResource(id = R.string.login_first_clickable_text),
+            onClick = {
+                viewModel.sendAction(LoginAction.Action.onClickSignUpButton)
+            }
+        )
+        ClickableText(
+            clickableText = stringResource(id = R.string.login_second_clickable_text),
+            onClick = {
+                viewModel.sendAction(
+                    LoginAction.Action.onClickForgotPasswordButton
+                )
+            }
+        )
+    }
+}
+
+private fun handleUiEffect(
+    viewModel: LoginViewModel,
+    localLifecycleOwner: androidx.lifecycle.LifecycleOwner
+) {
+    viewModel.uiEffect.observe(localLifecycleOwner) { effect ->
+        when (effect) {
+            is LoginUiEffect.ShowLoading -> {
+                viewModel.sendAction(LoginAction.Action.TryToLogin)
+            }
+            is LoginUiEffect.OpenHomeScreen -> {
+                // TODO: Open Home Screen
+            }
+            is LoginUiEffect.OpenSignUpScreen -> {
+                // TODO: Open Sign Up Screen
+            }
+            is LoginUiEffect.OpenForgotPasswordScreen -> {
+                // TODO: Open Forgot Password Screen
             }
         }
     }
