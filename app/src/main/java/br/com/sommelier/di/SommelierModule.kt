@@ -28,7 +28,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 object SommelierModule {
@@ -88,7 +87,7 @@ object SommelierModule {
     }
 
     private val presentationModule = module {
-        factory { LoginViewModel(context = androidContext(), signInUserUseCase = get()) }
+        factory { LoginViewModel(signInUserUseCase = get()) }
     }
 
     private fun provideFirebaseAuth(): FirebaseAuth {

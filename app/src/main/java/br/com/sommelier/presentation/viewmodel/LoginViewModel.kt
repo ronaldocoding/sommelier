@@ -1,28 +1,19 @@
 package br.com.sommelier.presentation.viewmodel
 
-import android.annotation.SuppressLint
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.sommelier.R
 import br.com.sommelier.base.event.MutableSingleLiveEvent
 import br.com.sommelier.domain.usecase.SignInUserUseCase
 import br.com.sommelier.presentation.login.action.LoginAction
-import br.com.sommelier.presentation.login.model.EmailUiState
-import br.com.sommelier.presentation.login.model.PasswordUiState
+import br.com.sommelier.presentation.login.res.LoginStringResource
 import br.com.sommelier.presentation.login.state.LoginUiEffect
 import br.com.sommelier.presentation.login.state.LoginUiState
-import br.com.sommelier.util.emptyString
 import br.com.sommelier.util.ext.asLiveData
 import br.com.sommelier.util.validator.isValidEmail
 import kotlinx.coroutines.launch
 
-@SuppressLint("StaticFieldLeak")
-class LoginViewModel(
-    private val context: Context,
-    private val signInUserUseCase: SignInUserUseCase
-) : ViewModel(), LoginAction {
+class LoginViewModel(private val signInUserUseCase: SignInUserUseCase) : ViewModel(), LoginAction {
 
     private val _uiState = MutableLiveData<LoginUiState>(LoginUiState.Initial)
     val uiState = _uiState.asLiveData()
@@ -45,10 +36,10 @@ class LoginViewModel(
                 is LoginAction.Action.TryToLogin -> {
                     handleTryToLogin()
                 }
-                is LoginAction.Action.onClickSignUpButton -> {
+                is LoginAction.Action.OnClickSignUpButton -> {
                     handleOnClickSignUpButton()
                 }
-                is LoginAction.Action.onClickForgotPasswordButton -> {
+                is LoginAction.Action.OnClickForgotPasswordButton -> {
                     handleOnClickForgotPasswordButton()
                 }
             }
@@ -58,12 +49,9 @@ class LoginViewModel(
     private fun handleOnTypeEmailField(action: LoginAction.Action.OnTypeEmailField) {
         val state = checkNotNull(_uiState.value)
         val uiModel = state.uiModel
+        val newEmailUiState = uiModel.emailUiState.copy(text = action.email)
         val newUiModel = uiModel.copy(
-            emailUiState = EmailUiState(
-                text = action.email,
-                errorSupportingMessage = emptyString(),
-                isError = false
-            )
+            emailUiState = newEmailUiState
         )
         val newUiState = LoginUiState.Resume(uiModel = newUiModel)
         _uiState.value = newUiState
@@ -72,12 +60,9 @@ class LoginViewModel(
     private fun handleOnTypePasswordField(action: LoginAction.Action.OnTypePasswordField) {
         val state = checkNotNull(_uiState.value)
         val uiModel = state.uiModel
+        val newPasswordUiState = uiModel.passwordUiState.copy(text = action.password)
         val newUiModel = uiModel.copy(
-            passwordUiState = PasswordUiState(
-                text = action.password,
-                errorSupportingMessage = emptyString(),
-                isError = false
-            )
+            passwordUiState = newPasswordUiState
         )
         val newUiState = LoginUiState.Resume(uiModel = newUiModel)
         _uiState.value = newUiState
@@ -90,11 +75,11 @@ class LoginViewModel(
         val passwordSupportingMessage = getPasswordSupportingMessage(uiModel.passwordUiState.text)
         val newEmailUiState = uiModel.emailUiState.copy(
             errorSupportingMessage = emailSupportingMessage,
-            isError = emailSupportingMessage.isNotBlank()
+            isError = emailSupportingMessage != LoginStringResource.Empty
         )
         val newPasswordUiState = uiModel.passwordUiState.copy(
             errorSupportingMessage = passwordSupportingMessage,
-            isError = passwordSupportingMessage.isNotBlank()
+            isError = passwordSupportingMessage != LoginStringResource.Empty
         )
         val newUiModel = uiModel.copy(
             emailUiState = newEmailUiState,
@@ -109,21 +94,21 @@ class LoginViewModel(
         }
     }
 
-    private fun getEmailSupportingMessage(email: String): String {
+    private fun getEmailSupportingMessage(email: String): LoginStringResource {
         if (email.isBlank()) {
-            return context.getString(R.string.blank_email_message)
+            return LoginStringResource.BlankEmail
         }
-        if (isValidEmail(context, email).not()) {
-            return context.getString(R.string.invalid_email_message)
+        if (isValidEmail(email).not()) {
+            return LoginStringResource.InvalidEmail
         }
-        return emptyString()
+        return LoginStringResource.Empty
     }
 
-    private fun getPasswordSupportingMessage(password: String): String {
+    private fun getPasswordSupportingMessage(password: String): LoginStringResource {
         if (password.isBlank()) {
-            return context.getString(R.string.blank_password_message)
+            return LoginStringResource.BlankPassword
         }
-        return emptyString()
+        return LoginStringResource.Empty
     }
 
     private suspend fun handleTryToLogin() {
@@ -136,16 +121,10 @@ class LoginViewModel(
             )
         ).fold(
             ifLeft = {
-                val newSnackBarUiState = uiModel.snackBarUiState.copy(
-                    text = context.getString(R.string.login_error_message)
-                )
-                val newUiModel = uiModel.copy(
-                    snackBarUiState = newSnackBarUiState
-                )
-                val newUiState = LoginUiState.Error(uiModel = newUiModel)
+                val newUiState = LoginUiState.Error(uiModel = uiModel)
                 _uiState.value = newUiState
-                (_uiState.value as LoginUiState.Error).uiModel.snackBarUiState.hostState
-                    .showSnackbar(newSnackBarUiState.text)
+                _uiEffect.value = LoginUiEffect.ShowSnackbarError
+
             },
             ifRight = {
                 _uiEffect.value = LoginUiEffect.OpenHomeScreen

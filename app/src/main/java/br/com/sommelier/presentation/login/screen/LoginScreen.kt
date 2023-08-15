@@ -17,7 +17,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.presentation.login.action.LoginAction
 import br.com.sommelier.presentation.login.model.LoginUiModel
+import br.com.sommelier.presentation.login.res.LoginStringResource
 import br.com.sommelier.presentation.login.state.LoginUiEffect
 import br.com.sommelier.presentation.login.state.LoginUiState
 import br.com.sommelier.presentation.viewmodel.LoginViewModel
@@ -43,6 +46,8 @@ import br.com.sommelier.ui.theme.ColorReference
 import br.com.sommelier.ui.theme.SommelierTheme
 import br.com.sommelier.ui.theme.Spacing
 import br.com.sommelier.ui.theme.Typography
+import br.com.sommelier.util.emptyString
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,23 +69,32 @@ fun LoginScreen() {
                             end = Spacing.mediumLarge,
                             bottom = Spacing.larger
                         ),
-                        text = uiModel.snackBarUiState.text,
+                        text = stringResource(id = R.string.login_error_message),
                         type = uiModel.snackBarUiState.type
                     )
                 }
             }
         ) {
-            when (uiState.value) {
-                is LoginUiState.Loading -> {
-                    LoadingScreen()
-                }
+            UiState(uiState, it, uiModel, viewModel)
+            UiEffect(viewModel = viewModel)
+        }
+    }
+}
 
-                else -> {
-                    Screen(it, uiModel, viewModel)
-                }
-            }
-            val localLifecycleOwner = LocalLifecycleOwner.current
-            handleUiEffect(viewModel, localLifecycleOwner)
+@Composable
+private fun UiState(
+    uiState: State<LoginUiState?>,
+    it: PaddingValues,
+    uiModel: LoginUiModel,
+    viewModel: LoginViewModel
+) {
+    when (uiState.value) {
+        is LoginUiState.Loading -> {
+            LoadingScreen()
+        }
+
+        else -> {
+            Screen(it, uiModel, viewModel)
         }
     }
 }
@@ -159,10 +173,21 @@ private fun LoginFields(
             label = stringResource(id = R.string.email_text_field_label),
             placeholder = stringResource(id = R.string.email_text_field_placeholder),
             supportingText = {
-                Text(
-                    text = uiModel.emailUiState.errorSupportingMessage,
-                    style = Typography.label
-                )
+                when (uiModel.emailUiState.errorSupportingMessage) {
+                    is LoginStringResource.Empty -> {
+                        emptyString()
+                    }
+
+                    is LoginStringResource.BlankEmail -> {
+                        stringResource(id = R.string.blank_email_message)
+                    }
+
+                    is LoginStringResource.InvalidEmail -> {
+                        stringResource(id = R.string.invalid_email_message)
+                    }
+
+                    else -> emptyString()
+                }
             },
             isError = uiModel.emailUiState.isError,
             keyboardOptions = KeyboardOptions(
@@ -183,10 +208,17 @@ private fun LoginFields(
             label = stringResource(id = R.string.password_text_field_label),
             placeholder = stringResource(id = R.string.password_text_field_placeholder),
             supportingText = {
-                Text(
-                    text = uiModel.passwordUiState.errorSupportingMessage,
-                    style = Typography.label
-                )
+                when (uiModel.passwordUiState.errorSupportingMessage) {
+                    is LoginStringResource.Empty -> {
+                        emptyString()
+                    }
+
+                    is LoginStringResource.BlankPassword -> {
+                        stringResource(id = R.string.blank_email_message)
+                    }
+
+                    else -> emptyString()
+                }
             },
             isError = uiModel.passwordUiState.isError,
             modifier = Modifier.padding(horizontal = Spacing.mediumLarge)
@@ -216,35 +248,47 @@ private fun LoginClickableTexts(viewModel: LoginViewModel) {
             nonClickableText = stringResource(id = R.string.login_non_clickable_text),
             clickableText = stringResource(id = R.string.login_first_clickable_text),
             onClick = {
-                viewModel.sendAction(LoginAction.Action.onClickSignUpButton)
+                viewModel.sendAction(LoginAction.Action.OnClickSignUpButton)
             }
         )
         ClickableText(
             clickableText = stringResource(id = R.string.login_second_clickable_text),
             onClick = {
                 viewModel.sendAction(
-                    LoginAction.Action.onClickForgotPasswordButton
+                    LoginAction.Action.OnClickForgotPasswordButton
                 )
             }
         )
     }
 }
 
-private fun handleUiEffect(
-    viewModel: LoginViewModel,
-    localLifecycleOwner: androidx.lifecycle.LifecycleOwner
-) {
+@Composable
+private fun UiEffect(viewModel: LoginViewModel) {
+    val localLifecycleOwner = LocalLifecycleOwner.current
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarErrorMessage = stringResource(id = R.string.login_error_message)
     viewModel.uiEffect.observe(localLifecycleOwner) { effect ->
         when (effect) {
             is LoginUiEffect.ShowLoading -> {
                 viewModel.sendAction(LoginAction.Action.TryToLogin)
             }
+
             is LoginUiEffect.OpenHomeScreen -> {
                 // TODO: Open Home Screen
             }
+
             is LoginUiEffect.OpenSignUpScreen -> {
                 // TODO: Open Sign Up Screen
             }
+
+            is LoginUiEffect.ShowSnackbarError -> {
+                coroutineScope.launch {
+                    viewModel.uiState.value?.uiModel?.snackBarUiState?.hostState?.showSnackbar(
+                        message = snackbarErrorMessage
+                    )
+                }
+            }
+
             is LoginUiEffect.OpenForgotPasswordScreen -> {
                 // TODO: Open Forgot Password Screen
             }

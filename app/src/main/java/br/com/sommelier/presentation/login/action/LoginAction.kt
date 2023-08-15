@@ -8,7 +8,7 @@ interface LoginAction {
         data class OnTypePasswordField(val password: String) : Action()
         object OnClickLoginButton : Action()
         object TryToLogin : Action()
-        object onClickSignUpButton : Action()
-        object onClickForgotPasswordButton : Action()
+        object OnClickSignUpButton : Action()
+        object OnClickForgotPasswordButton : Action()
     }
 }

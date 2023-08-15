@@ -1,11 +1,11 @@
 package br.com.sommelier.util.validator
 
-import android.content.Context
-import br.com.sommelier.R
+private const val EMAIL_PATTERN = "[a-zA-Z0-9\\\\+\\\\.\\\\_\\\\%\\\\-\\\\+]{1,256}\\\\@[a-zA-Z0-9][a-zA-Z0-9\\\\-]{0,64}(\\\\.[a-zA-Z0-9][a-zA-Z0-9\\\\-]{0,25})+"
+private const val DUPLICATED_COM_PATTERN = "(\\\\.com).*\\\\1"
 
-fun isValidEmail(context: Context, email: String): Boolean {
-    val emailPattern = context.getString(R.string.email_pattern).toRegex()
-    val duplicatedComPattern = context.getString(R.string.duplicated_com_pattern)
+fun isValidEmail(email: String): Boolean {
+    val emailPattern = EMAIL_PATTERN.toRegex()
+    val duplicatedComPattern = DUPLICATED_COM_PATTERN
     val containsDuplicatedCom = duplicatedComPattern.toRegex().containsMatchIn(email)
     return email.matches(emailPattern) && !containsDuplicatedCom
 }
