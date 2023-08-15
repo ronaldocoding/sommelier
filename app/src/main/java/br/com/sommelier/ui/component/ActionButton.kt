@@ -21,7 +21,7 @@ fun ActionButton(
     text: String = "Action",
     onClick: () -> Unit = {},
     textColor: Color = ColorReference.white,
-    textStyle: TextStyle = Typography.bodyMedium,
+    textStyle: TextStyle = Typography.bodyLargeBold,
     backGroundColor: Color = ColorReference.royalPurple,
     isOutlined: Boolean = false
 ) {

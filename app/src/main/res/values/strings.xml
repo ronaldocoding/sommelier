@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Sommelier</string>
+    <string name="cocktail_icon_description">Cocktail icon</string>
+    <string name="email_text_field_label">Email</string>
+    <string name="email_text_field_placeholder">Type your email</string>
+    <string name="password_text_field_label">Password</string>
+    <string name="password_text_field_placeholder">Type your password</string>
+    <string name="login_button_label">Login</string>
+    <string name="login_non_clickable_text">Don\'t have an account?</string>
+    <string name="login_first_clickable_text">Sign up</string>
+    <string name="login_second_clickable_text">Forgot your password?</string>
+    <string name="blank_email_message">Email cannot be blank</string>
+    <string name="invalid_email_message">Invalid email</string>
+    <string name="blank_password_message">Password cannot be blank</string>
+    <string name="invalid_password_message">Password must have at least 6 characters</string>
+    <string name="login_error_message">An error occurred while trying to log in. Please, try again</string>
+
+    <!-- Patterns -->
+    <string name="duplicated_com_pattern" translatable="false">(\\.com).*\\1</string>
+    <string name="email_pattern" translatable="false">[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}\\@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+</string>
 </resources>

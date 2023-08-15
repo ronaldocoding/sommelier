@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Sommelier</string>
+    <string name="cocktail_icon_description">Ícone do coquetel</string>
+    <string name="email_text_field_label">Email</string>
+    <string name="email_text_field_placeholder">Digite seu email</string>
+    <string name="password_text_field_label">Senha</string>
+    <string name="password_text_field_placeholder">Digite sua senha</string>
+    <string name="login_button_label">Entrar</string>
+    <string name="login_non_clickable_text">Ainda não tem conta?</string>
+    <string name="login_first_clickable_text">Cadastrar</string>
+    <string name="login_second_clickable_text">Esqueceu a senha?</string>
+    <string name="blank_email_message">Email não pode ser vazio</string>
+    <string name="invalid_email_message">Email inválido</string>
+    <string name="blank_password_message">Senha não pode ser vazia</string>
+    <string name="invalid_password_message">A senha deve ter pelo menos 6 caracteres</string>
+    <string name="login_error_message">Occoreu um erro ao tentar entrar. Por favor, tente novamente.</string>
+</resources>

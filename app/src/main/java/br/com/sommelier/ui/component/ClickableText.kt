@@ -42,7 +42,7 @@ fun ClickableText(
             )
             Spacer(
                 modifier = Modifier
-                    .width(Sizing.smallest)
+                    .width(Sizing.extraSmaller)
                     .testTag("ClickableTextSpacer")
             )
         }

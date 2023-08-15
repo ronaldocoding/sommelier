@@ -4,16 +4,23 @@ import androidx.compose.ui.text.TextStyle
 
 @Suppress("unused")
 object Typography {
+    val displayLarge = TextStyle(
+        fontFamily = FontStyle.carattereRegular,
+        fontSize = FontSize.largest,
+        lineHeight = LineHeight.normal,
+        letterSpacing = LetterSpacing.smallest
+    )
+
     val display = TextStyle(
         fontFamily = FontStyle.openSansMedium,
-        fontSize = FontSize.largest,
+        fontSize = FontSize.extraLarge,
         lineHeight = LineHeight.largest,
         letterSpacing = LetterSpacing.smallest
     )
 
     val headline = TextStyle(
         fontFamily = FontStyle.openSansSemiBold,
-        fontSize = FontSize.largest,
+        fontSize = FontSize.extraLarge,
         lineHeight = LineHeight.normal,
         letterSpacing = LetterSpacing.largest
     )

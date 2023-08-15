@@ -18,6 +18,7 @@ import br.com.sommelier.domain.usecase.SignOutUserUseCase
 import br.com.sommelier.domain.usecase.UpdateUserDocumentUseCase
 import br.com.sommelier.domain.usecase.UpdateUserEmailUseCase
 import br.com.sommelier.domain.usecase.UpdateUserPasswordUseCase
+import br.com.sommelier.presentation.login.viewmodel.LoginViewModel
 import br.com.sommelier.util.FirestoreCollections.USERS
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -85,6 +86,10 @@ object SommelierModule {
         factory { UpdateUserPasswordUseCase(authRepository = get(), coroutineDispatcher = get()) }
     }
 
+    private val presentationModule = module {
+        factory { LoginViewModel(signInUserUseCase = get()) }
+    }
+
     private fun provideFirebaseAuth(): FirebaseAuth {
         return Firebase.auth
     }
@@ -101,5 +106,5 @@ object SommelierModule {
         return Dispatchers.IO
     }
 
-    fun getModules() = listOf(dataModule, domainModule)
+    fun getModules() = listOf(dataModule, domainModule, presentationModule)
 }

@@ -81,6 +81,8 @@ def firebaseBomVersion = "32.2.0"
 def arrowVersion = "1.2.0"
 def mockkVersion = "1.13.5"
 def splashScreenVersion = "1.0.1"
+def coreTestingVersion = "2.2.0"
+def commonsValidatorVersion = "1.7"
 
 dependencies {
 
@@ -103,6 +105,7 @@ dependencies {
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.compose.runtime:runtime-livedata'
     androidTestImplementation platform("androidx.compose:compose-bom:$composeBomVersion")
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
@@ -131,6 +134,7 @@ dependencies {
     implementation "io.insert-koin:koin-android-compat:$koinVersion"
     implementation "io.insert-koin:koin-androidx-workmanager:$koinVersion"
     implementation "io.insert-koin:koin-androidx-navigation:$koinVersion"
+    implementation "io.insert-koin:koin-androidx-compose:$koinVersion"
     testImplementation "io.insert-koin:koin-test:$koinVersion"
     testImplementation "io.insert-koin:koin-test-junit4:$koinVersion"
 
@@ -151,4 +155,10 @@ dependencies {
 
     // Splash Screen API
     implementation "androidx.core:core-splashscreen:$splashScreenVersion"
+
+    // Core testing
+    testImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
+
+    // Validator Commons
+    implementation "commons-validator:commons-validator:$commonsValidatorVersion"
 }
