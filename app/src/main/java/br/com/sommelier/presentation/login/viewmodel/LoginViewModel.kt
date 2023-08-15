@@ -1,4 +1,4 @@
-package br.com.sommelier.presentation.viewmodel
+package br.com.sommelier.presentation.login.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,8 +10,8 @@ import br.com.sommelier.presentation.login.res.LoginStringResource
 import br.com.sommelier.presentation.login.state.LoginUiEffect
 import br.com.sommelier.presentation.login.state.LoginUiState
 import br.com.sommelier.util.ext.asLiveData
-import br.com.sommelier.util.validator.isValidEmail
 import kotlinx.coroutines.launch
+import org.apache.commons.validator.routines.EmailValidator
 
 class LoginViewModel(private val signInUserUseCase: SignInUserUseCase) : ViewModel(), LoginAction {
 
@@ -33,7 +33,7 @@ class LoginViewModel(private val signInUserUseCase: SignInUserUseCase) : ViewMod
                 is LoginAction.Action.OnClickLoginButton -> {
                     handleOnClickLoginButton()
                 }
-                is LoginAction.Action.TryToLogin -> {
+                is LoginAction.Action.OnTryToLogin -> {
                     handleTryToLogin()
                 }
                 is LoginAction.Action.OnClickSignUpButton -> {
@@ -98,7 +98,7 @@ class LoginViewModel(private val signInUserUseCase: SignInUserUseCase) : ViewMod
         if (email.isBlank()) {
             return LoginStringResource.BlankEmail
         }
-        if (isValidEmail(email).not()) {
+        if (EmailValidator.getInstance().isValid(email).not()) {
             return LoginStringResource.InvalidEmail
         }
         return LoginStringResource.Empty

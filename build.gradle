@@ -54,7 +54,7 @@ sonar {
         property "sonar.java.coveragePlugin", "jacoco"
         property "sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/app/build/reports/coverage/test/debug/report.xml"
         property "sonar.test.inclusions", "**/*Test*/**"
-        property "sonar.coverage.exclusions", "**/br/com/sommelier/presentation/**/*, **/br/com/sommelier/ui/**/*, **/br/com/sommelier/util/**/*"
+        property "sonar.coverage.exclusions", "**/br/com/sommelier/presentation/**/*/screen/**/*, **/br/com/sommelier/ui/**/*, **/br/com/sommelier/util/**/*"
         property "sonar.sourceEncoding", "UTF-8"
     }
 }

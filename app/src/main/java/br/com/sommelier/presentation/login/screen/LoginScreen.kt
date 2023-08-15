@@ -36,7 +36,7 @@ import br.com.sommelier.presentation.login.model.LoginUiModel
 import br.com.sommelier.presentation.login.res.LoginStringResource
 import br.com.sommelier.presentation.login.state.LoginUiEffect
 import br.com.sommelier.presentation.login.state.LoginUiState
-import br.com.sommelier.presentation.viewmodel.LoginViewModel
+import br.com.sommelier.presentation.login.viewmodel.LoginViewModel
 import br.com.sommelier.ui.component.ActionButton
 import br.com.sommelier.ui.component.ClickableText
 import br.com.sommelier.ui.component.OutlinedPasswordInput
@@ -173,21 +173,10 @@ private fun LoginFields(
             label = stringResource(id = R.string.email_text_field_label),
             placeholder = stringResource(id = R.string.email_text_field_placeholder),
             supportingText = {
-                when (uiModel.emailUiState.errorSupportingMessage) {
-                    is LoginStringResource.Empty -> {
-                        emptyString()
-                    }
-
-                    is LoginStringResource.BlankEmail -> {
-                        stringResource(id = R.string.blank_email_message)
-                    }
-
-                    is LoginStringResource.InvalidEmail -> {
-                        stringResource(id = R.string.invalid_email_message)
-                    }
-
-                    else -> emptyString()
-                }
+                Text(
+                    uiModel.emailUiState.errorSupportingMessage.toText(),
+                    style = Typography.label
+                )
             },
             isError = uiModel.emailUiState.isError,
             keyboardOptions = KeyboardOptions(
@@ -208,17 +197,10 @@ private fun LoginFields(
             label = stringResource(id = R.string.password_text_field_label),
             placeholder = stringResource(id = R.string.password_text_field_placeholder),
             supportingText = {
-                when (uiModel.passwordUiState.errorSupportingMessage) {
-                    is LoginStringResource.Empty -> {
-                        emptyString()
-                    }
-
-                    is LoginStringResource.BlankPassword -> {
-                        stringResource(id = R.string.blank_email_message)
-                    }
-
-                    else -> emptyString()
-                }
+                Text(
+                    uiModel.passwordUiState.errorSupportingMessage.toText(),
+                    style = Typography.label
+                )
             },
             isError = uiModel.passwordUiState.isError,
             modifier = Modifier.padding(horizontal = Spacing.mediumLarge)
@@ -270,7 +252,7 @@ private fun UiEffect(viewModel: LoginViewModel) {
     viewModel.uiEffect.observe(localLifecycleOwner) { effect ->
         when (effect) {
             is LoginUiEffect.ShowLoading -> {
-                viewModel.sendAction(LoginAction.Action.TryToLogin)
+                viewModel.sendAction(LoginAction.Action.OnTryToLogin)
             }
 
             is LoginUiEffect.OpenHomeScreen -> {
@@ -293,5 +275,15 @@ private fun UiEffect(viewModel: LoginViewModel) {
                 // TODO: Open Forgot Password Screen
             }
         }
+    }
+}
+
+@Composable
+fun LoginStringResource.toText(): String {
+    return when (this) {
+        LoginStringResource.Empty -> emptyString()
+        LoginStringResource.BlankEmail -> stringResource(id = R.string.blank_email_message)
+        LoginStringResource.BlankPassword -> stringResource(id = R.string.blank_password_message)
+        LoginStringResource.InvalidEmail -> stringResource(id = R.string.invalid_email_message)
     }
 }

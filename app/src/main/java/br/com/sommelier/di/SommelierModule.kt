@@ -18,7 +18,7 @@ import br.com.sommelier.domain.usecase.SignOutUserUseCase
 import br.com.sommelier.domain.usecase.UpdateUserDocumentUseCase
 import br.com.sommelier.domain.usecase.UpdateUserEmailUseCase
 import br.com.sommelier.domain.usecase.UpdateUserPasswordUseCase
-import br.com.sommelier.presentation.viewmodel.LoginViewModel
+import br.com.sommelier.presentation.login.viewmodel.LoginViewModel
 import br.com.sommelier.util.FirestoreCollections.USERS
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
