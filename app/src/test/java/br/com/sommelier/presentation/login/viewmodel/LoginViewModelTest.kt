@@ -11,7 +11,7 @@ import br.com.sommelier.presentation.login.model.LoginUiModel
 import br.com.sommelier.presentation.login.res.LoginStringResource
 import br.com.sommelier.presentation.login.state.LoginUiEffect
 import br.com.sommelier.presentation.login.state.LoginUiState
-import br.com.sommelier.test_rule.CoroutineTestRule
+import br.com.sommelier.testrule.CoroutineTestRule
 import br.com.sommelier.util.ext.getOrAwaitValue
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -250,7 +250,7 @@ class LoginViewModelTest {
             val result: Either<Failure, Success<Unit>> = Either.Left(
                 Failure(
                     GenericProblem(
-                            "Error"
+                        "Error"
                     )
                 )
             )

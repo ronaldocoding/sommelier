@@ -124,7 +124,6 @@ class LoginViewModel(private val signInUserUseCase: SignInUserUseCase) : ViewMod
                 val newUiState = LoginUiState.Error(uiModel = uiModel)
                 _uiState.value = newUiState
                 _uiEffect.value = LoginUiEffect.ShowSnackbarError
-
             },
             ifRight = {
                 _uiEffect.value = LoginUiEffect.OpenHomeScreen

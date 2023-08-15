@@ -1,4 +1,4 @@
-package br.com.sommelier.test_rule
+package br.com.sommelier.testrule
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,7 +24,6 @@ class CoroutineTestRule(
 
     override fun finished(description: Description) {
         Dispatchers.resetMain()
-
     }
 
     fun runBlockingTest(block: suspend TestScope.() -> Unit) {
