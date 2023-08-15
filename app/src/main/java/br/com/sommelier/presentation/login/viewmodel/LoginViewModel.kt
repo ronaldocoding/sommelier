@@ -132,7 +132,7 @@ class LoginViewModel(private val signInUserUseCase: SignInUserUseCase) : ViewMod
     }
 
     private fun handleOnClickSignUpButton() {
-        _uiEffect.value = LoginUiEffect.OpenSignUpScreen
+        _uiEffect.value = LoginUiEffect.OpenRegisterScreen
     }
 
     private fun handleOnClickForgotPasswordButton() {

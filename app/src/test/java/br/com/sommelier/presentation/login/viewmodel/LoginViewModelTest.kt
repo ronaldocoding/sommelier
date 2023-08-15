@@ -322,7 +322,7 @@ class LoginViewModelTest {
 
             val uiEffect = viewModel.uiEffect.getOrAwaitValue()
 
-            assertTrue(uiEffect is LoginUiEffect.OpenSignUpScreen)
+            assertTrue(uiEffect is LoginUiEffect.OpenRegisterScreen)
         }
 
     @Test

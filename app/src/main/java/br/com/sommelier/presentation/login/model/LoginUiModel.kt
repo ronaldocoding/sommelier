@@ -17,7 +17,7 @@ data class PasswordUiState(
     val isError: Boolean = false
 )
 
-data class SnackBarUiState(
+data class SnackbarUiState(
     val hostState: SnackbarHostState = SnackbarHostState(),
     val type: SommelierSnackbarType = SommelierSnackbarType.Error
 )
@@ -25,5 +25,5 @@ data class SnackBarUiState(
 data class LoginUiModel(
     val emailUiState: EmailUiState = EmailUiState(),
     val passwordUiState: PasswordUiState = PasswordUiState(),
-    val snackBarUiState: SnackBarUiState = SnackBarUiState()
+    val snackBarUiState: SnackbarUiState = SnackbarUiState()
 )

@@ -259,7 +259,7 @@ private fun UiEffect(viewModel: LoginViewModel) {
                 // TODO: Open Home Screen
             }
 
-            is LoginUiEffect.OpenSignUpScreen -> {
+            is LoginUiEffect.OpenRegisterScreen -> {
                 // TODO: Open Sign Up Screen
             }
 
