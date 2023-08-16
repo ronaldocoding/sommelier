@@ -4,8 +4,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.sommelier.base.event.MutableSingleLiveEvent
+import br.com.sommelier.base.usecase.UseCase
+import br.com.sommelier.domain.usecase.IsUserEmailVerifiedUseCase
+import br.com.sommelier.domain.usecase.SendEmailVerificationUseCase
 import br.com.sommelier.domain.usecase.SignInUserUseCase
+import br.com.sommelier.domain.usecase.SignOutUserUseCase
 import br.com.sommelier.presentation.login.action.LoginAction
+import br.com.sommelier.presentation.login.model.LoginUiModel
 import br.com.sommelier.presentation.login.res.LoginStringResource
 import br.com.sommelier.presentation.login.state.LoginUiEffect
 import br.com.sommelier.presentation.login.state.LoginUiState
@@ -13,7 +18,12 @@ import br.com.sommelier.util.ext.asLiveData
 import kotlinx.coroutines.launch
 import org.apache.commons.validator.routines.EmailValidator
 
-class LoginViewModel(private val signInUserUseCase: SignInUserUseCase) : ViewModel(), LoginAction {
+class LoginViewModel(
+    private val signInUserUseCase: SignInUserUseCase,
+    private val sendEmailVerificationUseCase: SendEmailVerificationUseCase,
+    private val isUserEmailVerifiedUseCase: IsUserEmailVerifiedUseCase,
+    private val signOutUserUseCase: SignOutUserUseCase
+) : ViewModel(), LoginAction {
 
     private val _uiState = MutableLiveData<LoginUiState>(LoginUiState.Initial)
     val uiState = _uiState.asLiveData()
@@ -27,18 +37,23 @@ class LoginViewModel(private val signInUserUseCase: SignInUserUseCase) : ViewMod
                 is LoginAction.Action.OnTypeEmailField -> {
                     handleOnTypeEmailField(action)
                 }
+
                 is LoginAction.Action.OnTypePasswordField -> {
                     handleOnTypePasswordField(action)
                 }
+
                 is LoginAction.Action.OnClickLoginButton -> {
                     handleOnClickLoginButton()
                 }
+
                 is LoginAction.Action.OnTryToLogin -> {
                     handleTryToLogin()
                 }
+
                 is LoginAction.Action.OnClickSignUpButton -> {
                     handleOnClickSignUpButton()
                 }
+
                 is LoginAction.Action.OnClickForgotPasswordButton -> {
                     handleOnClickForgotPasswordButton()
                 }
@@ -121,14 +136,38 @@ class LoginViewModel(private val signInUserUseCase: SignInUserUseCase) : ViewMod
             )
         ).fold(
             ifLeft = {
-                val newUiState = LoginUiState.Error(uiModel = uiModel)
-                _uiState.value = newUiState
-                _uiEffect.value = LoginUiEffect.ShowSnackbarError
+                handleError(uiModel)
             },
             ifRight = {
-                _uiEffect.value = LoginUiEffect.OpenHomeScreen
+                isUserEmailVerifiedUseCase(UseCase.None()).fold(
+                    ifLeft = {
+                        handleError(uiModel)
+                        signOutUserUseCase(UseCase.None())
+                    },
+                    ifRight = { success ->
+                        if (success.data) {
+                            _uiEffect.value = LoginUiEffect.OpenHomeScreen
+                        } else {
+                            sendEmailVerificationUseCase(UseCase.None()).fold(
+                                ifLeft = {
+                                    handleError(uiModel)
+                                    signOutUserUseCase(UseCase.None())
+                                },
+                                ifRight = {
+                                    _uiEffect.value = LoginUiEffect.OpenConfirmEmailScreen
+                                }
+                            )
+                        }
+                    }
+                )
             }
         )
+    }
+
+    private fun handleError(uiModel: LoginUiModel) {
+        val newUiState = LoginUiState.Error(uiModel = uiModel)
+        _uiState.value = newUiState
+        _uiEffect.value = LoginUiEffect.ShowSnackbarError
     }
 
     private fun handleOnClickSignUpButton() {

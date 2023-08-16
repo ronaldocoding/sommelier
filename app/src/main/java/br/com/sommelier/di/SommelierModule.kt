@@ -88,7 +88,14 @@ object SommelierModule {
     }
 
     private val presentationModule = module {
-        factory { LoginViewModel(signInUserUseCase = get()) }
+        factory {
+            LoginViewModel(
+                signInUserUseCase = get(),
+                sendEmailVerificationUseCase = get(),
+                isUserEmailVerifiedUseCase = get(),
+                signOutUserUseCase = get()
+            )
+        }
         factory {
             RegisterViewModel(
                 createUserUseCase = get(),

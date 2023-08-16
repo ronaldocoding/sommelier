@@ -6,4 +6,5 @@ sealed class LoginUiEffect {
     object OpenRegisterScreen : LoginUiEffect()
     object ShowSnackbarError : LoginUiEffect()
     object OpenForgotPasswordScreen : LoginUiEffect()
+    object OpenConfirmEmailScreen : LoginUiEffect()
 }

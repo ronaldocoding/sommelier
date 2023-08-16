@@ -274,6 +274,10 @@ private fun UiEffect(viewModel: LoginViewModel) {
             is LoginUiEffect.OpenForgotPasswordScreen -> {
                 // TODO: Open Forgot Password Screen
             }
+
+            is LoginUiEffect.OpenConfirmEmailScreen -> {
+                //TODO: Open Confirm Email Screen
+            }
         }
     }
 }
