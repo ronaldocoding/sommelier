@@ -4,8 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.sommelier.base.event.MutableSingleLiveEvent
+import br.com.sommelier.base.usecase.UseCase
 import br.com.sommelier.domain.model.UserInfo
 import br.com.sommelier.domain.usecase.CreateUserUseCase
+import br.com.sommelier.domain.usecase.SendEmailVerificationUseCase
 import br.com.sommelier.presentation.register.action.RegisterAction
 import br.com.sommelier.presentation.register.res.RegisterStringResource
 import br.com.sommelier.presentation.register.state.RegisterUiEffect
@@ -17,7 +19,8 @@ import kotlinx.coroutines.launch
 import org.apache.commons.validator.routines.EmailValidator
 
 class RegisterViewModel(
-    private val createUserUseCase: CreateUserUseCase
+    private val createUserUseCase: CreateUserUseCase,
+    private val sendEmailVerificationUseCase: SendEmailVerificationUseCase
 ) : ViewModel(), RegisterAction {
 
     private val _uiState = MutableLiveData<RegisterUiState>(RegisterUiState.Initial)
@@ -211,6 +214,7 @@ class RegisterViewModel(
                 _uiEffect.value = RegisterUiEffect.ShowSnackbarError
             },
             ifRight = {
+                sendEmailVerificationUseCase(UseCase.None())
                 _uiEffect.value = RegisterUiEffect.OpenConfirmEmailScreen
             }
         )

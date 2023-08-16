@@ -7,6 +7,7 @@ import br.com.sommelier.base.result.GenericProblem
 import br.com.sommelier.base.result.Success
 import br.com.sommelier.domain.model.UserInfo
 import br.com.sommelier.domain.usecase.CreateUserUseCase
+import br.com.sommelier.domain.usecase.SendEmailVerificationUseCase
 import br.com.sommelier.presentation.register.action.RegisterAction
 import br.com.sommelier.presentation.register.model.RegisterUiModel
 import br.com.sommelier.presentation.register.res.RegisterStringResource
@@ -29,13 +30,15 @@ class RegisterViewModelTest {
     @get:Rule
     val coroutineTestRule = CoroutineTestRule()
 
-    private val useCase = mockk<CreateUserUseCase>()
+    private val createUserUseCase = mockk<CreateUserUseCase>()
+
+    private val sendEmailVerificationUseCase = mockk<SendEmailVerificationUseCase>()
 
     private lateinit var viewModel: RegisterViewModel
 
     @Before
     fun setup() {
-        viewModel = RegisterViewModel(useCase)
+        viewModel = RegisterViewModel(createUserUseCase, sendEmailVerificationUseCase)
     }
 
     @Test
@@ -510,7 +513,7 @@ class RegisterViewModelTest {
                     GenericProblem("Error")
                 )
             )
-            coEvery { useCase(userInfo) } returns result
+            coEvery { createUserUseCase(userInfo) } returns result
 
             val action = RegisterAction.Action.OnTryToRegister
 
@@ -549,7 +552,7 @@ class RegisterViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnTryToRegister action was the last action sent and use case as success WHEN sendAction was called THEN assert that the ui effect is the expected`() =
+    fun `GIVEN OnTryToRegister action was the last action sent and both use cases as success WHEN sendAction was called THEN assert that the ui effect is the expected`() =
         coroutineTestRule.runBlockingTest {
             val userInfo = UserInfo(
                 name = "Name",
@@ -557,8 +560,54 @@ class RegisterViewModelTest {
                 password = "Password"
             )
 
-            val result: Either<Failure, Success<Unit>> = Either.Right(Success(Unit))
-            coEvery { useCase(userInfo) } returns result
+            val createUserUseCaseResult: Either<Failure, Success<Unit>> = Either.Right(
+                Success(Unit)
+            )
+            coEvery { createUserUseCase(userInfo) } returns createUserUseCaseResult
+
+            val sendEmailVerificationUseCaseResult: Either<Failure, Success<Unit>> = Either.Right(
+                Success(Unit)
+            )
+            coEvery {
+                sendEmailVerificationUseCase(any())
+            } returns sendEmailVerificationUseCaseResult
+
+            val action = RegisterAction.Action.OnTryToRegister
+
+            viewModel.sendAction(RegisterAction.Action.OnTypeNameField(userInfo.name))
+            viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(userInfo.email))
+            viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(userInfo.password))
+            viewModel.sendAction(
+                RegisterAction.Action.OnTypePasswordConfirmationField(userInfo.password)
+            )
+            viewModel.sendAction(action)
+
+            val expectedUiEffect = RegisterUiEffect.OpenConfirmEmailScreen
+            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+            assertEquals(expectedUiEffect, actualUiEffect)
+        }
+
+    @Test
+    fun `GIVEN OnTryToRegister action was the last action sent and sendEmailVerification use case as failure WHEN sendAction was called THEN assert that the ui effect is the expected`() =
+        coroutineTestRule.runBlockingTest {
+            val userInfo = UserInfo(
+                name = "Name",
+                email = "Email@email.com",
+                password = "Password"
+            )
+
+            val createUserUseCaseResult: Either<Failure, Success<Unit>> = Either.Right(
+                Success(Unit)
+            )
+            coEvery { createUserUseCase(userInfo) } returns createUserUseCaseResult
+
+            val sendEmailVerificationUseCaseResult: Either<Failure, Success<Unit>> = Either.Left(
+                Failure(GenericProblem("Error"))
+            )
+            coEvery {
+                sendEmailVerificationUseCase(any())
+            } returns sendEmailVerificationUseCaseResult
 
             val action = RegisterAction.Action.OnTryToRegister
 

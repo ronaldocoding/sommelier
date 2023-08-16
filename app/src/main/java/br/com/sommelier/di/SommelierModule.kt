@@ -89,7 +89,12 @@ object SommelierModule {
 
     private val presentationModule = module {
         factory { LoginViewModel(signInUserUseCase = get()) }
-        factory { RegisterViewModel(createUserUseCase = get()) }
+        factory {
+            RegisterViewModel(
+                createUserUseCase = get(),
+                sendEmailVerificationUseCase = get()
+            )
+        }
     }
 
     private fun provideFirebaseAuth(): FirebaseAuth {
