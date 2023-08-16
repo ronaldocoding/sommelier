@@ -23,14 +23,15 @@ import kotlinx.coroutines.tasks.await
 
 class AuthRepositoryImpl(private val firebaseAuth: FirebaseAuth) : AuthRepository {
 
-    override suspend fun registerUser(email: String, password: String): Either<Problem, Unit> {
+    override suspend fun registerUser(email: String, password: String): Either<Problem, String> {
         val task = firebaseAuth.createUserWithEmailAndPassword(email, password)
         return try {
             val result = task.await()
             if (result.user == null) {
                 NullUserProblem("Null user problem occurred").left()
             } else if (task.isSuccessful) {
-                Unit.right()
+                val uid = result.user!!.uid
+                uid.right()
             } else {
                 RegisterUserProblem(
                     task.exception?.message ?: "An unknown problem occurred"

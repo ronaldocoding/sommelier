@@ -1,6 +1,8 @@
 package br.com.sommelier.domain.usecase
 
 import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import br.com.sommelier.base.result.Problem
 import br.com.sommelier.base.usecase.UseCase
 import br.com.sommelier.domain.model.UserDomain
@@ -17,9 +19,12 @@ class CreateUserUseCase(
 
     override suspend fun execute(parameters: UserInfo): Either<Problem, Unit> {
         val result = authRepository.registerUser(parameters.email, parameters.password)
-        if (result.isRight()) {
-            userRepository.saveUser(UserDomain(parameters.name, parameters.email, parameters.uid))
+        return if (result.isRight()) {
+            val uid = (result as Either.Right<String>).value
+            userRepository.saveUser(UserDomain(parameters.name, parameters.email, uid))
+            Unit.right()
+        } else {
+            result.leftOrNull()!!.left()
         }
-        return result
     }
 }
