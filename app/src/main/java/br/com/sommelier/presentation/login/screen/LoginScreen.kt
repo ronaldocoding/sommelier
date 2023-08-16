@@ -62,7 +62,7 @@ fun LoginScreen() {
         Scaffold(
             containerColor = Color.White,
             snackbarHost = {
-                SnackbarHost(uiModel.snackBarUiState.hostState) {
+                SnackbarHost(uiModel.snackbarUiState.hostState) {
                     SommelierSnackbar(
                         modifier = Modifier.padding(
                             start = Spacing.mediumLarge,
@@ -70,7 +70,7 @@ fun LoginScreen() {
                             bottom = Spacing.larger
                         ),
                         text = stringResource(id = R.string.login_error_message),
-                        type = uiModel.snackBarUiState.type
+                        type = uiModel.snackbarUiState.type
                     )
                 }
             }
@@ -265,7 +265,7 @@ private fun UiEffect(viewModel: LoginViewModel) {
 
             is LoginUiEffect.ShowSnackbarError -> {
                 coroutineScope.launch {
-                    viewModel.uiState.value?.uiModel?.snackBarUiState?.hostState?.showSnackbar(
+                    viewModel.uiState.value?.uiModel?.snackbarUiState?.hostState?.showSnackbar(
                         message = snackbarErrorMessage
                     )
                 }

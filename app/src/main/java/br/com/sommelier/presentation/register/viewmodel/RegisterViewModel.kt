@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import org.apache.commons.validator.routines.EmailValidator
 
 class RegisterViewModel(
-    private val useCase: CreateUserUseCase
+    private val createUserUseCase: CreateUserUseCase
 ) : ViewModel(), RegisterAction {
 
     private val _uiState = MutableLiveData<RegisterUiState>(RegisterUiState.Initial)
@@ -205,7 +205,7 @@ class RegisterViewModel(
             email = uiModel.emailUiState.text,
             password = uiModel.passwordUiState.text
         )
-        useCase(userInfo).fold(
+        createUserUseCase(userInfo).fold(
             ifLeft = {
                 _uiState.value = RegisterUiState.Error(uiModel = uiModel)
                 _uiEffect.value = RegisterUiEffect.ShowSnackbarError

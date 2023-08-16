@@ -25,5 +25,5 @@ data class SnackbarUiState(
 data class LoginUiModel(
     val emailUiState: EmailUiState = EmailUiState(),
     val passwordUiState: PasswordUiState = PasswordUiState(),
-    val snackBarUiState: SnackbarUiState = SnackbarUiState()
+    val snackbarUiState: SnackbarUiState = SnackbarUiState()
 )

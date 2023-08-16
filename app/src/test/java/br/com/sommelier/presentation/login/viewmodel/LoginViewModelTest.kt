@@ -355,12 +355,12 @@ class LoginViewModelTest {
             actual.uiModel.passwordUiState.isError
         )
         assertEquals(
-            expected.uiModel.snackBarUiState.type,
-            actual.uiModel.snackBarUiState.type
+            expected.uiModel.snackbarUiState.type,
+            actual.uiModel.snackbarUiState.type
         )
         assertEquals(
-            expected.uiModel.snackBarUiState.hostState.currentSnackbarData,
-            actual.uiModel.snackBarUiState.hostState.currentSnackbarData
+            expected.uiModel.snackbarUiState.hostState.currentSnackbarData,
+            actual.uiModel.snackbarUiState.hostState.currentSnackbarData
         )
     }
 }
