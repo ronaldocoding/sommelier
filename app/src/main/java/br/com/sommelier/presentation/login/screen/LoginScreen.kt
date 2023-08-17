@@ -276,7 +276,7 @@ private fun UiEffect(viewModel: LoginViewModel) {
             }
 
             is LoginUiEffect.OpenConfirmEmailScreen -> {
-                //TODO: Open Confirm Email Screen
+                // TODO: Open Confirm Email Screen
             }
         }
     }

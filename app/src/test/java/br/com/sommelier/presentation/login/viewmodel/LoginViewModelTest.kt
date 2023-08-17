@@ -464,7 +464,6 @@ class LoginViewModelTest {
             )
             coEvery { signOutUserUseCase(any()) } returns signOutUserUseCaseResult
 
-
             viewModel.sendAction(LoginAction.Action.OnTypeEmailField(email))
             viewModel.sendAction(LoginAction.Action.OnTypePasswordField(password))
             viewModel.sendAction(action)

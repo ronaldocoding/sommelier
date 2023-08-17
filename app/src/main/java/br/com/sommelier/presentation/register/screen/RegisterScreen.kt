@@ -53,7 +53,6 @@ import org.koin.androidx.compose.getViewModel
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun RegisterScreen() {
-
     val viewModel = getViewModel<RegisterViewModel>()
     val uiState = checkNotNull(viewModel.uiState.observeAsState())
     val uiModel = checkNotNull(uiState.value?.uiModel)

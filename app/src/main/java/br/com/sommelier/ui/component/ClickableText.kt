@@ -65,8 +65,8 @@ fun ClickableText(
 }
 
 private fun Modifier.getModifier(clickableTextLength: Int): Modifier {
-    return if(clickableTextLength <= 5) {
-        then(Modifier.testTag("ClickableText").width(ButtonDefaults.MinWidth-14.dp))
+    return if (clickableTextLength <= 5) {
+        then(Modifier.testTag("ClickableText").width(ButtonDefaults.MinWidth - 14.dp))
     } else {
         then(Modifier.testTag("ClickableText"))
     }
