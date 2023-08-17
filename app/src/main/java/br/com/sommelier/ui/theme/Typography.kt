@@ -11,6 +11,13 @@ object Typography {
         letterSpacing = LetterSpacing.smallest
     )
 
+    val displayMedium = TextStyle(
+        fontFamily = FontStyle.carattereRegular,
+        fontSize = FontSize.larger,
+        lineHeight = LineHeight.normal,
+        letterSpacing = LetterSpacing.smallest
+    )
+
     val display = TextStyle(
         fontFamily = FontStyle.openSansMedium,
         fontSize = FontSize.extraLarge,
