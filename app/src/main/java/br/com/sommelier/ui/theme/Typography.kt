@@ -47,10 +47,10 @@ object Typography {
     )
 
     val headerNormal = TextStyle(
-        fontFamily = FontStyle.openSansMedium,
+        fontFamily = FontStyle.openSansRegular,
         fontSize = FontSize.medium,
         lineHeight = LineHeight.normal,
-        letterSpacing = LetterSpacing.largest
+        letterSpacing = LetterSpacing.smallest
     )
 
     val headerSmall = TextStyle(

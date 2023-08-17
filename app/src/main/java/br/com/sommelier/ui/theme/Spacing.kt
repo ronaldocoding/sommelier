@@ -11,6 +11,7 @@ object Spacing {
     val extraSmall = Sizing.extraSmall
     val small = Sizing.small
     val normal = Sizing.normal
+    val normalLarge = Sizing.normalLarge
     val medium = Sizing.medium
     val mediumLarge = Sizing.mediumLarge
     val large = Sizing.large
