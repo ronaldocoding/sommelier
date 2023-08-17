@@ -14,4 +14,16 @@
     <string name="blank_password_message">Senha não pode ser vazia</string>
     <string name="invalid_password_message">A senha deve ter pelo menos 6 caracteres</string>
     <string name="login_error_message">Occoreu um erro ao tentar entrar. Por favor, tente novamente.</string>
+    <string name="name_text_field_label">Nome</string>
+    <string name="name_text_field_placeholder">Digite seu nome</string>
+    <string name="password_confirmation_text_field_label">Confirmação de senha</string>
+    <string name="password_confirmation_text_field_placeholder">Confirme sua senha</string>
+    <string name="password_confirmation_not_match_message">Confirmação de senha não corresponde</string>
+    <string name="register_button_label">Cadastrar</string>
+    <string name="register_non_clickable_text">Já tem uma conta?</string>
+    <string name="register_clickable_text">Entrar</string>
+    <string name="blank_name_message">Nome não pode ser vazio</string>
+    <string name="invalid_name_message">Nome deve ter pelo menos 3 caracteres</string>
+    <string name="blank_password_confirmation_message">Confirmação de senha não pode ser vazia</string>
+    <string name="register_error_message">Occoreu um erro ao tentar cadastrar. Por favor, tente novamente.</string>
 </resources>

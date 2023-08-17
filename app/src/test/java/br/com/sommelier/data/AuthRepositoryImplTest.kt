@@ -48,13 +48,15 @@ class AuthRepositoryImplTest {
 
     @Test
     fun `GIVEN a successful task WHEN call registerUser THEN must return Unit`() = runTest {
+        val uid = "uid"
+
         val successfulTask = mockk<Task<AuthResult>>().apply {
             every { isSuccessful } returns true
             every { result } returns mockk()
             every { isComplete } returns true
             every { exception } returns null
             every { isCanceled } returns false
-            every { result.user } returns mockk()
+            every { result.user?.uid } returns uid
         }
 
         every {
@@ -68,7 +70,7 @@ class AuthRepositoryImplTest {
 
         assertTrue(
             result.isRight {
-                it == Unit
+                it == uid
             }
         )
     }

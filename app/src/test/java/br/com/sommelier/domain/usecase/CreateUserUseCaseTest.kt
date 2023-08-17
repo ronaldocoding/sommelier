@@ -30,7 +30,7 @@ class CreateUserUseCaseTest {
 
     private lateinit var useCase: CreateUserUseCase
 
-    private val dummyUserInfo = UserInfo("email", "password", "name", "uid")
+    private val dummyUserInfo = UserInfo("email", "password", "name")
 
     @Before
     fun setUp() {
@@ -40,7 +40,8 @@ class CreateUserUseCaseTest {
     @Test
     fun `GIVEN a successful result in register a user WHEN execute use case THEN assert that saveUser was called`() =
         runTest(coroutineDispatcher) {
-            val successfulResult: Either<Problem, Unit> = Unit.right()
+            val uid = "uid"
+            val successfulResult: Either<Problem, String> = uid.right()
 
             coEvery { authRepository.registerUser(any(), any()) } returns successfulResult
 
@@ -54,7 +55,7 @@ class CreateUserUseCaseTest {
     @Test
     fun `GIVEN an unsuccessful result in register a user WHEN execute use case THEN assert that saveUser was not called`() =
         runTest(coroutineDispatcher) {
-            val unsuccessfulResult: Either<Problem, Unit> =
+            val unsuccessfulResult: Either<Problem, String> =
                 RegisterUserProblem("Register user problem occurred").left()
 
             coEvery { authRepository.registerUser(any(), any()) } returns unsuccessfulResult
@@ -69,7 +70,8 @@ class CreateUserUseCaseTest {
     @Test
     fun `GIVEN a successful result in register a user and a successful result in save a user WHEN execute use case THEN must return Unit`() =
         runTest(coroutineDispatcher) {
-            val registerSuccessfulResult: Either<Problem, Unit> = Unit.right()
+            val uid = "uid"
+            val registerSuccessfulResult: Either<Problem, String> = uid.right()
 
             val saveSuccessfulResult: Either<Problem, Unit> = Unit.right()
 
@@ -89,7 +91,8 @@ class CreateUserUseCaseTest {
     @Test
     fun `GIVEN a successful result in register a user and an unsuccessful result in save a user WHEN execute use case THEN must return Unit`() =
         runTest(coroutineDispatcher) {
-            val registerSuccessfulResult: Either<Problem, Unit> = Unit.right()
+            val uid = "uid"
+            val registerSuccessfulResult: Either<Problem, String> = uid.right()
 
             val saveUnsuccessfulResult: Either<Problem, Unit> =
                 GenericProblem("Generic problem occurred").left()
@@ -111,7 +114,7 @@ class CreateUserUseCaseTest {
     fun `GIVEN an unsuccessful result in register a user WHEN execute use case THEN must return the expected failure result`() =
         runTest(coroutineDispatcher) {
             val errorMessage = "Generic problem occurred"
-            val unsuccessfulResult: Either<Problem, Unit> = GenericProblem(errorMessage).left()
+            val unsuccessfulResult: Either<Problem, String> = GenericProblem(errorMessage).left()
 
             coEvery { authRepository.registerUser(any(), any()) } returns unsuccessfulResult
 

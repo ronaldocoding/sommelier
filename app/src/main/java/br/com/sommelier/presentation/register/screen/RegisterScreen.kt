@@ -1,4 +1,4 @@
-package br.com.sommelier.presentation.login.screen
+package br.com.sommelier.presentation.register.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +22,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
@@ -31,12 +30,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
-import br.com.sommelier.presentation.login.action.LoginAction
-import br.com.sommelier.presentation.login.model.LoginUiModel
-import br.com.sommelier.presentation.login.res.LoginStringResource
-import br.com.sommelier.presentation.login.state.LoginUiEffect
-import br.com.sommelier.presentation.login.state.LoginUiState
-import br.com.sommelier.presentation.login.viewmodel.LoginViewModel
+import br.com.sommelier.presentation.register.action.RegisterAction
+import br.com.sommelier.presentation.register.model.RegisterUiModel
+import br.com.sommelier.presentation.register.res.RegisterStringResource
+import br.com.sommelier.presentation.register.state.RegisterUiEffect
+import br.com.sommelier.presentation.register.state.RegisterUiState
+import br.com.sommelier.presentation.register.viewmodel.RegisterViewModel
 import br.com.sommelier.ui.component.ActionButton
 import br.com.sommelier.ui.component.ClickableText
 import br.com.sommelier.ui.component.OutlinedPasswordInput
@@ -53,14 +52,14 @@ import org.koin.androidx.compose.getViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun LoginScreen() {
-    val viewModel = getViewModel<LoginViewModel>()
+fun RegisterScreen() {
+    val viewModel = getViewModel<RegisterViewModel>()
     val uiState = checkNotNull(viewModel.uiState.observeAsState())
     val uiModel = checkNotNull(uiState.value?.uiModel)
 
     SommelierTheme {
         Scaffold(
-            containerColor = Color.White,
+            containerColor = ColorReference.white,
             snackbarHost = {
                 SnackbarHost(uiModel.snackbarUiState.hostState) {
                     SommelierSnackbar(
@@ -69,27 +68,27 @@ fun LoginScreen() {
                             end = Spacing.mediumLarge,
                             bottom = Spacing.larger
                         ),
-                        text = stringResource(id = R.string.login_error_message),
+                        text = stringResource(id = R.string.register_error_message),
                         type = uiModel.snackbarUiState.type
                     )
                 }
             }
         ) {
             UiState(uiState, it, uiModel, viewModel)
-            UiEffect(viewModel = viewModel)
+            UiEffect(viewModel, uiModel)
         }
     }
 }
 
 @Composable
 private fun UiState(
-    uiState: State<LoginUiState?>,
+    uiState: State<RegisterUiState?>,
     it: PaddingValues,
-    uiModel: LoginUiModel,
-    viewModel: LoginViewModel
+    uiModel: RegisterUiModel,
+    viewModel: RegisterViewModel
 ) {
     when (uiState.value) {
-        is LoginUiState.Loading -> {
+        is RegisterUiState.Loading -> {
             LoadingScreen()
         }
 
@@ -114,21 +113,21 @@ private fun LoadingScreen() {
 @Composable
 private fun Screen(
     it: PaddingValues,
-    uiModel: LoginUiModel,
-    viewModel: LoginViewModel
+    uiModel: RegisterUiModel,
+    viewModel: RegisterViewModel
 ) {
     Column(
         modifier = Modifier
-            .padding(it)
             .fillMaxSize()
+            .padding(it)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Cocktail()
-        LoginFields(uiModel, viewModel)
-        LoginButton(viewModel)
-        LoginClickableTexts(viewModel)
+        RegisterFields(uiModel, viewModel)
+        RegisterButton(viewModel)
+        LoginClickableText(viewModel)
     }
 }
 
@@ -138,12 +137,12 @@ private fun Cocktail() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.padding(Spacing.large))
         Image(
             painter = painterResource(id = R.drawable.ic_cocktail),
-            contentDescription = stringResource(id = R.string.cocktail_icon_description)
+            contentDescription = stringResource(
+                id = R.string.cocktail_icon_description
+            )
         )
-        Spacer(modifier = Modifier.padding(Spacing.extraSmaller))
         Text(
             text = stringResource(id = R.string.app_name),
             style = Typography.displayLarge
@@ -152,19 +151,41 @@ private fun Cocktail() {
 }
 
 @Composable
-private fun LoginFields(
-    uiModel: LoginUiModel,
-    viewModel: LoginViewModel
+private fun RegisterFields(
+    uiModel: RegisterUiModel,
+    viewModel: RegisterViewModel
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextInput(
+            value = uiModel.nameUiState.text,
+            onValueChange = { changedValue ->
+                viewModel.sendAction(
+                    RegisterAction.Action.OnTypeNameField(
+                        changedValue
+                    )
+                )
+            },
+            leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_user),
+            label = stringResource(id = R.string.name_text_field_label),
+            placeholder = stringResource(id = R.string.name_text_field_placeholder),
+            supportingText = {
+                Text(
+                    text = uiModel.nameUiState.errorSupportingMessage.toText(),
+                    style = Typography.label
+                )
+            },
+            isError = uiModel.nameUiState.isError,
+            modifier = Modifier.padding(horizontal = Spacing.mediumLarge)
+        )
+        Spacer(modifier = Modifier.padding(Spacing.extraSmaller))
+        OutlinedTextInput(
             value = uiModel.emailUiState.text,
             onValueChange = { changedValue ->
                 viewModel.sendAction(
-                    LoginAction.Action.OnTypeEmailField(
+                    RegisterAction.Action.OnTypeEmailField(
                         changedValue
                     )
                 )
@@ -174,14 +195,14 @@ private fun LoginFields(
             placeholder = stringResource(id = R.string.email_text_field_placeholder),
             supportingText = {
                 Text(
-                    uiModel.emailUiState.errorSupportingMessage.toText(),
+                    text = uiModel.emailUiState.errorSupportingMessage.toText(),
                     style = Typography.label
                 )
             },
-            isError = uiModel.emailUiState.isError,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email
             ),
+            isError = uiModel.emailUiState.isError,
             modifier = Modifier.padding(horizontal = Spacing.mediumLarge)
         )
         Spacer(modifier = Modifier.padding(Spacing.extraSmaller))
@@ -189,7 +210,7 @@ private fun LoginFields(
             value = uiModel.passwordUiState.text,
             onValueChange = { changedValue ->
                 viewModel.sendAction(
-                    LoginAction.Action.OnTypePasswordField(
+                    RegisterAction.Action.OnTypePasswordField(
                         changedValue
                     )
                 )
@@ -198,96 +219,134 @@ private fun LoginFields(
             placeholder = stringResource(id = R.string.password_text_field_placeholder),
             supportingText = {
                 Text(
-                    uiModel.passwordUiState.errorSupportingMessage.toText(),
+                    text = uiModel.passwordUiState.errorSupportingMessage.toText(),
                     style = Typography.label
                 )
             },
             isError = uiModel.passwordUiState.isError,
             modifier = Modifier.padding(horizontal = Spacing.mediumLarge)
         )
+        Spacer(modifier = Modifier.padding(Spacing.extraSmaller))
+        OutlinedPasswordInput(
+            value = uiModel.passwordConfirmationUiState.text,
+            onValueChange = { changedValue ->
+                viewModel.sendAction(
+                    RegisterAction.Action.OnTypePasswordConfirmationField(
+                        changedValue
+                    )
+                )
+            },
+            label = stringResource(
+                id = R.string.password_confirmation_text_field_label
+            ),
+            placeholder = stringResource(
+                id = R.string.password_confirmation_text_field_placeholder
+            ),
+            supportingText = {
+                Text(
+                    text = uiModel.passwordConfirmationUiState.errorSupportingMessage
+                        .toText(),
+                    style = Typography.label
+                )
+            },
+            isError = uiModel.passwordConfirmationUiState.isError,
+            modifier = Modifier.padding(horizontal = Spacing.mediumLarge)
+        )
     }
 }
 
 @Composable
-private fun LoginButton(viewModel: LoginViewModel) {
+private fun RegisterButton(viewModel: RegisterViewModel) {
     ActionButton(
-        text = stringResource(id = R.string.login_button_label),
+        text = stringResource(id = R.string.register_button_label),
         modifier = Modifier.padding(horizontal = Spacing.small),
         onClick = {
-            viewModel.sendAction(LoginAction.Action.OnClickLoginButton)
+            viewModel.sendAction(RegisterAction.Action.OnClickRegisterButton)
         }
     )
 }
 
 @Composable
-private fun LoginClickableTexts(viewModel: LoginViewModel) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(bottom = Spacing.large)
-    ) {
-        ClickableText(
-            nonClickableText = stringResource(id = R.string.login_non_clickable_text),
-            clickableText = stringResource(id = R.string.login_first_clickable_text),
-            onClick = {
-                viewModel.sendAction(LoginAction.Action.OnClickSignUpButton)
-            }
-        )
-        ClickableText(
-            clickableText = stringResource(id = R.string.login_second_clickable_text),
-            onClick = {
-                viewModel.sendAction(
-                    LoginAction.Action.OnClickForgotPasswordButton
-                )
-            }
-        )
-    }
+private fun LoginClickableText(viewModel: RegisterViewModel) {
+    ClickableText(
+        nonClickableText = stringResource(id = R.string.register_non_clickable_text),
+        clickableText = stringResource(id = R.string.register_clickable_text),
+        onClick = {
+            viewModel.sendAction(RegisterAction.Action.OnClickAlreadyHaveAccountButton)
+        }
+    )
 }
 
 @Composable
-private fun UiEffect(viewModel: LoginViewModel) {
-    val localLifecycleOwner = LocalLifecycleOwner.current
-    val coroutineScope = rememberCoroutineScope()
-    val snackbarErrorMessage = stringResource(id = R.string.login_error_message)
-    viewModel.uiEffect.observe(localLifecycleOwner) { effect ->
-        when (effect) {
-            is LoginUiEffect.ShowLoading -> {
-                viewModel.sendAction(LoginAction.Action.OnTryToLogin)
-            }
+fun RegisterStringResource.toText(): String {
+    return when (this) {
+        is RegisterStringResource.Empty -> {
+            emptyString()
+        }
 
-            is LoginUiEffect.OpenHomeScreen -> {
-                // TODO: Open Home Screen
-            }
+        is RegisterStringResource.BlankName -> {
+            stringResource(id = R.string.blank_name_message)
+        }
 
-            is LoginUiEffect.OpenRegisterScreen -> {
-                // TODO: Open Sign Up Screen
-            }
+        is RegisterStringResource.InvalidName -> {
+            stringResource(id = R.string.invalid_name_message)
+        }
 
-            is LoginUiEffect.ShowSnackbarError -> {
-                coroutineScope.launch {
-                    viewModel.uiState.value?.uiModel?.snackbarUiState?.hostState?.showSnackbar(
-                        message = snackbarErrorMessage
-                    )
-                }
-            }
+        is RegisterStringResource.BlankEmail -> {
+            stringResource(id = R.string.blank_email_message)
+        }
 
-            is LoginUiEffect.OpenForgotPasswordScreen -> {
-                // TODO: Open Forgot Password Screen
-            }
+        is RegisterStringResource.InvalidEmail -> {
+            stringResource(id = R.string.invalid_email_message)
+        }
 
-            is LoginUiEffect.OpenConfirmEmailScreen -> {
-                // TODO: Open Confirm Email Screen
-            }
+        is RegisterStringResource.BlankPassword -> {
+            stringResource(id = R.string.blank_password_message)
+        }
+
+        is RegisterStringResource.InvalidPassword -> {
+            stringResource(id = R.string.invalid_password_message)
+        }
+
+        is RegisterStringResource.BlankPasswordConfirmation -> {
+            stringResource(id = R.string.blank_password_confirmation_message)
+        }
+
+        is RegisterStringResource.PasswordConfirmationNotMatch -> {
+            stringResource(id = R.string.password_confirmation_not_match_message)
         }
     }
 }
 
 @Composable
-fun LoginStringResource.toText(): String {
-    return when (this) {
-        LoginStringResource.Empty -> emptyString()
-        LoginStringResource.BlankEmail -> stringResource(id = R.string.blank_email_message)
-        LoginStringResource.BlankPassword -> stringResource(id = R.string.blank_password_message)
-        LoginStringResource.InvalidEmail -> stringResource(id = R.string.invalid_email_message)
+private fun UiEffect(
+    viewModel: RegisterViewModel,
+    uiModel: RegisterUiModel
+) {
+    val localLifecycleOwner = LocalLifecycleOwner.current
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarErrorMessage = stringResource(id = R.string.register_error_message)
+    viewModel.uiEffect.observe(localLifecycleOwner) { uiEffect ->
+        when (uiEffect) {
+            is RegisterUiEffect.ShowLoading -> {
+                viewModel.sendAction(RegisterAction.Action.OnTryToRegister)
+            }
+
+            is RegisterUiEffect.OpenLoginScreen -> {
+                // TODO: Navigate to Login Screen
+            }
+
+            is RegisterUiEffect.OpenConfirmEmailScreen -> {
+                // TODO: Navigate to Confirm Email Screen
+            }
+
+            is RegisterUiEffect.ShowSnackbarError -> {
+                coroutineScope.launch {
+                    uiModel.snackbarUiState.hostState.showSnackbar(
+                        message = snackbarErrorMessage
+                    )
+                }
+            }
+        }
     }
 }

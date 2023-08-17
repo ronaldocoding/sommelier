@@ -5,7 +5,7 @@ import br.com.sommelier.base.result.Problem
 import com.google.firebase.auth.FirebaseUser
 
 interface AuthRepository {
-    suspend fun registerUser(email: String, password: String): Either<Problem, Unit>
+    suspend fun registerUser(email: String, password: String): Either<Problem, String>
     suspend fun deleteUser(): Either<Problem, Unit>
     suspend fun signInUser(email: String, password: String): Either<Problem, Unit>
     suspend fun updateUserEmail(email: String): Either<Problem, Unit>

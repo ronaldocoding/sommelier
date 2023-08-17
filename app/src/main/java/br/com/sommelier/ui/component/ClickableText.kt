@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import br.com.sommelier.ui.theme.ColorReference
 import br.com.sommelier.ui.theme.Sizing
 import br.com.sommelier.ui.theme.Typography
@@ -38,7 +39,7 @@ fun ClickableText(
                 text = nonClickableText,
                 style = nonClickableTextStyle,
                 color = textColor,
-                modifier = modifier.testTag("NonClickableText")
+                modifier = Modifier.testTag("NonClickableText")
             )
             Spacer(
                 modifier = Modifier
@@ -52,7 +53,7 @@ fun ClickableText(
             colors = ButtonDefaults.buttonColors(
                 containerColor = ColorReference.white
             ),
-            modifier = modifier.testTag("ClickableText")
+            modifier = Modifier.getModifier(clickableText.length)
         ) {
             Text(
                 text = clickableText,
@@ -60,6 +61,14 @@ fun ClickableText(
                 color = textColor
             )
         }
+    }
+}
+
+private fun Modifier.getModifier(clickableTextLength: Int): Modifier {
+    return if (clickableTextLength <= 5) {
+        then(Modifier.testTag("ClickableText").width(ButtonDefaults.MinWidth - 14.dp))
+    } else {
+        then(Modifier.testTag("ClickableText"))
     }
 }
 

@@ -19,6 +19,7 @@ import br.com.sommelier.domain.usecase.UpdateUserDocumentUseCase
 import br.com.sommelier.domain.usecase.UpdateUserEmailUseCase
 import br.com.sommelier.domain.usecase.UpdateUserPasswordUseCase
 import br.com.sommelier.presentation.login.viewmodel.LoginViewModel
+import br.com.sommelier.presentation.register.viewmodel.RegisterViewModel
 import br.com.sommelier.util.FirestoreCollections.USERS
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -87,7 +88,20 @@ object SommelierModule {
     }
 
     private val presentationModule = module {
-        factory { LoginViewModel(signInUserUseCase = get()) }
+        factory {
+            LoginViewModel(
+                signInUserUseCase = get(),
+                sendEmailVerificationUseCase = get(),
+                isUserEmailVerifiedUseCase = get(),
+                signOutUserUseCase = get()
+            )
+        }
+        factory {
+            RegisterViewModel(
+                createUserUseCase = get(),
+                sendEmailVerificationUseCase = get()
+            )
+        }
     }
 
     private fun provideFirebaseAuth(): FirebaseAuth {
