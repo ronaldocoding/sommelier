@@ -30,14 +30,8 @@ fun ClickableText(
     textColor: Color = ColorReference.quartz,
     onClick: () -> Unit = {}
 ) {
-   val clickableTextWidth = if (clickableText.length <= 5) {
-        ButtonDefaults.MinWidth-14.dp
-    } else {
-        ButtonDefaults.MinWidth
-    }
-
     Row(
-        modifier = Modifier,
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (nonClickableText.isNotEmpty()) {
@@ -59,7 +53,7 @@ fun ClickableText(
             colors = ButtonDefaults.buttonColors(
                 containerColor = ColorReference.white
             ),
-            modifier = Modifier.testTag("ClickableText").width(clickableTextWidth)
+            modifier = Modifier.getModifier(clickableText.length)
         ) {
             Text(
                 text = clickableText,
@@ -67,6 +61,14 @@ fun ClickableText(
                 color = textColor
             )
         }
+    }
+}
+
+private fun Modifier.getModifier(clickableTextLength: Int): Modifier {
+    return if(clickableTextLength <= 5) {
+        then(Modifier.testTag("ClickableText").width(ButtonDefaults.MinWidth-14.dp))
+    } else {
+        then(Modifier.testTag("ClickableText"))
     }
 }
 
