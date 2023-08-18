@@ -36,18 +36,6 @@ class OutlinedTextInputTest {
     }
 
     @Test
-    fun givenOutlinedTextInputWithLabel_whenRendered_thenAssertLabelIsDisplayed() {
-        composeTestRule.setContent {
-            OutlinedTextInput(label = "Label")
-        }
-        composeTestRule.onNodeWithTag("OutlinedTextFieldLabel", useUnmergedTree = true)
-            .assertIsDisplayed()
-            .assertTextEquals("Label")
-        composeTestRule.onNodeWithTag("OutlinedTextFieldPlaceholder").assertDoesNotExist()
-        composeTestRule.onNodeWithTag("OutlinedTextFieldLeadingIcon").assertDoesNotExist()
-    }
-
-    @Test
     fun givenOutlinedTextInputWithPlaceholder_whenRendered_thenAssertPlaceholderIsDisplayed() {
         composeTestRule.setContent {
             OutlinedTextInput(placeholder = "Placeholder")

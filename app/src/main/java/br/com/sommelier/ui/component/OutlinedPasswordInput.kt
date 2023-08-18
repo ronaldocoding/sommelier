@@ -1,6 +1,7 @@
 package br.com.sommelier.ui.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -14,7 +15,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.ui.theme.ColorReference
+import br.com.sommelier.ui.theme.Sizing
 import br.com.sommelier.ui.theme.Typography
 import br.com.sommelier.util.emptyString
 
@@ -33,15 +34,9 @@ fun OutlinedPasswordInput(
     modifier: Modifier = Modifier,
     value: String = emptyString(),
     valueStyle: TextStyle = Typography.bodyLarge,
-    valueColor: Color = ColorReference.eerieBlack,
     onValueChange: (String) -> Unit = {},
     placeholder: String = emptyString(),
     placeholderStyle: TextStyle = Typography.bodyLarge,
-    placeHolderColor: Color = ColorReference.taupeGray,
-    label: String = emptyString(),
-    focusedLabelStyle: TextStyle = Typography.bodyLarge,
-    unfocusedLabelStyle: TextStyle = Typography.label,
-    labelColor: Color = ColorReference.taupeGray,
     leadingIconContentDescription: String? = null,
     isError: Boolean = false,
     isEnabled: Boolean = true,
@@ -49,10 +44,35 @@ fun OutlinedPasswordInput(
     maxLines: Int = 1,
     supportingText: (@Composable () -> Unit)? = null
 ) {
-    var isLabelFocused by rememberSaveable { mutableStateOf(false) }
     var isTextFieldFocused by rememberSaveable { mutableStateOf(false) }
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
     var passwordEye by rememberSaveable { mutableStateOf(R.drawable.ic_opened_eye) }
+
+    val lockIconColor = if (isError) {
+        ColorReference.bitterSweet
+    } else {
+        ColorReference.taupeGray
+    }
+    val eyeIconColor = if (isError) {
+        ColorReference.bitterSweet
+    } else {
+        ColorReference.taupeGray
+    }
+    val containerColor = if (isError) {
+        ColorReference.seaShell
+    } else {
+        ColorReference.antiFlashWhite
+    }
+    val textColor = if (isError) {
+        ColorReference.bitterSweet
+    } else {
+        ColorReference.eerieBlack
+    }
+    val placeholderColor = if (isError) {
+        ColorReference.bitterSweet
+    } else {
+        ColorReference.taupeGray
+    }
 
     OutlinedTextField(
         visualTransformation = if (isPasswordVisible) {
@@ -68,39 +88,27 @@ fun OutlinedPasswordInput(
                 isTextFieldFocused = it.isFocused
             }
             .testTag("OutlinedPasswordInput"),
-        textStyle = valueStyle.copy(color = valueColor),
+        textStyle = valueStyle.copy(color = textColor),
         enabled = isEnabled,
         isError = isError,
         singleLine = singleLine,
         maxLines = maxLines,
         supportingText = supportingText,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = ColorReference.taupeGray,
-            unfocusedBorderColor = ColorReference.taupeGray
+            focusedBorderColor = ColorReference.antiFlashWhite,
+            unfocusedBorderColor = ColorReference.antiFlashWhite,
+            containerColor = containerColor,
+            errorBorderColor = ColorReference.seaShell,
+            errorCursorColor = ColorReference.bitterSweet,
+            errorSupportingTextColor = ColorReference.bitterSweet,
+            errorLeadingIconColor = ColorReference.bitterSweet
         ),
-        label = {
-            Text(
-                text = label,
-                style = if (isTextFieldFocused) {
-                    unfocusedLabelStyle
-                } else if (!isLabelFocused && value.isEmpty()) {
-                    focusedLabelStyle
-                } else {
-                    unfocusedLabelStyle
-                },
-                color = labelColor,
-                modifier = Modifier
-                    .onFocusChanged {
-                        isLabelFocused = it.isFocused
-                    }
-                    .testTag("OutlinedPasswordInputLabel")
-            )
-        },
+        shape = RoundedCornerShape(Sizing.normal),
         placeholder = {
             Text(
                 text = placeholder,
                 style = placeholderStyle,
-                color = placeHolderColor,
+                color = placeholderColor,
                 modifier = Modifier.testTag("OutlinedPasswordInputPlaceholder")
             )
         },
@@ -108,7 +116,7 @@ fun OutlinedPasswordInput(
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_lock),
                 contentDescription = leadingIconContentDescription,
-                tint = ColorReference.taupeGray,
+                tint = lockIconColor,
                 modifier = Modifier.testTag("OutlinedPasswordInputLeadingIcon")
             )
         },
@@ -125,7 +133,7 @@ fun OutlinedPasswordInput(
                 Icon(
                     imageVector = ImageVector.vectorResource(id = passwordEye),
                     contentDescription = "Visibility",
-                    tint = ColorReference.taupeGray,
+                    tint = eyeIconColor,
                     modifier = Modifier.testTag("OutlinedPasswordInputTrailingIcon")
                 )
             }
@@ -147,7 +155,22 @@ fun OutlinedPasswordInputPreview() {
         value = text,
         onValueChange = { text = it },
         placeholder = "Type your password",
-        label = "Password",
         leadingIconContentDescription = "Password"
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OutlinedPasswordInputErrorPreview() {
+    var text by rememberSaveable { mutableStateOf(emptyString()) }
+    OutlinedPasswordInput(
+        value = text,
+        onValueChange = { text = it },
+        placeholder = "Type your password",
+        leadingIconContentDescription = "Password",
+        isError = true,
+        supportingText = {
+            Text(text = "Error message", style = Typography.label)
+        }
     )
 }
