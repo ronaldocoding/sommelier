@@ -10,7 +10,9 @@ import br.com.sommelier.domain.usecase.SendEmailVerificationUseCase
 import br.com.sommelier.domain.usecase.SignInUserUseCase
 import br.com.sommelier.domain.usecase.SignOutUserUseCase
 import br.com.sommelier.presentation.login.action.LoginAction
+import br.com.sommelier.presentation.login.model.EmailUiState
 import br.com.sommelier.presentation.login.model.LoginUiModel
+import br.com.sommelier.presentation.login.model.PasswordUiState
 import br.com.sommelier.presentation.login.res.LoginStringResource
 import br.com.sommelier.presentation.login.state.LoginUiEffect
 import br.com.sommelier.presentation.login.state.LoginUiState
@@ -301,7 +303,58 @@ class LoginViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnTryToLogin was the last action sent and signIn use case as success but user email is not verified and sendEmailVerification as success WHEN sendAction was called THEN assert that the uiEffect is the expected`() =
+    fun `GIVEN OnTryToLogin was the last action sent, signIn use case as failure and fields with error state WHEN sendAction was called THEN assert that the emitted uiState and uiEffect are the expected`() =
+        coroutineTestRule.runBlockingTest {
+            val action = LoginAction.Action.OnTryToLogin
+            val email = "email@email.com"
+            val password = "password"
+
+            val result: Either<Failure, Success<Unit>> = Either.Left(
+                Failure(
+                    GenericProblem(
+                        "Error"
+                    )
+                )
+            )
+            coEvery {
+                signInUserUseCase(
+                    SignInUserUseCase.Params(
+                        email,
+                        password
+                    )
+                )
+            } returns result
+
+            viewModel.sendAction(LoginAction.Action.OnClickLoginButton)
+            viewModel.sendAction(LoginAction.Action.OnTypeEmailField(email))
+            viewModel.sendAction(LoginAction.Action.OnTypePasswordField(password))
+            viewModel.sendAction(action)
+
+            val expectedUiState = LoginUiState.Error(
+                LoginUiModel().copy(
+                    emailUiState = EmailUiState(
+                        text = email,
+                        errorSupportingMessage = LoginStringResource.Empty,
+                        isError = false
+                    ),
+                    passwordUiState = PasswordUiState(
+                        text = password,
+                        errorSupportingMessage = LoginStringResource.Empty,
+                        isError = false
+                    )
+                )
+            )
+            val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+            val expectedUiEffect = LoginUiEffect.ShowSnackbarError
+            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+            assertUiState(expectedUiState, actualUiState)
+            assertEquals(expectedUiEffect, actualUiEffect)
+        }
+
+    @Test
+    fun `GIVEN OnTryToLogin was the last action sent but user email is not verified and sendEmailVerification as success WHEN sendAction was called THEN assert that the uiEffect is the expected`() =
         coroutineTestRule.runBlockingTest {
             val action = LoginAction.Action.OnTryToLogin
             val email = "email@email.com"
@@ -341,7 +394,7 @@ class LoginViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnTryToLogin was the last action sent, signIn use case as success and user email is verified WHEN sendAction was called THEN assert that the uiEffect is the expected`() =
+    fun `GIVEN OnTryToLogin was the last action sent and user email is verified WHEN sendAction was called THEN assert that the uiEffect is the expected`() =
         coroutineTestRule.runBlockingTest {
             val action = LoginAction.Action.OnTryToLogin
             val email = "email@email.com"
@@ -376,7 +429,7 @@ class LoginViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnTryToLogin was the last action sent and signIn use case as success but isUserEmailVerified use case as failure WHEN sendAction was called THEN assert that the uiState and uiEffect are the expected`() =
+    fun `GIVEN OnTryToLogin was the last action sent and isUserEmailVerified use case as failure WHEN sendAction was called THEN assert that the uiState and uiEffect are the expected`() =
         coroutineTestRule.runBlockingTest {
             val action = LoginAction.Action.OnTryToLogin
             val email = "email@email.com"
@@ -428,7 +481,129 @@ class LoginViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnTryToLogin was the last action sent, signIn use case as success, email is not verified but sendEmailVerification use case fails WHEN sendAction was called THEN assert that the uiState and uiEffect are the expected`() =
+    fun `GIVEN OnTryToLogin was the last action sent, isUserEmailVerified use case as failure and fields with error state WHEN sendAction was called THEN assert that the uiState and uiEffect are the expected`() =
+        coroutineTestRule.runBlockingTest {
+            val action = LoginAction.Action.OnTryToLogin
+            val email = "email@email.com"
+            val password = "password"
+
+            val signInUseCaseResult: Either<Failure, Success<Unit>> = Either.Right(
+                Success(Unit)
+            )
+            coEvery {
+                signInUserUseCase(
+                    SignInUserUseCase.Params(
+                        email,
+                        password
+                    )
+                )
+            } returns signInUseCaseResult
+
+            val isUserEmailVerifiedUseCaseResult: Either<Failure, Success<Boolean>> = Either.Left(
+                Failure(GenericProblem("Error"))
+            )
+            coEvery { isUserEmailVerifiedUseCase(any()) } returns isUserEmailVerifiedUseCaseResult
+
+            val signOutUserUseCaseResult: Either<Failure, Success<Unit>> = Either.Right(
+                Success(Unit)
+            )
+            coEvery { signOutUserUseCase(any()) } returns signOutUserUseCaseResult
+
+            viewModel.sendAction(LoginAction.Action.OnClickLoginButton)
+            viewModel.sendAction(LoginAction.Action.OnTypeEmailField(email))
+            viewModel.sendAction(LoginAction.Action.OnTypePasswordField(password))
+            viewModel.sendAction(action)
+
+            val expectedUiState = LoginUiState.Error(
+                LoginUiModel().copy(
+                    emailUiState = EmailUiState(
+                        text = email,
+                        errorSupportingMessage = LoginStringResource.Empty,
+                        isError = false
+                    ),
+                    passwordUiState = PasswordUiState(
+                        text = password,
+                        errorSupportingMessage = LoginStringResource.Empty,
+                        isError = false
+                    )
+                )
+            )
+            val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+            val expectedUiEffect = LoginUiEffect.ShowSnackbarError
+            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+            assertUiState(expectedUiState, actualUiState)
+            assertEquals(expectedUiEffect, actualUiEffect)
+        }
+
+    @Test
+    fun `GIVEN OnTryToLogin was the last action sent, sendEmailVerification use case fails and fields with error state WHEN sendAction was called THEN assert that the uiState and uiEffect are the expected`() =
+        coroutineTestRule.runBlockingTest {
+            val action = LoginAction.Action.OnTryToLogin
+            val email = "email@email.com"
+            val password = "password"
+            val isEmailVerified = false
+
+            val signInUseCaseResult: Either<Failure, Success<Unit>> = Either.Right(
+                Success(Unit)
+            )
+            coEvery {
+                signInUserUseCase(
+                    SignInUserUseCase.Params(
+                        email,
+                        password
+                    )
+                )
+            } returns signInUseCaseResult
+
+            val isUserEmailVerifiedUseCaseResult: Either<Failure, Success<Boolean>> = Either.Right(
+                Success(isEmailVerified)
+            )
+            coEvery { isUserEmailVerifiedUseCase(any()) } returns isUserEmailVerifiedUseCaseResult
+
+            val sendEmailVerificationUseCaseResult: Either<Failure, Success<Unit>> = Either.Left(
+                Failure(GenericProblem("Error"))
+            )
+            coEvery {
+                sendEmailVerificationUseCase(any())
+            } returns sendEmailVerificationUseCaseResult
+
+            val signOutUserUseCaseResult: Either<Failure, Success<Unit>> = Either.Right(
+                Success(Unit)
+            )
+            coEvery { signOutUserUseCase(any()) } returns signOutUserUseCaseResult
+
+            viewModel.sendAction(LoginAction.Action.OnClickLoginButton)
+            viewModel.sendAction(LoginAction.Action.OnTypeEmailField(email))
+            viewModel.sendAction(LoginAction.Action.OnTypePasswordField(password))
+            viewModel.sendAction(action)
+
+            val expectedUiState = LoginUiState.Error(
+                LoginUiModel().copy(
+                    emailUiState = EmailUiState(
+                        text = email,
+                        errorSupportingMessage = LoginStringResource.Empty,
+                        isError = false
+                    ),
+                    passwordUiState = PasswordUiState(
+                        text = password,
+                        errorSupportingMessage = LoginStringResource.Empty,
+                        isError = false
+                    )
+                )
+            )
+            val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+            val expectedUiEffect = LoginUiEffect.ShowSnackbarError
+            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+            assertUiState(expectedUiState, actualUiState)
+            assertEquals(expectedUiEffect, actualUiEffect)
+        }
+
+    @Test
+    fun `GIVEN OnTryToLogin was the last action sent and sendEmailVerification use case fails WHEN sendAction was called THEN assert that the uiState and uiEffect are the expected`() =
         coroutineTestRule.runBlockingTest {
             val action = LoginAction.Action.OnTryToLogin
             val email = "email@email.com"

@@ -9,6 +9,7 @@ import br.com.sommelier.domain.model.UserInfo
 import br.com.sommelier.domain.usecase.CreateUserUseCase
 import br.com.sommelier.domain.usecase.SendEmailVerificationUseCase
 import br.com.sommelier.presentation.register.action.RegisterAction
+import br.com.sommelier.presentation.register.model.RegisterUiModel
 import br.com.sommelier.presentation.register.res.RegisterStringResource
 import br.com.sommelier.presentation.register.state.RegisterUiEffect
 import br.com.sommelier.presentation.register.state.RegisterUiState
@@ -202,7 +203,7 @@ class RegisterViewModel(
 
     private suspend fun handleOnTryToRegister() {
         val state = checkNotNull(_uiState.value)
-        val uiModel = state.uiModel
+        val uiModel = removePossibleRemainingErrorState(state.uiModel)
         val userInfo = UserInfo(
             name = uiModel.nameUiState.text,
             email = uiModel.emailUiState.text,
@@ -217,6 +218,31 @@ class RegisterViewModel(
                 sendEmailVerificationUseCase(UseCase.None())
                 _uiEffect.value = RegisterUiEffect.OpenConfirmEmailScreen
             }
+        )
+    }
+
+    private fun removePossibleRemainingErrorState(uiModel: RegisterUiModel): RegisterUiModel {
+        val newNameUiState = uiModel.nameUiState.copy(
+            errorSupportingMessage = RegisterStringResource.Empty,
+            isError = false
+        )
+        val newEmailUiState = uiModel.emailUiState.copy(
+            errorSupportingMessage = RegisterStringResource.Empty,
+            isError = false
+        )
+        val newPasswordUiState = uiModel.passwordUiState.copy(
+            errorSupportingMessage = RegisterStringResource.Empty,
+            isError = false
+        )
+        val newPasswordConfirmationUiState = uiModel.passwordConfirmationUiState.copy(
+            errorSupportingMessage = RegisterStringResource.Empty,
+            isError = false
+        )
+        return uiModel.copy(
+            nameUiState = newNameUiState,
+            emailUiState = newEmailUiState,
+            passwordUiState = newPasswordUiState,
+            passwordConfirmationUiState = newPasswordConfirmationUiState
         )
     }
 }
