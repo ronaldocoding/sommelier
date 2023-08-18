@@ -18,6 +18,7 @@ import br.com.sommelier.domain.usecase.SignOutUserUseCase
 import br.com.sommelier.domain.usecase.UpdateUserDocumentUseCase
 import br.com.sommelier.domain.usecase.UpdateUserEmailUseCase
 import br.com.sommelier.domain.usecase.UpdateUserPasswordUseCase
+import br.com.sommelier.presentation.home.viewmodel.HomeViewModel
 import br.com.sommelier.presentation.login.viewmodel.LoginViewModel
 import br.com.sommelier.presentation.register.viewmodel.RegisterViewModel
 import br.com.sommelier.util.FirestoreCollections.USERS
@@ -102,6 +103,7 @@ object SommelierModule {
                 sendEmailVerificationUseCase = get()
             )
         }
+        factory { HomeViewModel() }
     }
 
     private fun provideFirebaseAuth(): FirebaseAuth {
