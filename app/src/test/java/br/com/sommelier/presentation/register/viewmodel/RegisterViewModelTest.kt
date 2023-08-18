@@ -587,22 +587,22 @@ class RegisterViewModelTest {
                     nameUiState = NameUiState(
                         text = userInfo.name,
                         errorSupportingMessage = RegisterStringResource.Empty,
-                        isError = false,
+                        isError = false
                     ),
                     emailUiState = EmailUiState(
                         text = userInfo.email,
                         errorSupportingMessage = RegisterStringResource.Empty,
-                        isError = false,
+                        isError = false
                     ),
                     passwordUiState = PasswordUiState(
                         text = userInfo.password,
                         errorSupportingMessage = RegisterStringResource.Empty,
-                        isError = false,
+                        isError = false
                     ),
                     passwordConfirmationUiState = PasswordConfirmationUiState(
                         text = userInfo.password,
                         errorSupportingMessage = RegisterStringResource.Empty,
-                        isError = false,
+                        isError = false
                     )
                 )
             )

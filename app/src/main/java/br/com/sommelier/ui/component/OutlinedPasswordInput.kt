@@ -101,7 +101,7 @@ fun OutlinedPasswordInput(
             errorBorderColor = ColorReference.seaShell,
             errorCursorColor = ColorReference.bitterSweet,
             errorSupportingTextColor = ColorReference.bitterSweet,
-            errorLeadingIconColor = ColorReference.bitterSweet,
+            errorLeadingIconColor = ColorReference.bitterSweet
         ),
         shape = RoundedCornerShape(Sizing.normal),
         placeholder = {
