@@ -131,7 +131,7 @@ private fun HomeSearchBar(uiModel: HomeUiModel, viewModel: HomeViewModel) {
         modifier = Modifier.padding(horizontal = Spacing.mediumLarge),
         onSearch = {
             viewModel.sendAction(HomeAction.Action.OnSearch)
-        },
+        }
     )
 }
 
