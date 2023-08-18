@@ -26,4 +26,9 @@
     <string name="invalid_name_message">Nome deve ter pelo menos 3 caracteres</string>
     <string name="blank_password_confirmation_message">Confirmação de senha não pode ser vazia</string>
     <string name="register_error_message">Occoreu um erro ao tentar cadastrar. Por favor, tente novamente.</string>
+    <string name="account_icon_description">Ícone de conta</string>
+    <string name="search_hint">Pesquise um restaurante</string>
+    <string name="restaurant_list_title">Restaurantes</string>
+    <string name="chef_hat_icon_description">Ícone de chapéu de chefe de cozinha</string>
+    <string name="no_restaurants_registered">Nenhum restaurante cadastrado</string>
 </resources>

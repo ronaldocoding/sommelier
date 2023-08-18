@@ -26,4 +26,9 @@
     <string name="invalid_name_message">Name must have at least 3 characters</string>
     <string name="blank_password_confirmation_message">Password confirmation cannot be blank</string>
     <string name="register_error_message">An error occurred while trying to register. Please, try again</string>
+    <string name="account_icon_description">Account icon</string>
+    <string name="search_hint">Search a restaurant</string>
+    <string name="restaurant_list_title">Restaurants</string>
+    <string name="chef_hat_icon_description">Chef hat icon</string>
+    <string name="no_restaurants_registered">No restaurants registered</string>
 </resources>
