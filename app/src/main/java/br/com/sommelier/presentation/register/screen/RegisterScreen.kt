@@ -169,7 +169,6 @@ private fun RegisterFields(
                 )
             },
             leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_user),
-            label = stringResource(id = R.string.name_text_field_label),
             placeholder = stringResource(id = R.string.name_text_field_placeholder),
             supportingText = {
                 Text(
@@ -191,7 +190,6 @@ private fun RegisterFields(
                 )
             },
             leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_mail),
-            label = stringResource(id = R.string.email_text_field_label),
             placeholder = stringResource(id = R.string.email_text_field_placeholder),
             supportingText = {
                 Text(
@@ -215,7 +213,6 @@ private fun RegisterFields(
                     )
                 )
             },
-            label = stringResource(id = R.string.password_text_field_label),
             placeholder = stringResource(id = R.string.password_text_field_placeholder),
             supportingText = {
                 Text(
@@ -236,9 +233,6 @@ private fun RegisterFields(
                     )
                 )
             },
-            label = stringResource(
-                id = R.string.password_confirmation_text_field_label
-            ),
             placeholder = stringResource(
                 id = R.string.password_confirmation_text_field_placeholder
             ),

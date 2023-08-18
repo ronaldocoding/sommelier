@@ -179,7 +179,6 @@ fun Content() {
                         text = changedValue
                     },
                     placeholder = "Type your email",
-                    label = "Email",
                     leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_mail),
                     isError = textInputIsError,
                     supportingText = {
@@ -195,7 +194,6 @@ fun Content() {
                         password = changedValue
                     },
                     placeholder = "Type your password",
-                    label = "Password",
                     leadingIconContentDescription = "Password"
                 )
                 Spacer(modifier = Modifier.padding(Spacing.small))
