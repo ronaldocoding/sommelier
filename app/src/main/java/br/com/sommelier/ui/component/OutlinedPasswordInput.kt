@@ -101,7 +101,7 @@ fun OutlinedPasswordInput(
             errorBorderColor = ColorReference.seaShell,
             errorCursorColor = ColorReference.bitterSweet,
             errorSupportingTextColor = ColorReference.bitterSweet,
-            errorLeadingIconColor = ColorReference.bitterSweet,
+            errorLeadingIconColor = ColorReference.bitterSweet
         ),
         shape = RoundedCornerShape(Sizing.normal),
         placeholder = {
@@ -168,6 +168,9 @@ fun OutlinedPasswordInputErrorPreview() {
         onValueChange = { text = it },
         placeholder = "Type your password",
         leadingIconContentDescription = "Password",
-        isError = true
+        isError = true,
+        supportingText = {
+            Text(text = "Error message", style = Typography.label)
+        }
     )
 }
