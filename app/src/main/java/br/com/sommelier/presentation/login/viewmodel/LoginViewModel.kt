@@ -128,7 +128,7 @@ class LoginViewModel(
 
     private suspend fun handleTryToLogin() {
         val state = checkNotNull(_uiState.value)
-        val uiModel = state.uiModel
+        val uiModel = removePossibleRemainingErrorState(state.uiModel)
         signInUserUseCase(
             SignInUserUseCase.Params(
                 userEmail = uiModel.emailUiState.text,
@@ -161,6 +161,19 @@ class LoginViewModel(
                     }
                 )
             }
+        )
+    }
+
+    private fun removePossibleRemainingErrorState(uiModel: LoginUiModel): LoginUiModel {
+        return uiModel.copy(
+            emailUiState = uiModel.emailUiState.copy(
+                errorSupportingMessage = LoginStringResource.Empty,
+                isError = false
+            ),
+            passwordUiState = uiModel.passwordUiState.copy(
+                errorSupportingMessage = LoginStringResource.Empty,
+                isError = false
+            )
         )
     }
 

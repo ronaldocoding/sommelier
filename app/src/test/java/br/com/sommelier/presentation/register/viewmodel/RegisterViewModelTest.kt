@@ -9,6 +9,10 @@ import br.com.sommelier.domain.model.UserInfo
 import br.com.sommelier.domain.usecase.CreateUserUseCase
 import br.com.sommelier.domain.usecase.SendEmailVerificationUseCase
 import br.com.sommelier.presentation.register.action.RegisterAction
+import br.com.sommelier.presentation.register.model.EmailUiState
+import br.com.sommelier.presentation.register.model.NameUiState
+import br.com.sommelier.presentation.register.model.PasswordConfirmationUiState
+import br.com.sommelier.presentation.register.model.PasswordUiState
 import br.com.sommelier.presentation.register.model.RegisterUiModel
 import br.com.sommelier.presentation.register.res.RegisterStringResource
 import br.com.sommelier.presentation.register.state.RegisterUiEffect
@@ -540,6 +544,66 @@ class RegisterViewModelTest {
                         .copy(
                             text = userInfo.password
                         )
+                )
+            )
+            val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+            val expectedUiEffect = RegisterUiEffect.ShowSnackbarError
+            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+            assertUiState(expectedUiState, actualUiState)
+            assertEquals(expectedUiEffect, actualUiEffect)
+        }
+
+    @Test
+    fun `GIVEN OnTryToRegister action was the last action sent, use case as failure and fields with error state WHEN sendAction was called THEN assert that the ui state and ui effect are the expected`() =
+        coroutineTestRule.runBlockingTest {
+            val userInfo = UserInfo(
+                name = "Name",
+                email = "Email@email.com",
+                password = "Password"
+            )
+
+            val result: Either<Failure, Success<Unit>> = Either.Left(
+                Failure(
+                    GenericProblem("Error")
+                )
+            )
+            coEvery { createUserUseCase(userInfo) } returns result
+
+            val action = RegisterAction.Action.OnTryToRegister
+
+            viewModel.sendAction(RegisterAction.Action.OnClickRegisterButton)
+            viewModel.sendAction(RegisterAction.Action.OnTypeNameField(userInfo.name))
+            viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(userInfo.email))
+            viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(userInfo.password))
+            viewModel.sendAction(
+                RegisterAction.Action.OnTypePasswordConfirmationField(userInfo.password)
+            )
+            viewModel.sendAction(action)
+
+            val expectedUiState = RegisterUiState.Error(
+                RegisterUiModel().copy(
+                    nameUiState = NameUiState(
+                        text = userInfo.name,
+                        errorSupportingMessage = RegisterStringResource.Empty,
+                        isError = false,
+                    ),
+                    emailUiState = EmailUiState(
+                        text = userInfo.email,
+                        errorSupportingMessage = RegisterStringResource.Empty,
+                        isError = false,
+                    ),
+                    passwordUiState = PasswordUiState(
+                        text = userInfo.password,
+                        errorSupportingMessage = RegisterStringResource.Empty,
+                        isError = false,
+                    ),
+                    passwordConfirmationUiState = PasswordConfirmationUiState(
+                        text = userInfo.password,
+                        errorSupportingMessage = RegisterStringResource.Empty,
+                        isError = false,
+                    )
                 )
             )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
