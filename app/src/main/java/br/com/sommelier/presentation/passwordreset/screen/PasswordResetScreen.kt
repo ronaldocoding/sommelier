@@ -197,7 +197,7 @@ private fun PasswordResetInitialScreen(
                     text = uiModel.emailUiState.errorSupportingMessage.toText(),
                     style = Typography.label
                 )
-            },
+            }
         )
         ActionButton(
             text = stringResource(id = R.string.send_button_label),

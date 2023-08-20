@@ -6,11 +6,11 @@ import br.com.sommelier.util.emptyString
 data class EmailUiState(
     val text: String = emptyString(),
     val errorSupportingMessage: PasswordResetStringResource = PasswordResetStringResource.Empty,
-    val isError: Boolean = false,
+    val isError: Boolean = false
 )
 
 data class PasswordResetUiModel(
     val emailUiState: EmailUiState = EmailUiState(),
     val isBackButtonEnabled: Boolean = true,
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = false
 )
