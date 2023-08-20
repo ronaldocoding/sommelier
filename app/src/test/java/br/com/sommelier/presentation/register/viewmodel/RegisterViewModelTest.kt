@@ -41,7 +41,7 @@ class RegisterViewModelTest {
     private lateinit var viewModel: RegisterViewModel
 
     @Before
-    fun setup() {
+    fun setUp() {
         viewModel = RegisterViewModel(createUserUseCase, sendEmailVerificationUseCase)
     }
 

@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.presentation.home.action.HomeAction
 import br.com.sommelier.presentation.home.model.HomeUiModel
-import br.com.sommelier.presentation.home.state.HomeEffect
+import br.com.sommelier.presentation.home.state.HomeUiEffect
 import br.com.sommelier.presentation.home.viewmodel.HomeViewModel
 import br.com.sommelier.ui.component.QuickActionButton
 import br.com.sommelier.ui.component.SearchBar
@@ -180,15 +180,15 @@ private fun UiEffect(viewModel: HomeViewModel) {
     val localLifecycleOwner = LocalLifecycleOwner.current
     viewModel.uiEffect.observe(localLifecycleOwner) { effect ->
         when (effect) {
-            is HomeEffect.OpenManageAccount -> {
+            is HomeUiEffect.OpenManageAccount -> {
                 // TODO: Open manage account screen
             }
 
-            is HomeEffect.OpenAddRestaurant -> {
+            is HomeUiEffect.OpenAddRestaurant -> {
                 // TODO: Open add restaurant screen
             }
 
-            is HomeEffect.GetRestaurants -> {
+            is HomeUiEffect.GetRestaurants -> {
                 // TODO: Get restaurants
             }
         }

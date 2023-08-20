@@ -20,6 +20,7 @@ import br.com.sommelier.domain.usecase.UpdateUserEmailUseCase
 import br.com.sommelier.domain.usecase.UpdateUserPasswordUseCase
 import br.com.sommelier.presentation.home.viewmodel.HomeViewModel
 import br.com.sommelier.presentation.login.viewmodel.LoginViewModel
+import br.com.sommelier.presentation.passwordreset.viewmodel.PasswordResetViewModel
 import br.com.sommelier.presentation.register.viewmodel.RegisterViewModel
 import br.com.sommelier.util.FirestoreCollections.USERS
 import com.google.firebase.auth.FirebaseAuth
@@ -104,6 +105,7 @@ object SommelierModule {
             )
         }
         factory { HomeViewModel() }
+        factory { PasswordResetViewModel(sendPasswordResetEmailUseCase = get()) }
     }
 
     private fun provideFirebaseAuth(): FirebaseAuth {
