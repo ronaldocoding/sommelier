@@ -3,7 +3,7 @@ package br.com.sommelier.presentation.home.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import br.com.sommelier.presentation.home.action.HomeAction
 import br.com.sommelier.presentation.home.model.HomeUiModel
-import br.com.sommelier.presentation.home.state.HomeEffect
+import br.com.sommelier.presentation.home.state.HomeUiEffect
 import br.com.sommelier.presentation.home.state.HomeUiState
 import br.com.sommelier.testrule.CoroutineTestRule
 import br.com.sommelier.util.ext.getOrAwaitValue
@@ -23,7 +23,7 @@ class HomeViewModelTest {
     private lateinit var viewModel: HomeViewModel
 
     @Before
-    fun setup() {
+    fun setUp() {
         viewModel = HomeViewModel()
     }
 
@@ -60,7 +60,7 @@ class HomeViewModelTest {
 
             viewModel.sendAction(action)
 
-            val expectedUiEffect = HomeEffect.GetRestaurants
+            val expectedUiEffect = HomeUiEffect.GetRestaurants
             val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
             assertEquals(expectedUiEffect, actualUiEffect)
@@ -73,7 +73,7 @@ class HomeViewModelTest {
 
             viewModel.sendAction(action)
 
-            val expectedUiEffect = HomeEffect.OpenManageAccount
+            val expectedUiEffect = HomeUiEffect.OpenManageAccount
             val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
             assertEquals(expectedUiEffect, actualUiEffect)
@@ -86,7 +86,7 @@ class HomeViewModelTest {
 
             viewModel.sendAction(action)
 
-            val expectedUiEffect = HomeEffect.OpenAddRestaurant
+            val expectedUiEffect = HomeUiEffect.OpenAddRestaurant
             val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
             assertEquals(expectedUiEffect, actualUiEffect)

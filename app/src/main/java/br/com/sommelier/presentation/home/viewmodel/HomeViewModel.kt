@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.sommelier.base.event.MutableSingleLiveEvent
 import br.com.sommelier.presentation.home.action.HomeAction
-import br.com.sommelier.presentation.home.state.HomeEffect
+import br.com.sommelier.presentation.home.state.HomeUiEffect
 import br.com.sommelier.presentation.home.state.HomeUiState
 import br.com.sommelier.util.ext.asLiveData
 
@@ -13,7 +13,7 @@ class HomeViewModel : ViewModel(), HomeAction {
     private val _uiState = MutableLiveData<HomeUiState>(HomeUiState.Initial)
     val uiState = _uiState.asLiveData()
 
-    private val _uiEffect = MutableSingleLiveEvent<HomeEffect>()
+    private val _uiEffect = MutableSingleLiveEvent<HomeUiEffect>()
     val uiEffect = _uiEffect.asSingleLiveEvent()
 
     override fun sendAction(action: HomeAction.Action) {
@@ -49,14 +49,14 @@ class HomeViewModel : ViewModel(), HomeAction {
     }
 
     private fun handleOnSearch() {
-        _uiEffect.value = HomeEffect.GetRestaurants
+        _uiEffect.value = HomeUiEffect.GetRestaurants
     }
 
     private fun handleOnClickManageAccountButton() {
-        _uiEffect.value = HomeEffect.OpenManageAccount
+        _uiEffect.value = HomeUiEffect.OpenManageAccount
     }
 
     private fun handleOnClickAddRestaurantsButton() {
-        _uiEffect.value = HomeEffect.OpenAddRestaurant
+        _uiEffect.value = HomeUiEffect.OpenAddRestaurant
     }
 }
