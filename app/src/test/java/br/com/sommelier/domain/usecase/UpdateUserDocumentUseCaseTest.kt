@@ -28,7 +28,7 @@ class UpdateUserDocumentUseCaseTest {
     private val dummyUserDomain = UserDomain("email", "name", "uid")
 
     @Before
-    fun setup() {
+    fun setUp() {
         useCase = UpdateUserDocumentUseCase(userRepository, coroutineDispatcher)
     }
 
