@@ -12,4 +12,5 @@ data class EmailUiState(
 data class PasswordResetUiModel(
     val emailUiState: EmailUiState = EmailUiState(),
     val isBackButtonEnabled: Boolean = true,
+    val isLoading: Boolean = false,
 )

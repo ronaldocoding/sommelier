@@ -123,7 +123,8 @@ class PasswordResetViewModelTest {
             PasswordResetUiModel(
                 emailUiState = EmailUiState(
                     text = email
-                )
+                ),
+                isLoading = true
             )
         )
         val actualUiState = viewModel.uiState.getOrAwaitValue()
@@ -369,6 +370,14 @@ class PasswordResetViewModelTest {
         assertEquals(
             expectedUiState.uiModel.emailUiState.isError,
             actualUiState.uiModel.emailUiState.isError
+        )
+        assertEquals(
+            expectedUiState.uiModel.isBackButtonEnabled,
+            actualUiState.uiModel.isBackButtonEnabled
+        )
+        assertEquals(
+            expectedUiState.uiModel.isLoading,
+            actualUiState.uiModel.isLoading
         )
     }
 }

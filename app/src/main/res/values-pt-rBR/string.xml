@@ -29,6 +29,16 @@
     <string name="account_icon_description">Ícone de conta</string>
     <string name="search_hint">Pesquise um restaurante</string>
     <string name="restaurant_list_title">Restaurantes</string>
+    <string name="password_reset_top_bar_title">Redefinição de senha</string>
+    <string name="arrow_back_icon_description">Botão de voltar de seta</string>
     <string name="chef_hat_icon_description">Ícone de chapéu de chefe de cozinha</string>
     <string name="no_restaurants_registered">Nenhum restaurante cadastrado</string>
+    <string name="repair_icon_description">Ícone de reparos</string>
+    <string name="password_reset_description">Digite seu email abaixo para enviarmos um link de redefinição de senha a você</string>
+    <string name="password_reset_success_description">O link para redefinir a sua senha foi enviado ao seu email</string>
+    <string name="password_reset_error_description">Algo deu errado ao tentar enviar o link de redefinição de senha para você. Por favor, tente novamente</string>
+    <string name="send_button_label">Enviar</string>
+    <string name="try_again_button_label">Tentar novamente</string>
+    <string name="coffee_cup_icon_description">Ícone de copo de café</string>
+    <string name="drink_icon_description">Ícon de bebida</string>
 </resources>

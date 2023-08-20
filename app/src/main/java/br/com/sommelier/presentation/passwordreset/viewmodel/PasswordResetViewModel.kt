@@ -83,7 +83,7 @@ class PasswordResetViewModel(
         if (newUiModel.emailUiState.isError) {
             _uiState.value = PasswordResetUiState.Resume(newUiModel)
         } else {
-            _uiState.value = PasswordResetUiState.Loading(newUiModel)
+            _uiState.value = PasswordResetUiState.Loading(newUiModel.copy(isLoading = true))
             _uiEffect.value = PasswordResetUiEffect.ShowLoading
         }
     }
@@ -114,7 +114,7 @@ class PasswordResetViewModel(
 
     private suspend fun tryToSendPasswordResetEmail() {
         val state = checkNotNull(_uiState.value)
-        val uiModel = checkNotNull(state.uiModel)
+        val uiModel = checkNotNull(state.uiModel).copy(isLoading = false)
         val email = uiModel.emailUiState.text
         sendPasswordResetEmailUseCase(
             SendPasswordResetEmailUseCase.Params(userEmail = email)

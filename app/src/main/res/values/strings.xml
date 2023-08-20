@@ -31,4 +31,15 @@
     <string name="restaurant_list_title">Restaurants</string>
     <string name="chef_hat_icon_description">Chef hat icon</string>
     <string name="no_restaurants_registered">No restaurants registered</string>
+    <string name="password_reset_top_bar_title">Password Reset</string>
+    <string name="arrow_back_icon_description">Arrow back button</string>
+    <string name="repair_icon_description">Repair icon</string>
+    <string name="password_reset_description">Enter your email address below and we\'ll send you a password reset link</string>
+    <string name="password_reset_success_description">The link to reset your password has been sent to your email</string>
+    <string name="password_reset_error_description">Something went wrong when trying to send you the password reset link. Please, try again</string>
+    <string name="send_button_label">Send</string>
+    <string name="try_again_button_label">Try again</string>
+    <string name="ok_button_label" translatable="false">OK</string>
+    <string name="coffee_cup_icon_description">Coffee cup icon</string>
+    <string name="drink_icon_description">Drink icon</string>
 </resources>
