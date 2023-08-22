@@ -13,7 +13,9 @@ import br.com.sommelier.domain.usecase.GetUserDocumentUseCase
 import br.com.sommelier.domain.usecase.SignOutUserUseCase
 import br.com.sommelier.presentation.account.action.AccountAction
 import br.com.sommelier.presentation.account.model.AccountUiModel
+import br.com.sommelier.presentation.account.state.AccountDialogType
 import br.com.sommelier.presentation.account.state.AccountLoadingCause
+import br.com.sommelier.presentation.account.state.AccountSnackbarErrorCause
 import br.com.sommelier.presentation.account.state.AccountUiEffect
 import br.com.sommelier.presentation.account.state.AccountUiState
 import br.com.sommelier.util.ext.asLiveData
@@ -59,6 +61,14 @@ class AccountViewModel(
                     handleOnClickResetPasswordButton()
                 }
 
+                is AccountAction.Action.OnClickResetPasswordConfirmationButton -> {
+                    handleOnClickResetPasswordConfirmationButton()
+                }
+
+                is AccountAction.Action.OnTryToResetPassword -> {
+                    handleOnTryToResetPassword()
+                }
+
                 is AccountAction.Action.OnClickDeleteAccountButton -> {
                     handleOnClickDeleteAccountButton()
                 }
@@ -91,9 +101,7 @@ class AccountViewModel(
     }
 
     private fun handleClickTryToFetchAccountDataAgainButton() {
-        _uiState.value = AccountUiState.Loading(uiModel = AccountUiModel())
-        _uiEffect.value =
-            AccountUiEffect.ShowLoading(cause = AccountLoadingCause.FetchAccountData)
+        emitLoadingState(AccountUiModel(), AccountLoadingCause.FetchAccountData)
     }
 
     private suspend fun handleOnClickTryToFetchAccountDataAgainButton() {
@@ -144,18 +152,34 @@ class AccountViewModel(
     }
 
     private fun handleOnClickResetPasswordButton() {
-        _uiEffect.value = AccountUiEffect.OpenResetPasswordScreen
+        _uiEffect.value = AccountUiEffect.ShowDialog(AccountDialogType.PasswordResetConfirmation)
+    }
+
+    private fun handleOnClickResetPasswordConfirmationButton() {
+        emitLoadingState(checkNotNull(_uiState.value).uiModel, AccountLoadingCause.PasswordReset)
+    }
+
+    private suspend fun handleOnTryToResetPassword() {
+        logOutUserUseCase(UseCase.None())
+            .fold(
+                ifLeft = {
+                    emitResumeState()
+                    _uiEffect.value = AccountUiEffect.ShowSnackbarError(
+                        AccountSnackbarErrorCause.PasswordReset
+                    )
+                },
+                ifRight = {
+                    _uiEffect.value = AccountUiEffect.OpenResetPasswordScreen
+                }
+            )
     }
 
     private fun handleOnClickDeleteAccountButton() {
-        _uiEffect.value = AccountUiEffect.ShowDeleteAccountConfirmationDialog
+        _uiEffect.value = AccountUiEffect.ShowDialog(AccountDialogType.DeleteAccountConfirmation)
     }
 
     private fun handleOnClickDeleteAccountConfirmationButton() {
-        val state = checkNotNull(_uiState.value)
-        val uiModel = state.uiModel
-        _uiState.value = AccountUiState.Loading(uiModel)
-        _uiEffect.value = AccountUiEffect.ShowLoading(cause = AccountLoadingCause.DeleteAccount)
+        emitLoadingState(checkNotNull(_uiState.value).uiModel, AccountLoadingCause.DeleteAccount)
     }
 
     private suspend fun handleOnTryToDeleteAccount() {
@@ -182,37 +206,43 @@ class AccountViewModel(
     }
 
     private fun handleTryToDeleteAccountError() {
-        val state = checkNotNull(_uiState.value)
-        val uiModel = state.uiModel
-        _uiState.value = AccountUiState.Resume(uiModel)
-        _uiEffect.value = AccountUiEffect.ShowErrorDeleteAccountSnackbar
+        emitResumeState()
+        _uiEffect.value = AccountUiEffect.ShowSnackbarError(
+            AccountSnackbarErrorCause.DeleteAccount
+        )
     }
 
     private fun handleOnClickLogoutButton() {
-        _uiEffect.value = AccountUiEffect.ShowLogoutConfirmationDialog
+        _uiEffect.value = AccountUiEffect.ShowDialog(AccountDialogType.LogoutConfirmation)
     }
 
     private fun handleOnClickLogoutConfirmationButton() {
-        val state = checkNotNull(_uiState.value)
-        val uiModel = state.uiModel
-        _uiState.value = AccountUiState.Loading(uiModel)
-        _uiEffect.value = AccountUiEffect.ShowLoading(
-            cause = AccountLoadingCause.Logout
-        )
+        emitLoadingState(checkNotNull(_uiState.value).uiModel, AccountLoadingCause.Logout)
     }
 
     private suspend fun handleOnTryToLogout() {
         logOutUserUseCase(UseCase.None())
             .fold(
                 ifLeft = {
-                    val state = checkNotNull(_uiState.value)
-                    val uiModel = state.uiModel
-                    _uiState.value = AccountUiState.Resume(uiModel)
-                    _uiEffect.value = AccountUiEffect.ShowErrorLogoutSnackbar
+                    emitResumeState()
+                    _uiEffect.value = AccountUiEffect.ShowSnackbarError(
+                        AccountSnackbarErrorCause.Logout
+                    )
                 },
                 ifRight = {
                     _uiEffect.value = AccountUiEffect.OpenLoginScreen
                 }
             )
+    }
+
+    private fun emitResumeState() {
+        val state = checkNotNull(_uiState.value)
+        val uiModel = state.uiModel
+        _uiState.value = AccountUiState.Resume(uiModel)
+    }
+
+    private fun emitLoadingState(uiModel: AccountUiModel, cause: AccountLoadingCause) {
+        _uiState.value = AccountUiState.Loading(uiModel)
+        _uiEffect.value = AccountUiEffect.ShowLoading(cause)
     }
 }

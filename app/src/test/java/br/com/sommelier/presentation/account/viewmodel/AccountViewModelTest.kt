@@ -13,7 +13,9 @@ import br.com.sommelier.domain.usecase.GetUserDocumentUseCase
 import br.com.sommelier.domain.usecase.SignOutUserUseCase
 import br.com.sommelier.presentation.account.action.AccountAction
 import br.com.sommelier.presentation.account.model.AccountUiModel
+import br.com.sommelier.presentation.account.state.AccountDialogType
 import br.com.sommelier.presentation.account.state.AccountLoadingCause
+import br.com.sommelier.presentation.account.state.AccountSnackbarErrorCause
 import br.com.sommelier.presentation.account.state.AccountUiEffect
 import br.com.sommelier.presentation.account.state.AccountUiState
 import br.com.sommelier.testrule.CoroutineTestRule
@@ -252,16 +254,76 @@ class AccountViewModelTest {
     }
 
     @Test
-    fun `GIVEN OnClickResetPasswordButton action was sent WHEN sendAction was called THEN assert that the emitted uiEffect was OpenResetPasswordScreen`() {
+    fun `GIVEN OnClickResetPasswordButton action was sent WHEN sendAction was called THEN assert that the emitted uiEffect was ShowResetPasswordConfirmationDialog`() {
         val action = AccountAction.Action.OnClickResetPasswordButton
 
         viewModel.sendAction(action)
 
-        val expectedUiEffect = AccountUiEffect.OpenResetPasswordScreen
+        val expectedUiEffect = AccountUiEffect.ShowDialog(
+            AccountDialogType.PasswordResetConfirmation
+        )
         val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
         assertEquals(expectedUiEffect, actualUiEffect)
     }
+
+    @Test
+    fun `GIVEN OnClickResetPasswordConfirmationButton action was sent WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() {
+        val action = AccountAction.Action.OnClickResetPasswordConfirmationButton
+
+        viewModel.sendAction(action)
+
+        val expectedUiState = AccountUiState.Loading(AccountUiModel())
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+        val expectedUiEffect = AccountUiEffect.ShowLoading(AccountLoadingCause.PasswordReset)
+        val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+        assertUiState(expectedUiState, actualUiState)
+        assertEquals(expectedUiEffect, actualUiEffect)
+    }
+
+    @Test
+    fun `GIVEN OnTryToResetPassword action was sent and logOutUserUseCase as success WHEN sendAction was called THEN assert that the emitted uiEffect is OpenResetPasswordScreen`() =
+        coroutineTestRule.runBlockingTest {
+            val action = AccountAction.Action.OnTryToResetPassword
+
+            val logOutUserUseCaseResult: Either<Failure, Success<Unit>> = Either.Right(
+                Success(Unit)
+            )
+            coEvery { logOutUserUseCase(any()) } returns logOutUserUseCaseResult
+
+            viewModel.sendAction(action)
+
+            val expectedUiEffect = AccountUiEffect.OpenResetPasswordScreen
+            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+            assertEquals(expectedUiEffect, actualUiEffect)
+        }
+
+    @Test
+    fun `GIVEN OnTryToResetPassword action was sent and logOutUserUseCase as failure WHEN sendAction was called THEN assert that the emitted uiEffect is OpenLoginScreen`() =
+        coroutineTestRule.runBlockingTest {
+            val action = AccountAction.Action.OnTryToResetPassword
+
+            val logOutUserUseCaseResult: Either<Failure, Success<Unit>> = Either.Left(
+                Failure(GenericProblem("Generic problem occurred"))
+            )
+            coEvery { logOutUserUseCase(any()) } returns logOutUserUseCaseResult
+
+            viewModel.sendAction(action)
+
+            val expectedUiState = AccountUiState.Resume(AccountUiModel())
+            val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+            val expectedUiEffect = AccountUiEffect.ShowSnackbarError(
+                AccountSnackbarErrorCause.PasswordReset
+            )
+            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+            assertUiState(expectedUiState, actualUiState)
+            assertEquals(expectedUiEffect, actualUiEffect)
+        }
 
     @Test
     fun `GIVEN OnClickDeleteAccountButton action was sent WHEN sendAction was called THEN assert that the emitted uiEffect was ShowLogoutConfirmationDialog`() {
@@ -269,7 +331,9 @@ class AccountViewModelTest {
 
         viewModel.sendAction(action)
 
-        val expectedUiEffect = AccountUiEffect.ShowDeleteAccountConfirmationDialog
+        val expectedUiEffect = AccountUiEffect.ShowDialog(
+            AccountDialogType.DeleteAccountConfirmation
+        )
         val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
         assertEquals(expectedUiEffect, actualUiEffect)
@@ -332,7 +396,9 @@ class AccountViewModelTest {
             val expectedUiState = AccountUiState.Resume(AccountUiModel())
             val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            val expectedUiEffect = AccountUiEffect.ShowErrorDeleteAccountSnackbar
+            val expectedUiEffect = AccountUiEffect.ShowSnackbarError(
+                AccountSnackbarErrorCause.DeleteAccount
+            )
             val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
             assertUiState(expectedUiState, actualUiState)
@@ -361,7 +427,9 @@ class AccountViewModelTest {
             val expectedUiState = AccountUiState.Resume(AccountUiModel())
             val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            val expectedUiEffect = AccountUiEffect.ShowErrorDeleteAccountSnackbar
+            val expectedUiEffect = AccountUiEffect.ShowSnackbarError(
+                AccountSnackbarErrorCause.DeleteAccount
+            )
             val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
             assertUiState(expectedUiState, actualUiState)
@@ -374,7 +442,9 @@ class AccountViewModelTest {
 
         viewModel.sendAction(action)
 
-        val expectedUiEffect = AccountUiEffect.ShowLogoutConfirmationDialog
+        val expectedUiEffect = AccountUiEffect.ShowDialog(
+            AccountDialogType.LogoutConfirmation
+        )
         val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
         assertEquals(expectedUiEffect, actualUiEffect)
@@ -430,7 +500,9 @@ class AccountViewModelTest {
             val expectedUiState = AccountUiState.Resume(AccountUiModel())
             val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            val expectedUiEffect = AccountUiEffect.ShowErrorLogoutSnackbar
+            val expectedUiEffect = AccountUiEffect.ShowSnackbarError(
+                AccountSnackbarErrorCause.Logout
+            )
             val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
             assertUiState(expectedUiState, actualUiState)

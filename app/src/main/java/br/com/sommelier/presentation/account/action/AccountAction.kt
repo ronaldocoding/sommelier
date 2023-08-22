@@ -10,6 +10,8 @@ interface AccountAction {
         object OnClickBackButton : Action()
         object OnClickEditButton : Action()
         object OnClickResetPasswordButton : Action()
+        object OnClickResetPasswordConfirmationButton : Action()
+        object OnTryToResetPassword : Action()
         object OnClickDeleteAccountButton : Action()
         object OnClickDeleteAccountConfirmationButton : Action()
         object OnTryToDeleteAccount : Action()
