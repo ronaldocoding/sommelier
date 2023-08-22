@@ -16,10 +16,10 @@ class DeleteUserUseCase(
     override suspend fun execute(parameters: Params): Either<Problem, Unit> {
         val result = authRepository.deleteUser()
         if (result.isRight()) {
-            userRepository.deleteUser(parameters.userUuid)
+            userRepository.deleteUser(parameters.userUid)
         }
         return result
     }
 
-    data class Params(val userUuid: String)
+    data class Params(val userUid: String)
 }

@@ -109,9 +109,10 @@ object SommelierModule {
         factory { PasswordResetViewModel(sendPasswordResetEmailUseCase = get()) }
         factory {
             AccountViewModel(
+                getCurrentUserUseCase = get(),
                 getUserDocumentUseCase = get(),
-                logOutUserUseCase = get(),
-                deleteUserUseCase = get()
+                deleteUserUseCase = get(),
+                logOutUserUseCase = get()
             )
         }
     }
