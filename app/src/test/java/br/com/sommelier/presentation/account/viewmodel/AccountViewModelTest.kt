@@ -145,7 +145,7 @@ class AccountViewModelTest {
 
         viewModel.sendAction(action)
 
-        val expectedUiState = AccountUiState.Loading(AccountUiModel())
+        val expectedUiState = AccountUiState.Loading(AccountUiModel().copy(isLoading = true))
         val actualUiState = viewModel.uiState.getOrAwaitValue()
 
         val expectedUiEffect = AccountUiEffect.ShowLoading(AccountLoadingCause.FetchAccountData)
@@ -153,7 +153,7 @@ class AccountViewModelTest {
 
         assertUiState(expectedUiState, actualUiState)
         assertEquals(expectedUiEffect, actualUiEffect)
-        assertEquals(expectedUiEffect.cause, (actualUiEffect as AccountUiEffect.ShowLoading).cause)
+        assertEquals(expectedUiEffect.loadingCause, (actualUiEffect as AccountUiEffect.ShowLoading).loadingCause)
     }
 
     @Test
@@ -273,7 +273,7 @@ class AccountViewModelTest {
 
         viewModel.sendAction(action)
 
-        val expectedUiState = AccountUiState.Loading(AccountUiModel())
+        val expectedUiState = AccountUiState.Loading(AccountUiModel().copy(isLoading = true))
         val actualUiState = viewModel.uiState.getOrAwaitValue()
 
         val expectedUiEffect = AccountUiEffect.ShowLoading(AccountLoadingCause.PasswordReset)
@@ -345,7 +345,7 @@ class AccountViewModelTest {
 
         viewModel.sendAction(action)
 
-        val expectedUiState = AccountUiState.Loading(AccountUiModel())
+        val expectedUiState = AccountUiState.Loading(AccountUiModel().copy(isLoading = true))
         val actualUiState = viewModel.uiState.getOrAwaitValue()
 
         val expectedUiEffect = AccountUiEffect.ShowLoading(AccountLoadingCause.DeleteAccount)
@@ -353,7 +353,7 @@ class AccountViewModelTest {
 
         assertUiState(expectedUiState, actualUiState)
         assertEquals(expectedUiEffect, actualUiEffect)
-        assertEquals(expectedUiEffect.cause, (actualUiEffect as AccountUiEffect.ShowLoading).cause)
+        assertEquals(expectedUiEffect.loadingCause, (actualUiEffect as AccountUiEffect.ShowLoading).loadingCause)
     }
 
     @Test
@@ -456,7 +456,7 @@ class AccountViewModelTest {
 
         viewModel.sendAction(action)
 
-        val expectedUiState = AccountUiState.Loading(AccountUiModel())
+        val expectedUiState = AccountUiState.Loading(AccountUiModel().copy(isLoading = true))
         val actualUiState = viewModel.uiState.getOrAwaitValue()
 
         val expectedUiEffect = AccountUiEffect.ShowLoading(AccountLoadingCause.Logout)
@@ -464,7 +464,7 @@ class AccountViewModelTest {
 
         assertUiState(expectedUiState, actualUiState)
         assertEquals(expectedUiEffect, actualUiEffect)
-        assertEquals(expectedUiEffect.cause, (actualUiEffect as AccountUiEffect.ShowLoading).cause)
+        assertEquals(expectedUiEffect.loadingCause, (actualUiEffect as AccountUiEffect.ShowLoading).loadingCause)
     }
 
     @Test

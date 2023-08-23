@@ -42,4 +42,6 @@
     <string name="ok_button_label" translatable="false">OK</string>
     <string name="coffee_cup_icon_description">Coffee cup icon</string>
     <string name="drink_icon_description">Drink icon</string>
+    <string name="account_top_bar_title">Account</string>
+    <string name="edit_icon_description">Edit icon</string>
 </resources>

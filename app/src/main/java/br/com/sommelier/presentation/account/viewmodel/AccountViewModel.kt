@@ -242,7 +242,7 @@ class AccountViewModel(
     }
 
     private fun emitLoadingState(uiModel: AccountUiModel, cause: AccountLoadingCause) {
-        _uiState.value = AccountUiState.Loading(uiModel)
+        _uiState.value = AccountUiState.Loading(uiModel.copy(isLoading = true))
         _uiEffect.value = AccountUiEffect.ShowLoading(cause)
     }
 }

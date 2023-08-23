@@ -40,5 +40,7 @@
     <string name="send_button_label">Enviar</string>
     <string name="try_again_button_label">Tentar novamente</string>
     <string name="coffee_cup_icon_description">Ícone de copo de café</string>
-    <string name="drink_icon_description">Ícon de bebida</string>
+    <string name="drink_icon_description">Ícone de bebida</string>
+    <string name="account_top_bar_title">Conta</string>
+    <string name="edit_icon_description">Ícone de edição</string>
 </resources>
