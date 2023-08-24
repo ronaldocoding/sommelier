@@ -18,6 +18,7 @@ import br.com.sommelier.domain.usecase.SignOutUserUseCase
 import br.com.sommelier.domain.usecase.UpdateUserDocumentUseCase
 import br.com.sommelier.domain.usecase.UpdateUserEmailUseCase
 import br.com.sommelier.domain.usecase.UpdateUserPasswordUseCase
+import br.com.sommelier.presentation.account.viewmodel.AccountViewModel
 import br.com.sommelier.presentation.home.viewmodel.HomeViewModel
 import br.com.sommelier.presentation.login.viewmodel.LoginViewModel
 import br.com.sommelier.presentation.passwordreset.viewmodel.PasswordResetViewModel
@@ -106,6 +107,14 @@ object SommelierModule {
         }
         factory { HomeViewModel() }
         factory { PasswordResetViewModel(sendPasswordResetEmailUseCase = get()) }
+        factory {
+            AccountViewModel(
+                getCurrentUserUseCase = get(),
+                getUserDocumentUseCase = get(),
+                deleteUserUseCase = get(),
+                logOutUserUseCase = get()
+            )
+        }
     }
 
     private fun provideFirebaseAuth(): FirebaseAuth {
