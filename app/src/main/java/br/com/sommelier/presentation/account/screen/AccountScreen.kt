@@ -280,9 +280,9 @@ private fun AccountErrorScreen(viewModel: AccountViewModel) {
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(top = Spacing.small)
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.padding(Spacing.extraLarge))
             Image(
                 painter = painterResource(id = R.drawable.ic_drink),
                 contentDescription = stringResource(id = R.string.drink_icon_description)
