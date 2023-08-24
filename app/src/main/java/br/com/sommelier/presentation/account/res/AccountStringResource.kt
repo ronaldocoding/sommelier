@@ -5,5 +5,4 @@ sealed class AccountStringResource {
     object ErrorPasswordReset : AccountStringResource()
     object ErrorDeleteAccount : AccountStringResource()
     object ErrorLogout : AccountStringResource()
-
 }

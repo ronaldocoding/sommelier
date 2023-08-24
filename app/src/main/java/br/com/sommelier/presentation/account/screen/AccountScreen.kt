@@ -79,7 +79,7 @@ fun AccountScreen() {
                         type = uiModel.snackbarUiState.type
                     )
                 }
-            },
+            }
         ) { innerPadding ->
             viewModel.sendAction(AccountAction.Action.OnTryToFetchAccountData)
             UiState(innerPadding, viewModel, uiState, uiModel)
