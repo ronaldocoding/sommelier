@@ -58,4 +58,6 @@
     <string name="password_reset_snackbar_error_message">Ocorreu um erro ao tentar redirecionar você para a tela de redefinição de senha. Por favor, tente novamente.</string>
     <string name="delete_account_snackbar_error_message">Ocorreu um erro ao tentar deletar a sua conta. Por favor, tente novamente.</string>
     <string name="logout_snackbar_error_message">Ocorreu um erro ao tentar sair. Por favor, tente novamente.</string>
+    <string name="confirm_dialog_button_label">Sim</string>
+    <string name="cancel_dialog_button_label">Não</string>
 </resources>

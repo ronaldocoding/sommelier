@@ -59,4 +59,6 @@
     <string name="password_reset_snackbar_error_message">An error occurred while trying to redirect you to the password reset screen. Please, try again.</string>
     <string name="delete_account_snackbar_error_message">An error occurred while trying to delete your account. Please, try again.</string>
     <string name="logout_snackbar_error_message">An error occurred while trying to log you out. Please, try again.</string>
+    <string name="confirm_dialog_button_label">Yes</string>
+    <string name="cancel_dialog_button_label">No</string>
 </resources>
