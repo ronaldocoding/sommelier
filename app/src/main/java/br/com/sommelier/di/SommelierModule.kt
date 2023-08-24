@@ -118,6 +118,7 @@ object SommelierModule {
         }
         factory {
             EditAccountViewModel(
+                getCurrentUserUseCase = get(),
                 getUserDocumentUseCase = get(),
                 updateUserDocumentUseCase = get()
             )
