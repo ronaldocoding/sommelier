@@ -43,4 +43,19 @@
     <string name="drink_icon_description">Ícone de bebida</string>
     <string name="account_top_bar_title">Conta</string>
     <string name="edit_icon_description">Ícone de edição</string>
+    <string name="account_error_message">Algo deu errado ao tentar obter os dados de sua conta. Por favor, tente novamente.</string>
+    <string name="user_icon_description">Ícone de usuário</string>
+    <string name="email_icon_description">ìcone de email</string>
+    <string name="password_reset_button_label">Redefinição de senha</string>
+    <string name="delete_account_button_label">Deletar conta</string>
+    <string name="logout_button_label">Sair</string>
+    <string name="password_reset_dialog_title">Redefinir senha</string>
+    <string name="password_reset_dialog_description">Tem certeza que deseja redefinir a sua senha? Para fazer isso, você irá sair do aplicativo e será redirecionado para a tela de redefinição de senha.</string>
+    <string name="delete_account_dialog_title">Deletar conta</string>
+    <string name="delete_account_dialog_description">Tem certeza que deseja deletar a sua conta? Saiba que essa ação não pode ser desfeita.</string>
+    <string name="logout_dialog_title">Sair</string>
+    <string name="logout_dialog_description">Tem certeza que deseja sair? Se sair, precisará se autenticar novamente para entrar.</string>
+    <string name="password_reset_snackbar_error_message">Ocorreu um erro ao tentar redirecionar você para a tela de redefinição de senha. Por favor, tente novamente.</string>
+    <string name="delete_account_snackbar_error_message">Ocorreu um erro ao tentar deletar a sua conta. Por favor, tente novamente.</string>
+    <string name="logout_snackbar_error_message">Ocorreu um erro ao tentar sair. Por favor, tente novamente.</string>
 </resources>

@@ -4,19 +4,21 @@ interface AccountAction {
     fun sendAction(action: Action)
 
     sealed class Action {
-        object OnFetchAccountData : Action()
+        object OnTryToFetchAccountData : Action()
         object OnClickTryToFetchAccountDataAgainButton : Action()
-        object OnTryToFetchAccountDataAgain : Action()
         object OnClickBackButton : Action()
         object OnClickEditButton : Action()
-        object OnClickResetPasswordButton : Action()
-        object OnClickResetPasswordConfirmationButton : Action()
-        object OnTryToResetPassword : Action()
+        object OnClickPasswordResetButton : Action()
+        object OnClickPasswordResetConfirmationButton : Action()
+        object OnDismissPasswordResetDialog : Action()
+        object OnTryToPasswordReset : Action()
         object OnClickDeleteAccountButton : Action()
         object OnClickDeleteAccountConfirmationButton : Action()
+        object OnDismissDeleteAccountDialog : Action()
         object OnTryToDeleteAccount : Action()
         object OnClickLogoutButton : Action()
         object OnClickLogoutConfirmationButton : Action()
+        object OnDismissLogoutDialog : Action()
         object OnTryToLogout : Action()
     }
 }

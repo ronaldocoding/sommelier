@@ -13,9 +13,8 @@ import br.com.sommelier.domain.usecase.GetUserDocumentUseCase
 import br.com.sommelier.domain.usecase.SignOutUserUseCase
 import br.com.sommelier.presentation.account.action.AccountAction
 import br.com.sommelier.presentation.account.model.AccountUiModel
-import br.com.sommelier.presentation.account.state.AccountDialogType
+import br.com.sommelier.presentation.account.res.AccountStringResource
 import br.com.sommelier.presentation.account.state.AccountLoadingCause
-import br.com.sommelier.presentation.account.state.AccountSnackbarErrorCause
 import br.com.sommelier.presentation.account.state.AccountUiEffect
 import br.com.sommelier.presentation.account.state.AccountUiState
 import br.com.sommelier.util.ext.asLiveData
@@ -37,16 +36,12 @@ class AccountViewModel(
     override fun sendAction(action: AccountAction.Action) {
         viewModelScope.launch {
             when (action) {
-                is AccountAction.Action.OnFetchAccountData -> {
+                is AccountAction.Action.OnTryToFetchAccountData -> {
                     handleOnFetchAccountData()
                 }
 
                 is AccountAction.Action.OnClickTryToFetchAccountDataAgainButton -> {
                     handleClickTryToFetchAccountDataAgainButton()
-                }
-
-                is AccountAction.Action.OnTryToFetchAccountDataAgain -> {
-                    handleOnClickTryToFetchAccountDataAgainButton()
                 }
 
                 is AccountAction.Action.OnClickBackButton -> {
@@ -57,15 +52,19 @@ class AccountViewModel(
                     handleOnClickEditButton()
                 }
 
-                is AccountAction.Action.OnClickResetPasswordButton -> {
+                is AccountAction.Action.OnClickPasswordResetButton -> {
                     handleOnClickResetPasswordButton()
                 }
 
-                is AccountAction.Action.OnClickResetPasswordConfirmationButton -> {
+                is AccountAction.Action.OnClickPasswordResetConfirmationButton -> {
                     handleOnClickResetPasswordConfirmationButton()
                 }
 
-                is AccountAction.Action.OnTryToResetPassword -> {
+                is AccountAction.Action.OnDismissPasswordResetDialog -> {
+                    handleOnDismissPasswordResetDialog()
+                }
+
+                is AccountAction.Action.OnTryToPasswordReset -> {
                     handleOnTryToResetPassword()
                 }
 
@@ -75,6 +74,10 @@ class AccountViewModel(
 
                 is AccountAction.Action.OnClickDeleteAccountConfirmationButton -> {
                     handleOnClickDeleteAccountConfirmationButton()
+                }
+
+                is AccountAction.Action.OnDismissDeleteAccountDialog -> {
+                    handleOnDismissDeleteAccountDialog()
                 }
 
                 is AccountAction.Action.OnTryToDeleteAccount -> {
@@ -87,6 +90,10 @@ class AccountViewModel(
 
                 is AccountAction.Action.OnClickLogoutConfirmationButton -> {
                     handleOnClickLogoutConfirmationButton()
+                }
+
+                is AccountAction.Action.OnDismissLogoutDialog -> {
+                    handleOnDismissLogoutDialog()
                 }
 
                 is AccountAction.Action.OnTryToLogout -> {
@@ -102,10 +109,6 @@ class AccountViewModel(
 
     private fun handleClickTryToFetchAccountDataAgainButton() {
         emitLoadingState(AccountUiModel(), AccountLoadingCause.FetchAccountData)
-    }
-
-    private suspend fun handleOnClickTryToFetchAccountDataAgainButton() {
-        tryToGetCurrentUserData()
     }
 
     private suspend fun tryToGetCurrentUserData() {
@@ -152,34 +155,62 @@ class AccountViewModel(
     }
 
     private fun handleOnClickResetPasswordButton() {
-        _uiEffect.value = AccountUiEffect.ShowDialog(AccountDialogType.PasswordResetConfirmation)
+        val state = checkNotNull(_uiState.value)
+        val newUiState = state.uiModel.copy(
+            isPasswordResetDialogVisible = true
+        )
+        _uiState.value = AccountUiState.Resume(newUiState)
     }
 
     private fun handleOnClickResetPasswordConfirmationButton() {
         emitLoadingState(checkNotNull(_uiState.value).uiModel, AccountLoadingCause.PasswordReset)
     }
 
+    private fun handleOnDismissPasswordResetDialog() {
+        val state = checkNotNull(_uiState.value)
+        val uiModel = state.uiModel.copy(
+            isPasswordResetDialogVisible = false
+        )
+        _uiState.value = AccountUiState.Resume(uiModel)
+    }
+
     private suspend fun handleOnTryToResetPassword() {
         logOutUserUseCase(UseCase.None())
             .fold(
                 ifLeft = {
-                    emitResumeState()
-                    _uiEffect.value = AccountUiEffect.ShowSnackbarError(
-                        AccountSnackbarErrorCause.PasswordReset
+                    val state = checkNotNull(_uiState.value)
+                    val uiModel = state.uiModel.copy(
+                        snackbarUiState = AccountUiModel().snackbarUiState.copy(
+                            message = AccountStringResource.ErrorPasswordReset
+                        )
                     )
+                    _uiState.value = AccountUiState.Resume(uiModel)
+                    _uiEffect.value = AccountUiEffect.ShowSnackbarError
                 },
                 ifRight = {
-                    _uiEffect.value = AccountUiEffect.OpenResetPasswordScreen
+                    _uiEffect.value = AccountUiEffect.OpenPasswordResetScreen
                 }
             )
     }
 
     private fun handleOnClickDeleteAccountButton() {
-        _uiEffect.value = AccountUiEffect.ShowDialog(AccountDialogType.DeleteAccountConfirmation)
+        val state = checkNotNull(_uiState.value)
+        val newUiState = state.uiModel.copy(
+            isDeleteAccountDialogVisible = true
+        )
+        _uiState.value = AccountUiState.Resume(newUiState)
     }
 
     private fun handleOnClickDeleteAccountConfirmationButton() {
         emitLoadingState(checkNotNull(_uiState.value).uiModel, AccountLoadingCause.DeleteAccount)
+    }
+
+    private fun handleOnDismissDeleteAccountDialog() {
+        val state = checkNotNull(_uiState.value)
+        val uiModel = state.uiModel.copy(
+            isDeleteAccountDialogVisible = false
+        )
+        _uiState.value = AccountUiState.Resume(uiModel)
     }
 
     private suspend fun handleOnTryToDeleteAccount() {
@@ -206,39 +237,53 @@ class AccountViewModel(
     }
 
     private fun handleTryToDeleteAccountError() {
-        emitResumeState()
-        _uiEffect.value = AccountUiEffect.ShowSnackbarError(
-            AccountSnackbarErrorCause.DeleteAccount
+        val state = checkNotNull(_uiState.value)
+        val uiModel = state.uiModel.copy(
+            snackbarUiState = AccountUiModel().snackbarUiState.copy(
+                message = AccountStringResource.ErrorDeleteAccount
+            )
         )
+        _uiState.value = AccountUiState.Resume(uiModel)
+        _uiEffect.value = AccountUiEffect.ShowSnackbarError
     }
 
     private fun handleOnClickLogoutButton() {
-        _uiEffect.value = AccountUiEffect.ShowDialog(AccountDialogType.LogoutConfirmation)
+        val state = checkNotNull(_uiState.value)
+        val newUiState = state.uiModel.copy(
+            isLogoutDialogVisible = true
+        )
+        _uiState.value = AccountUiState.Resume(newUiState)
     }
 
     private fun handleOnClickLogoutConfirmationButton() {
         emitLoadingState(checkNotNull(_uiState.value).uiModel, AccountLoadingCause.Logout)
     }
 
+    private fun handleOnDismissLogoutDialog() {
+        val state = checkNotNull(_uiState.value)
+        val uiModel = state.uiModel.copy(
+            isLogoutDialogVisible = false
+        )
+        _uiState.value = AccountUiState.Resume(uiModel)
+    }
+
     private suspend fun handleOnTryToLogout() {
         logOutUserUseCase(UseCase.None())
             .fold(
                 ifLeft = {
-                    emitResumeState()
-                    _uiEffect.value = AccountUiEffect.ShowSnackbarError(
-                        AccountSnackbarErrorCause.Logout
+                    val state = checkNotNull(_uiState.value)
+                    val uiModel = state.uiModel.copy(
+                        snackbarUiState = AccountUiModel().snackbarUiState.copy(
+                            message = AccountStringResource.ErrorLogout
+                        )
                     )
+                    _uiState.value = AccountUiState.Resume(uiModel)
+                    _uiEffect.value = AccountUiEffect.ShowSnackbarError
                 },
                 ifRight = {
                     _uiEffect.value = AccountUiEffect.OpenLoginScreen
                 }
             )
-    }
-
-    private fun emitResumeState() {
-        val state = checkNotNull(_uiState.value)
-        val uiModel = state.uiModel
-        _uiState.value = AccountUiState.Resume(uiModel)
     }
 
     private fun emitLoadingState(uiModel: AccountUiModel, cause: AccountLoadingCause) {

@@ -44,4 +44,19 @@
     <string name="drink_icon_description">Drink icon</string>
     <string name="account_top_bar_title">Account</string>
     <string name="edit_icon_description">Edit icon</string>
+    <string name="account_error_message">Something went wrong while trying to fetch your account data. Please, try again.</string>
+    <string name="user_icon_description">User icon</string>
+    <string name="email_icon_description">Email icon</string>
+    <string name="password_reset_button_label">Password reset</string>
+    <string name="delete_account_button_label">Delete account</string>
+    <string name="logout_button_label">Logout</string>
+    <string name="password_reset_dialog_title">Password reset</string>
+    <string name="password_reset_dialog_description">Are you sure you want to reset your password? To do this, we\'ll log you out and redirect you to the password reset screen.</string>
+    <string name="delete_account_dialog_title">Delete account</string>
+    <string name="delete_account_dialog_description">Are you sure you want to delete your account? Be aware that this action cannot be undone.</string>
+    <string name="logout_dialog_title">Logout</string>
+    <string name="logout_dialog_description">Are you sure you want to logout? If you do, you will need to log in again to enter the app.</string>
+    <string name="password_reset_snackbar_error_message">An error occurred while trying to redirect you to the password reset screen. Please, try again.</string>
+    <string name="delete_account_snackbar_error_message">An error occurred while trying to delete your account. Please, try again.</string>
+    <string name="logout_snackbar_error_message">An error occurred while trying to log you out. Please, try again.</string>
 </resources>
