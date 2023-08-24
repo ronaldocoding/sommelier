@@ -19,6 +19,7 @@ import br.com.sommelier.domain.usecase.UpdateUserDocumentUseCase
 import br.com.sommelier.domain.usecase.UpdateUserEmailUseCase
 import br.com.sommelier.domain.usecase.UpdateUserPasswordUseCase
 import br.com.sommelier.presentation.account.viewmodel.AccountViewModel
+import br.com.sommelier.presentation.editaccount.viewmodel.EditAccountViewModel
 import br.com.sommelier.presentation.home.viewmodel.HomeViewModel
 import br.com.sommelier.presentation.login.viewmodel.LoginViewModel
 import br.com.sommelier.presentation.passwordreset.viewmodel.PasswordResetViewModel
@@ -113,6 +114,12 @@ object SommelierModule {
                 getUserDocumentUseCase = get(),
                 deleteUserUseCase = get(),
                 logOutUserUseCase = get()
+            )
+        }
+        factory {
+            EditAccountViewModel(
+                getUserDocumentUseCase = get(),
+                updateUserDocumentUseCase = get()
             )
         }
     }
