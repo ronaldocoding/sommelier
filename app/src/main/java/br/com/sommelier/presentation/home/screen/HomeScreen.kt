@@ -1,5 +1,6 @@
 package br.com.sommelier.presentation.home.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +26,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.presentation.home.action.HomeAction
 import br.com.sommelier.presentation.home.model.HomeUiModel
@@ -40,12 +40,15 @@ import br.com.sommelier.ui.theme.Typography
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(popBackStack: () -> Unit, navigateToAccountScreen: () -> Unit) {
     val viewModel = getViewModel<HomeViewModel>()
     val uiState = checkNotNull(viewModel.uiState.observeAsState())
     val uiModel = checkNotNull(uiState.value?.uiModel)
+
+    BackHandler {
+        viewModel.sendAction(HomeAction.Action.OnClickBackButton)
+    }
 
     SommelierTheme {
         Scaffold(
@@ -60,7 +63,7 @@ fun HomeScreen() {
             containerColor = ColorReference.white
         ) {
             UiState(it, viewModel, uiModel)
-            UiEffect(viewModel)
+            UiEffect(viewModel, popBackStack, navigateToAccountScreen)
         }
     }
 }
@@ -176,12 +179,20 @@ private fun Restaurants() {
 }
 
 @Composable
-private fun UiEffect(viewModel: HomeViewModel) {
+private fun UiEffect(
+    viewModel: HomeViewModel,
+    popBackStack: () -> Unit = {},
+    navigateToAccountScreen: () -> Unit = {}
+) {
     val localLifecycleOwner = LocalLifecycleOwner.current
     viewModel.uiEffect.observe(localLifecycleOwner) { effect ->
         when (effect) {
+            is HomeUiEffect.PopBackStack -> {
+                popBackStack()
+            }
+
             is HomeUiEffect.OpenManageAccount -> {
-                // TODO: Open manage account screen
+                navigateToAccountScreen()
             }
 
             is HomeUiEffect.OpenAddRestaurant -> {

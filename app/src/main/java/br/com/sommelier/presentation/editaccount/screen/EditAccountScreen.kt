@@ -28,7 +28,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.presentation.editaccount.action.EditAccountAction
 import br.com.sommelier.presentation.editaccount.model.EditAccountUiModel
@@ -51,9 +50,8 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun EditAccountScreen() {
+fun EditAccountScreen(popBackStack: () -> Unit) {
     val viewModel = getViewModel<EditAccountViewModel>()
     val uiState = checkNotNull(viewModel.uiState.observeAsState().value)
     val uiModel = uiState.uiModel
@@ -82,7 +80,7 @@ fun EditAccountScreen() {
         ) { innerPadding ->
             viewModel.sendAction(EditAccountAction.Action.OnInitial)
             UiState(uiState, viewModel, innerPadding, uiModel)
-            UiEffect(viewModel, uiModel)
+            UiEffect(viewModel, uiModel, popBackStack)
         }
     }
 }
@@ -224,14 +222,18 @@ fun EditAccountErrorScreen(viewModel: EditAccountViewModel) {
 }
 
 @Composable
-fun UiEffect(viewModel: EditAccountViewModel, uiModel: EditAccountUiModel) {
+fun UiEffect(
+    viewModel: EditAccountViewModel,
+    uiModel: EditAccountUiModel,
+    popBackStack: () -> Unit = {}
+) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val coroutineScope = rememberCoroutineScope()
     val snackbarMessage = uiModel.snackbarUiState.message.toText()
     viewModel.uiEffect.observe(lifecycleOwner) { uiEffect ->
         when (uiEffect) {
             is EditAccountUiEffect.PopBackStack -> {
-                // TODO: Navigate back
+                popBackStack()
             }
 
             is EditAccountUiEffect.ShowLoading -> {

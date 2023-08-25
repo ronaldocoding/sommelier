@@ -52,9 +52,13 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun AccountScreen() {
+fun AccountScreen(
+    navigateToEditAccountScreen: () -> Unit,
+    navigateToLoginScreen: () -> Unit,
+    navigateToPasswordResetScreen: () -> Unit,
+    popBackStack: () -> Unit
+) {
     val viewModel = getViewModel<AccountViewModel>()
     val uiState = checkNotNull(viewModel.uiState.observeAsState().value)
     val uiModel = checkNotNull(uiState.uiModel)
@@ -84,7 +88,14 @@ fun AccountScreen() {
             viewModel.sendAction(AccountAction.Action.OnTryToFetchAccountData)
             UiState(innerPadding, viewModel, uiState, uiModel)
             AccountDialog(viewModel, uiModel)
-            UiEffect(viewModel, uiModel)
+            UiEffect(
+                viewModel,
+                uiModel,
+                navigateToEditAccountScreen,
+                navigateToLoginScreen,
+                navigateToPasswordResetScreen,
+                popBackStack
+            )
         }
     }
 }
@@ -312,26 +323,33 @@ private fun AccountErrorScreen(viewModel: AccountViewModel) {
 }
 
 @Composable
-private fun UiEffect(viewModel: AccountViewModel, uiModel: AccountUiModel) {
+private fun UiEffect(
+    viewModel: AccountViewModel,
+    uiModel: AccountUiModel,
+    navigateToEditAccountScreen: () -> Unit = {},
+    navigateToLoginScreen: () -> Unit = {},
+    navigateToPasswordResetScreen: () -> Unit = {},
+    popBackStack: () -> Unit = {}
+) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val coroutineScope = rememberCoroutineScope()
     val snackbarMessage = uiModel.snackbarUiState.message.toText()
     viewModel.uiEffect.observe(lifecycleOwner) { uiEffect ->
         when (uiEffect) {
             is AccountUiEffect.OpenEditAccountScreen -> {
-                // TODO: Navigate to EditAccountScreen
+                navigateToEditAccountScreen()
             }
 
             is AccountUiEffect.OpenLoginScreen -> {
-                // TODO: Navigate to LoginScreen
+                navigateToLoginScreen()
             }
 
             is AccountUiEffect.OpenPasswordResetScreen -> {
-                // TODO: Navigate to ResetPasswordScreen
+                navigateToPasswordResetScreen()
             }
 
             is AccountUiEffect.PopBackStack -> {
-                // TODO: Pop back stack
+                popBackStack()
             }
 
             is AccountUiEffect.ShowLoading -> {
