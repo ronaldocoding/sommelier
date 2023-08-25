@@ -65,4 +65,7 @@
     <string name="save_button_label">Save</string>
     <string name="edit_account_snackbar_error_message">An error occurred while trying to update your account. Please, try again.</string>
     <string name="edit_account_success_snackbar_message">Account successfully updated</string>
+    <string name="hamburger_icon_description">Hamburger icon</string>
+    <string name="confirm_email_top_bar_title">Confirm email</string>
+    <string name="confirm_email_description">You are already registered. Now we need you to confirm your email address, we\'ve sent you a link.</string>
 </resources>
