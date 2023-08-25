@@ -238,14 +238,7 @@ fun UiEffect(viewModel: EditAccountViewModel, uiModel: EditAccountUiModel) {
                 handleLoadingCause(viewModel, uiEffect.loadingCause)
             }
 
-            is EditAccountUiEffect.ShowSnackbarSuccess -> {
-                coroutineScope.launch {
-                    uiModel.snackbarUiState.hostState.showSnackbar(
-                        message = snackbarMessage
-                    )
-                }
-            }
-
+            is EditAccountUiEffect.ShowSnackbarSuccess,
             is EditAccountUiEffect.ShowSnackbarError -> {
                 coroutineScope.launch {
                     uiModel.snackbarUiState.hostState.showSnackbar(
