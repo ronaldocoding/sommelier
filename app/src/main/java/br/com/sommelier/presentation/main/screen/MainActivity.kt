@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.com.sommelier.presentation.account.screen.AccountScreen
+import br.com.sommelier.presentation.confirmemail.screen.ConfirmEmailScreen
 import br.com.sommelier.presentation.editaccount.screen.EditAccountScreen
 import br.com.sommelier.presentation.home.screen.HomeScreen
 import br.com.sommelier.presentation.login.screen.LoginScreen
@@ -76,13 +77,17 @@ fun Application() {
         composable(route = SommelierRoute.PASSWORD_RESET.name) {
             PasswordResetScreen(
                 popBackStack = {
-                    navController.popBackStack(SommelierRoute.HOME.name, inclusive = false)
+                    navController.popBackStack()
                 }
             )
         }
 
         composable(route = SommelierRoute.CONFIRM_EMAIL.name) {
-            // TODO: Implement
+            ConfirmEmailScreen(
+                popBackStack = {
+                    navController.popBackStack()
+                }
+            )
         }
 
         composable(route = SommelierRoute.ACCOUNT.name) {
@@ -98,7 +103,7 @@ fun Application() {
                 },
 
                 popBackStack = {
-                    navController.popBackStack(SommelierRoute.HOME.name, inclusive = false)
+                    navController.popBackStack()
                 }
             )
         }
@@ -106,7 +111,7 @@ fun Application() {
         composable(route = SommelierRoute.EDIT_ACCOUNT.name) {
             EditAccountScreen(
                 popBackStack = {
-                    navController.popBackStack(SommelierRoute.ACCOUNT.name, inclusive = false)
+                    navController.popBackStack()
                 }
             )
         }
