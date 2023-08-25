@@ -105,7 +105,7 @@ class EditAccountViewModelTest {
                 EditAccountUiModel().copy(
                     editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
                         name = dummyUserDomain.name
-                    ),
+                    )
                 )
             )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
@@ -224,8 +224,8 @@ class EditAccountViewModelTest {
             EditAccountUiModel().copy(
                 editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
                     errorSupportingMessage = EditAccountStringResource.BlankName,
-                    isError = true,
-                ),
+                    isError = true
+                )
             )
         )
         val actualUiState = viewModel.uiState.getOrAwaitValue()
@@ -246,8 +246,8 @@ class EditAccountViewModelTest {
                 editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
                     name = name,
                     errorSupportingMessage = EditAccountStringResource.InvalidName,
-                    isError = true,
-                ),
+                    isError = true
+                )
             )
         )
         val actualUiState = viewModel.uiState.getOrAwaitValue()
@@ -399,7 +399,7 @@ class EditAccountViewModelTest {
             EditAccountUiModel().copy(
                 editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
                     name = name
-                ),
+                )
             )
         )
         val actualUiState = viewModel.uiState.getOrAwaitValue()

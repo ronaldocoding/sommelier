@@ -7,5 +7,4 @@ sealed class EditAccountUiState(open val uiModel: EditAccountUiModel) {
     data class Resume(override val uiModel: EditAccountUiModel) : EditAccountUiState(uiModel)
     data class Loading(override val uiModel: EditAccountUiModel) : EditAccountUiState(uiModel)
     data class Error(override val uiModel: EditAccountUiModel) : EditAccountUiState(uiModel)
-
 }
