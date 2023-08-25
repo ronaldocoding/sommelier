@@ -20,6 +20,5 @@ data class SnackbarUiState(
 data class EditAccountUiModel(
     val editNameFieldUiState: EditNameFieldUiState = EditNameFieldUiState(),
     val snackbarUiState: SnackbarUiState = SnackbarUiState(),
-    val isLoading: Boolean = false,
-    val isSaveButtonEnabled: Boolean = false
+    val isLoading: Boolean = false
 )

@@ -60,4 +60,8 @@
     <string name="logout_snackbar_error_message">Ocorreu um erro ao tentar sair. Por favor, tente novamente.</string>
     <string name="confirm_dialog_button_label">Sim</string>
     <string name="cancel_dialog_button_label">Não</string>
+    <string name="edit_account_top_bar_title">Editar conta</string>
+    <string name="save_button_label">Salvar</string>
+    <string name="edit_account_snackbar_error_message">Ocorreu um erro ao tentar atualizar a sua conta. Por favor, tente novamente.</string>
+    <string name="edit_account_success_snackbar_message">Conta atualizada com sucesso</string>
 </resources>
