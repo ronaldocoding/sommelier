@@ -139,6 +139,8 @@ private fun AccountDialog(viewModel: AccountViewModel, uiModel: AccountUiModel) 
         SommelierDialog(
             title = stringResource(id = R.string.password_reset_dialog_title),
             text = stringResource(id = R.string.password_reset_dialog_description),
+            confirmButtonText = stringResource(id = R.string.confirm_dialog_button_label),
+            dismissButtonText = stringResource(id = R.string.cancel_dialog_button_label),
             onDismissRequest = {
                 viewModel.sendAction(AccountAction.Action.OnDismissPasswordResetDialog)
             },
@@ -154,6 +156,8 @@ private fun AccountDialog(viewModel: AccountViewModel, uiModel: AccountUiModel) 
         SommelierDialog(
             title = stringResource(id = R.string.delete_account_dialog_title),
             text = stringResource(id = R.string.delete_account_dialog_description),
+            confirmButtonText = stringResource(id = R.string.confirm_dialog_button_label),
+            dismissButtonText = stringResource(id = R.string.cancel_dialog_button_label),
             onDismissRequest = {
                 viewModel.sendAction(AccountAction.Action.OnDismissDeleteAccountDialog)
             },
@@ -169,6 +173,8 @@ private fun AccountDialog(viewModel: AccountViewModel, uiModel: AccountUiModel) 
         SommelierDialog(
             title = stringResource(id = R.string.logout_dialog_title),
             text = stringResource(id = R.string.logout_dialog_description),
+            confirmButtonText = stringResource(id = R.string.confirm_dialog_button_label),
+            dismissButtonText = stringResource(id = R.string.cancel_dialog_button_label),
             onDismissRequest = {
                 viewModel.sendAction(AccountAction.Action.OnDismissLogoutDialog)
             },
