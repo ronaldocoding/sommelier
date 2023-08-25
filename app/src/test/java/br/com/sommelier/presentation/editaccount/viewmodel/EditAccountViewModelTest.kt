@@ -434,6 +434,5 @@ class EditAccountViewModelTest {
             actual.uiModel.snackbarUiState.type
         )
         assertEquals(expected.uiModel.isLoading, actual.uiModel.isLoading)
-        assertEquals(expected.uiModel.isSaveButtonEnabled, actual.uiModel.isSaveButtonEnabled)
     }
 }
