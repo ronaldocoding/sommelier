@@ -92,7 +92,7 @@ private fun ConfirmEmailInitialScreen(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.padding(Spacing.medium))
             Image(

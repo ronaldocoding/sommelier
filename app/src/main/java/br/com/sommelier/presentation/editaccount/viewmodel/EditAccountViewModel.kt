@@ -100,7 +100,7 @@ class EditAccountViewModel(
                 val uiModel = state.uiModel
                 val newUiModel = uiModel.copy(
                     editNameFieldUiState = uiModel.editNameFieldUiState.copy(
-                        placeholder = successResult.data.name,
+                        placeholder = successResult.data.name
                     ),
                     isLoading = false
                 )

@@ -4,7 +4,7 @@ interface MainAction {
     fun sendAction(action: Action)
 
     sealed class Action {
-        object OnInitial: Action()
-        object OnCheckIfUserIsSignedIn: Action()
+        object OnInitial : Action()
+        object OnCheckIfUserIsSignedIn : Action()
     }
 }
