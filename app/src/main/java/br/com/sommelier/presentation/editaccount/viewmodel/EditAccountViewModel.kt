@@ -229,6 +229,15 @@ class EditAccountViewModel(
     }
 
     private fun emitSnackbarErrorEffect() {
+        val state = checkNotNull(_uiState.value)
+        val uiModel = state.uiModel
+        val newUiModel = uiModel.copy(
+            snackbarUiState = uiModel.snackbarUiState.copy(
+                message = EditAccountStringResource.ErrorSnackbar,
+                type = SommelierSnackbarType.Error
+            )
+        )
+        _uiState.value = EditAccountUiState.Resume(newUiModel)
         _uiEffect.emit(EditAccountUiEffect.ShowSnackbarError)
     }
 

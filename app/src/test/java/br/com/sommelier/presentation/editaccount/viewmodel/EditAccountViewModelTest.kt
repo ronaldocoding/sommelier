@@ -313,7 +313,14 @@ class EditAccountViewModelTest {
 
             viewModel.sendAction(action)
 
-            val expectedUiState = EditAccountUiState.Resume(EditAccountUiModel())
+            val expectedUiState = EditAccountUiState.Resume(
+                EditAccountUiModel().copy(
+                    snackbarUiState = EditAccountUiModel().snackbarUiState.copy(
+                        message = EditAccountStringResource.ErrorSnackbar,
+                        type = SommelierSnackbarType.Error
+                    )
+                )
+            )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
 
             val expectedUiEffect = EditAccountUiEffect.ShowSnackbarError
@@ -342,7 +349,14 @@ class EditAccountViewModelTest {
 
             viewModel.sendAction(action)
 
-            val expectedUiState = EditAccountUiState.Resume(EditAccountUiModel())
+            val expectedUiState = EditAccountUiState.Resume(
+                EditAccountUiModel().copy(
+                    snackbarUiState = EditAccountUiModel().snackbarUiState.copy(
+                        message = EditAccountStringResource.ErrorSnackbar,
+                        type = SommelierSnackbarType.Error
+                    )
+                )
+            )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
 
             val expectedUiEffect = EditAccountUiEffect.ShowSnackbarError
@@ -378,7 +392,14 @@ class EditAccountViewModelTest {
 
             viewModel.sendAction(action)
 
-            val expectedUiState = EditAccountUiState.Resume(EditAccountUiModel())
+            val expectedUiState = EditAccountUiState.Resume(
+                EditAccountUiModel().copy(
+                    snackbarUiState = EditAccountUiModel().snackbarUiState.copy(
+                        message = EditAccountStringResource.ErrorSnackbar,
+                        type = SommelierSnackbarType.Error
+                    )
+                )
+            )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
 
             val expectedUiEffect = EditAccountUiEffect.ShowSnackbarError
