@@ -55,7 +55,7 @@
     <string name="delete_account_dialog_title">Delete account</string>
     <string name="delete_account_dialog_description">Are you sure you want to delete your account? Be aware that this action cannot be undone.</string>
     <string name="logout_dialog_title">Logout</string>
-    <string name="logout_dialog_description">Are you sure you want to logout? If you do, you will need to log in again to enter the app.</string>
+    <string name="logout_dialog_description">Are you sure you want to logout? If you do, you will need to log in again to re-enter the app.</string>
     <string name="password_reset_snackbar_error_message">An error occurred while trying to redirect you to the password reset screen. Please, try again.</string>
     <string name="delete_account_snackbar_error_message">An error occurred while trying to delete your account. Please, try again.</string>
     <string name="logout_snackbar_error_message">An error occurred while trying to log you out. Please, try again.</string>

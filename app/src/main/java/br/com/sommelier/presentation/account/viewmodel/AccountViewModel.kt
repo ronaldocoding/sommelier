@@ -36,6 +36,10 @@ class AccountViewModel(
     override fun sendAction(action: AccountAction.Action) {
         viewModelScope.launch {
             when (action) {
+                is AccountAction.Action.OnInitial -> {
+                    handleOnInitial()
+                }
+
                 is AccountAction.Action.OnTryToFetchAccountData -> {
                     handleOnFetchAccountData()
                 }
@@ -101,6 +105,10 @@ class AccountViewModel(
                 }
             }
         }
+    }
+
+    private fun handleOnInitial() {
+        emitLoadingState(checkNotNull(_uiState.value).uiModel, AccountLoadingCause.FetchAccountData)
     }
 
     private suspend fun handleOnFetchAccountData() {

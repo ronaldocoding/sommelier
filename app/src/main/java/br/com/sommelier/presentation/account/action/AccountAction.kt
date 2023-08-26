@@ -4,6 +4,7 @@ interface AccountAction {
     fun sendAction(action: Action)
 
     sealed class Action {
+        object OnInitial : Action()
         object OnTryToFetchAccountData : Action()
         object OnClickTryToFetchAccountDataAgainButton : Action()
         object OnClickBackButton : Action()

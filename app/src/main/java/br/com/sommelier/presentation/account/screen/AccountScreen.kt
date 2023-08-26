@@ -95,7 +95,6 @@ fun AccountScreen(
                 navigateToPasswordResetScreen,
                 popBackStack
             )
-            viewModel.sendAction(AccountAction.Action.OnTryToFetchAccountData)
         }
     }
 }
@@ -130,8 +129,12 @@ private fun UiState(
     uiModel: AccountUiModel
 ) {
     when (uiState) {
-        is AccountUiState.Initial, is AccountUiState.Resume -> {
-            AccountInitialAndResumeScreen(innerPadding, uiModel, viewModel)
+        is AccountUiState.Initial -> {
+            viewModel.sendAction(AccountAction.Action.OnInitial)
+        }
+
+        is AccountUiState.Resume -> {
+            AccountResumeScreen(innerPadding, uiModel, viewModel)
         }
 
         is AccountUiState.Error -> {
@@ -200,7 +203,7 @@ private fun AccountDialog(viewModel: AccountViewModel, uiModel: AccountUiModel) 
 }
 
 @Composable
-private fun AccountInitialAndResumeScreen(
+private fun AccountResumeScreen(
     innerPadding: PaddingValues,
     uiModel: AccountUiModel,
     viewModel: AccountViewModel

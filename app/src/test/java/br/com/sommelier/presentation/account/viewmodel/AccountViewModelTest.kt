@@ -66,6 +66,26 @@ class AccountViewModelTest {
     }
 
     @Test
+    fun `GIVEN OnInitial action was sent WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() {
+        val action = AccountAction.Action.OnInitial
+
+        viewModel.sendAction(action)
+
+        val expectedUiState = AccountUiState.Loading(AccountUiModel().copy(isLoading = true))
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+        val expectedUiEffect = AccountUiEffect.ShowLoading(AccountLoadingCause.FetchAccountData)
+        val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+        assertUiState(expectedUiState, actualUiState)
+        assertEquals(expectedUiEffect, actualUiEffect)
+        assertEquals(
+            expectedUiEffect.loadingCause,
+            (actualUiEffect as AccountUiEffect.ShowLoading).loadingCause
+        )
+    }
+
+    @Test
     fun `GIVEN OnFetchAccountData action was sent and both use cases as success WHEN sendAction was called THEN assert that the emitted uiState was Resume`() =
         coroutineTestRule.runBlockingTest {
             val action = AccountAction.Action.OnTryToFetchAccountData
