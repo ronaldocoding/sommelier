@@ -143,7 +143,14 @@ private fun SommelierNavHost(navController: NavHostController, uiModel: MainUiMo
         composable(route = SommelierRoute.PASSWORD_RESET.name) {
             PasswordResetScreen(
                 popBackStack = {
-                    navController.popBackStack()
+                    navController.navigate(SommelierRoute.LOGIN.name) {
+                        popUpTo(
+                            navController.currentBackStackEntry?.destination?.route
+                                ?: SommelierRoute.LOGIN.name
+                        ) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -151,7 +158,14 @@ private fun SommelierNavHost(navController: NavHostController, uiModel: MainUiMo
         composable(route = SommelierRoute.CONFIRM_EMAIL.name) {
             ConfirmEmailScreen(
                 popBackStack = {
-                    navController.popBackStack(SommelierRoute.LOGIN.name, inclusive = false)
+                    navController.navigate(SommelierRoute.LOGIN.name) {
+                        popUpTo(
+                            navController.currentBackStackEntry?.destination?.route
+                                ?: SommelierRoute.LOGIN.name
+                        ) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -162,10 +176,24 @@ private fun SommelierNavHost(navController: NavHostController, uiModel: MainUiMo
                     navController.navigate(SommelierRoute.EDIT_ACCOUNT.name)
                 },
                 navigateToLoginScreen = {
-                    navController.navigate(SommelierRoute.LOGIN.name)
+                    navController.navigate(SommelierRoute.LOGIN.name) {
+                        popUpTo(
+                            navController.currentBackStackEntry?.destination?.route
+                                ?: SommelierRoute.LOGIN.name
+                        ) {
+                            inclusive = true
+                        }
+                    }
                 },
                 navigateToPasswordResetScreen = {
-                    navController.navigate(SommelierRoute.PASSWORD_RESET.name)
+                    navController.navigate(SommelierRoute.PASSWORD_RESET.name) {
+                        popUpTo(
+                            navController.currentBackStackEntry?.destination?.route
+                                ?: SommelierRoute.LOGIN.name
+                        ) {
+                            inclusive = true
+                        }
+                    }
                 },
 
                 popBackStack = {
