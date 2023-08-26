@@ -17,6 +17,7 @@ import br.com.sommelier.presentation.editaccount.state.EditAccountLoadingCause
 import br.com.sommelier.presentation.editaccount.state.EditAccountUiEffect
 import br.com.sommelier.presentation.editaccount.state.EditAccountUiState
 import br.com.sommelier.ui.component.SommelierSnackbarType
+import br.com.sommelier.util.emptyString
 import br.com.sommelier.util.ext.asLiveData
 import br.com.sommelier.util.validator.isValidName
 import kotlinx.coroutines.launch
@@ -170,18 +171,21 @@ class EditAccountViewModel(
                 handleErrorWhenTryingToSave()
             },
             ifRight = { userDocumentResult ->
-                tryToSave(userDocumentResult)
+                val newUserDomain = userDocumentResult.data.copy(
+                    name = checkNotNull(_uiState.value).uiModel.editNameFieldUiState.name
+                )
+                tryToSave(newUserDomain)
             }
         )
     }
 
-    private suspend fun tryToSave(userDocumentResult: Success<UserDomain>) {
-        updateUserDocumentUseCase(userDocumentResult.data).fold(
+    private suspend fun tryToSave(userDomain: UserDomain) {
+        updateUserDocumentUseCase(userDomain).fold(
             ifLeft = {
                 handleErrorWhenTryingToSave()
             },
             ifRight = {
-                handleSuccessWhenTryingToSave(userDocumentResult)
+                handleSuccessWhenTryingToSave(userDomain)
             }
         )
     }
@@ -190,12 +194,13 @@ class EditAccountViewModel(
         _uiEffect.emit(EditAccountUiEffect.ShowLoading(loadingCause))
     }
 
-    private fun handleSuccessWhenTryingToSave(userDocumentResult: Success<UserDomain>) {
+    private fun handleSuccessWhenTryingToSave(userDomain: UserDomain) {
         val state = checkNotNull(_uiState.value)
         val uiModel = state.uiModel
         val newUiModel = uiModel.copy(
             editNameFieldUiState = uiModel.editNameFieldUiState.copy(
-                placeholder = userDocumentResult.data.name
+                name = emptyString(),
+                placeholder = userDomain.name
             ),
             snackbarUiState = uiModel.snackbarUiState.copy(
                 message = EditAccountStringResource.SuccessSnackbar,
