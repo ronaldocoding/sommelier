@@ -3,8 +3,16 @@ package br.com.sommelier.presentation.main.screen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -13,10 +21,17 @@ import br.com.sommelier.presentation.confirmemail.screen.ConfirmEmailScreen
 import br.com.sommelier.presentation.editaccount.screen.EditAccountScreen
 import br.com.sommelier.presentation.home.screen.HomeScreen
 import br.com.sommelier.presentation.login.screen.LoginScreen
+import br.com.sommelier.presentation.main.action.MainAction
+import br.com.sommelier.presentation.main.model.MainUiModel
+import br.com.sommelier.presentation.main.state.MainUiEffect
+import br.com.sommelier.presentation.main.state.MainUiState
+import br.com.sommelier.presentation.main.viewmodel.MainViewModel
 import br.com.sommelier.presentation.passwordreset.screen.PasswordResetScreen
 import br.com.sommelier.presentation.register.screen.RegisterScreen
 import br.com.sommelier.shared.route.SommelierRoute
+import br.com.sommelier.ui.theme.ColorReference
 import br.com.sommelier.ui.theme.SommelierTheme
+import org.koin.androidx.compose.getViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +47,60 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Application() {
+    val viewModel = getViewModel<MainViewModel>()
+    val state = checkNotNull(viewModel.uiState.observeAsState().value)
+    val uiModel = state.uiModel
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = SommelierRoute.LOGIN.name) {
+    viewModel.sendAction(MainAction.Action.OnInitial)
+    UiState(state, navController, uiModel)
+    UiEffect(viewModel)
+}
+
+@Composable
+private fun UiState(
+    state: MainUiState,
+    navController: NavHostController,
+    uiModel: MainUiModel
+) {
+    when (state) {
+        is MainUiState.Loading -> {
+            LoadingScreen()
+        }
+
+        is MainUiState.Resume -> {
+            SommelierNavHost(navController, uiModel)
+        }
+    }
+}
+
+@Composable
+private fun UiEffect(viewModel: MainViewModel) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    viewModel.uiEffect.observe(lifecycleOwner) { effect ->
+        when (effect) {
+            is MainUiEffect.ShowLoading -> {
+                viewModel.sendAction(MainAction.Action.OnCheckIfUserIsSignedIn)
+            }
+        }
+    }
+}
+
+@Composable
+private fun LoadingScreen() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(
+            color = ColorReference.royalPurple
+        )
+    }
+}
+
+@Composable
+private fun SommelierNavHost(navController: NavHostController, uiModel: MainUiModel) {
+    NavHost(navController = navController, startDestination = uiModel.startDestination) {
         composable(route = SommelierRoute.LOGIN.name) {
             LoginScreen(
                 navigateToHomeScreen = {
@@ -85,7 +151,7 @@ fun Application() {
         composable(route = SommelierRoute.CONFIRM_EMAIL.name) {
             ConfirmEmailScreen(
                 popBackStack = {
-                    navController.popBackStack()
+                    navController.popBackStack(SommelierRoute.LOGIN.name, inclusive = false)
                 }
             )
         }
