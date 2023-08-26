@@ -197,7 +197,14 @@ private fun SommelierNavHost(navController: NavHostController, uiModel: MainUiMo
                 },
 
                 popBackStack = {
-                    navController.popBackStack()
+                    navController.navigate(SommelierRoute.HOME.name) {
+                        popUpTo(
+                            navController.currentBackStackEntry?.destination?.route
+                                ?: SommelierRoute.LOGIN.name
+                        ) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -205,7 +212,14 @@ private fun SommelierNavHost(navController: NavHostController, uiModel: MainUiMo
         composable(route = SommelierRoute.EDIT_ACCOUNT.name) {
             EditAccountScreen(
                 popBackStack = {
-                    navController.popBackStack()
+                    navController.navigate(SommelierRoute.ACCOUNT.name) {
+                        popUpTo(
+                            navController.currentBackStackEntry?.destination?.route
+                                ?: SommelierRoute.LOGIN.name
+                        ) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
