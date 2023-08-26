@@ -200,7 +200,8 @@ class EditAccountViewModel(
             snackbarUiState = uiModel.snackbarUiState.copy(
                 message = EditAccountStringResource.SuccessSnackbar,
                 type = SommelierSnackbarType.Success
-            )
+            ),
+            isLoading = false
         )
         _uiState.value = EditAccountUiState.Resume(newUiModel)
         _uiEffect.value = EditAccountUiEffect.ShowSnackbarSuccess
@@ -235,7 +236,8 @@ class EditAccountViewModel(
             snackbarUiState = uiModel.snackbarUiState.copy(
                 message = EditAccountStringResource.ErrorSnackbar,
                 type = SommelierSnackbarType.Error
-            )
+            ),
+            isLoading = false
         )
         _uiState.value = EditAccountUiState.Resume(newUiModel)
         _uiEffect.emit(EditAccountUiEffect.ShowSnackbarError)

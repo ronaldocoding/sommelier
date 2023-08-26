@@ -256,8 +256,9 @@ class EditAccountViewModelTest {
     }
 
     @Test
-    fun `GIVEN OnTryToSave action was sent and all use cases as success WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
+    fun `GIVEN OnTryToSave was the last action sent and all use cases as success WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
         coroutineTestRule.runBlockingTest {
+            val name = "name"
             val action = EditAccountAction.Action.OnTryToSave
 
             val getCurrentUserUseCaseResult: Either<Failure, Success<UserFirebase>> = Either.Right(
@@ -279,17 +280,21 @@ class EditAccountViewModelTest {
                 updateUserDocumentUseCase(dummyUserDomain)
             } returns updateUserDocumentUseCaseResult
 
+            viewModel.sendAction(EditAccountAction.Action.OnTypeNameField(name))
+            viewModel.sendAction(EditAccountAction.Action.OnClickSaveButton)
             viewModel.sendAction(action)
 
             val expectedUiState = EditAccountUiState.Resume(
                 EditAccountUiModel().copy(
                     editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
+                        name = name,
                         placeholder = dummyUserDomain.name
                     ),
                     snackbarUiState = EditAccountUiModel().snackbarUiState.copy(
                         message = EditAccountStringResource.SuccessSnackbar,
                         type = SommelierSnackbarType.Success
-                    )
+                    ),
+                    isLoading = false
                 )
             )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
@@ -302,8 +307,9 @@ class EditAccountViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnTryToSave action was sent and getCurrentUserUseCase as failure WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
+    fun `GIVEN OnTryToSave was the last action sent and getCurrentUserUseCase as failure WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
         coroutineTestRule.runBlockingTest {
+            val name = "name"
             val action = EditAccountAction.Action.OnTryToSave
 
             val getCurrentUserUseCaseResult: Either<Failure, Success<UserFirebase>> = Either.Left(
@@ -311,14 +317,20 @@ class EditAccountViewModelTest {
             )
             coEvery { getCurrentUserUseCase(any()) } returns getCurrentUserUseCaseResult
 
+            viewModel.sendAction(EditAccountAction.Action.OnTypeNameField(name))
+            viewModel.sendAction(EditAccountAction.Action.OnClickSaveButton)
             viewModel.sendAction(action)
 
             val expectedUiState = EditAccountUiState.Resume(
                 EditAccountUiModel().copy(
+                    editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
+                        name = name
+                    ),
                     snackbarUiState = EditAccountUiModel().snackbarUiState.copy(
                         message = EditAccountStringResource.ErrorSnackbar,
                         type = SommelierSnackbarType.Error
-                    )
+                    ),
+                    isLoading = false
                 )
             )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
@@ -331,8 +343,9 @@ class EditAccountViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnTryToSave action was sent and getCurrentUserUseCase as success but getUserDocument as failure WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
+    fun `GIVEN OnTryToSave was the last action sent and getCurrentUserUseCase as success but getUserDocument as failure WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
         coroutineTestRule.runBlockingTest {
+            val name = "name"
             val action = EditAccountAction.Action.OnTryToSave
 
             val getCurrentUserUseCaseResult: Either<Failure, Success<UserFirebase>> = Either.Right(
@@ -347,14 +360,20 @@ class EditAccountViewModelTest {
                 getUserDocumentUseCase(GetUserDocumentUseCase.Params(userUid = dummyUserDomain.uid))
             } returns getUserDocumentUseCaseResult
 
+            viewModel.sendAction(EditAccountAction.Action.OnTypeNameField(name))
+            viewModel.sendAction(EditAccountAction.Action.OnClickSaveButton)
             viewModel.sendAction(action)
 
             val expectedUiState = EditAccountUiState.Resume(
                 EditAccountUiModel().copy(
+                    editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
+                        name = name
+                    ),
                     snackbarUiState = EditAccountUiModel().snackbarUiState.copy(
                         message = EditAccountStringResource.ErrorSnackbar,
                         type = SommelierSnackbarType.Error
-                    )
+                    ),
+                    isLoading = false
                 )
             )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
@@ -367,8 +386,9 @@ class EditAccountViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnTryToSave action was sent and all use cases as success except updateUserDocument WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
+    fun `GIVEN OnTryToSave was the last action sent and all use cases as success except updateUserDocument WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
         coroutineTestRule.runBlockingTest {
+            val name = "name"
             val action = EditAccountAction.Action.OnTryToSave
 
             val getCurrentUserUseCaseResult: Either<Failure, Success<UserFirebase>> = Either.Right(
@@ -390,14 +410,20 @@ class EditAccountViewModelTest {
                 updateUserDocumentUseCase(dummyUserDomain)
             } returns updateUserDocumentUseCaseResult
 
+            viewModel.sendAction(EditAccountAction.Action.OnTypeNameField(name))
+            viewModel.sendAction(EditAccountAction.Action.OnClickSaveButton)
             viewModel.sendAction(action)
 
             val expectedUiState = EditAccountUiState.Resume(
                 EditAccountUiModel().copy(
+                    editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
+                        name = name
+                    ),
                     snackbarUiState = EditAccountUiModel().snackbarUiState.copy(
                         message = EditAccountStringResource.ErrorSnackbar,
                         type = SommelierSnackbarType.Error
-                    )
+                    ),
+                    isLoading = false
                 )
             )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
