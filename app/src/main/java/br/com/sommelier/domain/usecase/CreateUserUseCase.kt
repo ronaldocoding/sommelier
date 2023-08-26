@@ -21,7 +21,7 @@ class CreateUserUseCase(
         val result = authRepository.registerUser(parameters.email, parameters.password)
         return if (result.isRight()) {
             val uid = (result as Either.Right<String>).value
-            userRepository.saveUser(UserDomain(parameters.name, parameters.email, uid))
+            userRepository.saveUser(UserDomain(parameters.email, parameters.name, uid))
             Unit.right()
         } else {
             result.leftOrNull()!!.left()

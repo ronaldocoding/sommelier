@@ -53,8 +53,8 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun EditAccountScreen(popBackStack: () -> Unit) {
     val viewModel = getViewModel<EditAccountViewModel>()
-    val uiState = checkNotNull(viewModel.uiState.observeAsState().value)
-    val uiModel = uiState.uiModel
+    val uiState = checkNotNull(viewModel.uiState.observeAsState())
+    val uiModel = checkNotNull(uiState.value?.uiModel)
 
     SommelierTheme {
         Scaffold(
@@ -78,8 +78,7 @@ fun EditAccountScreen(popBackStack: () -> Unit) {
                 }
             }
         ) { innerPadding ->
-            viewModel.sendAction(EditAccountAction.Action.OnInitial)
-            UiState(uiState, viewModel, innerPadding, uiModel)
+            UiState(checkNotNull(uiState.value), viewModel, innerPadding, uiModel)
             UiEffect(viewModel, uiModel, popBackStack)
         }
     }
@@ -93,7 +92,11 @@ private fun UiState(
     uiModel: EditAccountUiModel
 ) {
     when (uiState) {
-        is EditAccountUiState.Initial, is EditAccountUiState.Loading -> {
+        is EditAccountUiState.Initial -> {
+            viewModel.sendAction(EditAccountAction.Action.OnInitial)
+        }
+
+        is EditAccountUiState.Loading -> {
             EditAccountLoadingScreen()
         }
 
@@ -144,7 +147,11 @@ private fun EditAccountResumeScreen(
         OutlinedTextInput(
             leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_user),
             leadingIconContentDescription = stringResource(id = R.string.user_icon_description),
-            placeholder = uiModel.editNameFieldUiState.name,
+            value = uiModel.editNameFieldUiState.name,
+            onValueChange = { changedValue ->
+                viewModel.sendAction(EditAccountAction.Action.OnTypeNameField(changedValue))
+            },
+            placeholder = uiModel.editNameFieldUiState.placeholder,
             isError = uiModel.editNameFieldUiState.isError,
             supportingText = {
                 Text(

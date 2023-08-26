@@ -104,7 +104,7 @@ class EditAccountViewModelTest {
             val expectedUiState = EditAccountUiState.Resume(
                 EditAccountUiModel().copy(
                     editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
-                        name = dummyUserDomain.name
+                        placeholder = dummyUserDomain.name
                     )
                 )
             )
@@ -284,7 +284,7 @@ class EditAccountViewModelTest {
             val expectedUiState = EditAccountUiState.Resume(
                 EditAccountUiModel().copy(
                     editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
-                        name = dummyUserDomain.name
+                        placeholder = dummyUserDomain.name
                     ),
                     snackbarUiState = EditAccountUiModel().snackbarUiState.copy(
                         message = EditAccountStringResource.SuccessSnackbar,
@@ -412,6 +412,10 @@ class EditAccountViewModelTest {
         assertEquals(
             expected.uiModel.editNameFieldUiState.name,
             actual.uiModel.editNameFieldUiState.name
+        )
+        assertEquals(
+            expected.uiModel.editNameFieldUiState.placeholder,
+            actual.uiModel.editNameFieldUiState.placeholder
         )
         assertEquals(
             expected.uiModel.editNameFieldUiState.errorSupportingMessage,

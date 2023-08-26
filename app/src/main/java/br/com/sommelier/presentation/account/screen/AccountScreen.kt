@@ -85,7 +85,6 @@ fun AccountScreen(
                 }
             }
         ) { innerPadding ->
-            viewModel.sendAction(AccountAction.Action.OnTryToFetchAccountData)
             UiState(innerPadding, viewModel, uiState, uiModel)
             AccountDialog(viewModel, uiModel)
             UiEffect(
@@ -96,6 +95,7 @@ fun AccountScreen(
                 navigateToPasswordResetScreen,
                 popBackStack
             )
+            viewModel.sendAction(AccountAction.Action.OnTryToFetchAccountData)
         }
     }
 }

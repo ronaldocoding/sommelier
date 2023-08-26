@@ -98,8 +98,9 @@ class EditAccountViewModel(
                 val uiModel = state.uiModel
                 val newUiModel = uiModel.copy(
                     editNameFieldUiState = uiModel.editNameFieldUiState.copy(
-                        name = successResult.data.name
-                    )
+                        placeholder = successResult.data.name,
+                    ),
+                    isLoading = false
                 )
                 _uiState.value = EditAccountUiState.Resume(newUiModel)
             }
@@ -116,7 +117,7 @@ class EditAccountViewModel(
     }
 
     private fun handleOnClickBackButton() {
-        _uiEffect.value = EditAccountUiEffect.PopBackStack
+        _uiEffect.emit(EditAccountUiEffect.PopBackStack)
     }
 
     private fun handleOnClickSaveButton() {
@@ -186,7 +187,7 @@ class EditAccountViewModel(
     }
 
     private fun emitShowLoadingEffect(loadingCause: EditAccountLoadingCause) {
-        _uiEffect.value = EditAccountUiEffect.ShowLoading(loadingCause)
+        _uiEffect.emit(EditAccountUiEffect.ShowLoading(loadingCause))
     }
 
     private fun handleSuccessWhenTryingToSave(userDocumentResult: Success<UserDomain>) {
@@ -194,7 +195,7 @@ class EditAccountViewModel(
         val uiModel = state.uiModel
         val newUiModel = uiModel.copy(
             editNameFieldUiState = uiModel.editNameFieldUiState.copy(
-                name = userDocumentResult.data.name
+                placeholder = userDocumentResult.data.name
             ),
             snackbarUiState = uiModel.snackbarUiState.copy(
                 message = EditAccountStringResource.SuccessSnackbar,
@@ -228,7 +229,7 @@ class EditAccountViewModel(
     }
 
     private fun emitSnackbarErrorEffect() {
-        _uiEffect.value = EditAccountUiEffect.ShowSnackbarError
+        _uiEffect.emit(EditAccountUiEffect.ShowSnackbarError)
     }
 
     private fun emitLoadingState() {

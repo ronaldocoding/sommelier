@@ -7,7 +7,8 @@ import br.com.sommelier.util.emptyString
 
 data class EditNameFieldUiState(
     val name: String = emptyString(),
-    val errorSupportingMessage: EditAccountStringResource = EditAccountStringResource.ErrorSnackbar,
+    val placeholder: String = emptyString(),
+    val errorSupportingMessage: EditAccountStringResource = EditAccountStringResource.Empty,
     val isError: Boolean = false
 )
 
