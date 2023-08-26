@@ -12,6 +12,7 @@ import br.com.sommelier.domain.usecase.GetUserDocumentUseCase
 import br.com.sommelier.domain.usecase.UpdateUserDocumentUseCase
 import br.com.sommelier.presentation.editaccount.action.EditAccountAction
 import br.com.sommelier.presentation.editaccount.model.EditAccountUiModel
+import br.com.sommelier.presentation.editaccount.model.EditNameFieldUiState
 import br.com.sommelier.presentation.editaccount.res.EditAccountStringResource
 import br.com.sommelier.presentation.editaccount.state.EditAccountLoadingCause
 import br.com.sommelier.presentation.editaccount.state.EditAccountUiEffect
@@ -201,6 +202,35 @@ class EditAccountViewModelTest {
             EditAccountUiModel().copy(
                 editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
                     name = name
+                ),
+                isLoading = true
+            )
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+        val expectedUiEffect =
+            EditAccountUiEffect.ShowLoading(EditAccountLoadingCause.SaveAccountData)
+        val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+        assertUiState(expectedUiState, actualUiState)
+        assertEquals(expectedUiEffect, actualUiEffect)
+    }
+
+    @Test
+    fun `GIVEN OnClickSaveButton was the last action sent and name field was valid but had error status WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() {
+        val action = EditAccountAction.Action.OnClickSaveButton
+        val name = "Ronaldo"
+
+        viewModel.sendAction(EditAccountAction.Action.OnClickSaveButton)
+        viewModel.sendAction(EditAccountAction.Action.OnTypeNameField(name))
+        viewModel.sendAction(action)
+
+        val expectedUiState = EditAccountUiState.Loading(
+            EditAccountUiModel().copy(
+                editNameFieldUiState = EditNameFieldUiState(
+                    name = name,
+                    errorSupportingMessage = EditAccountStringResource.Empty,
+                    isError = false
                 ),
                 isLoading = true
             )

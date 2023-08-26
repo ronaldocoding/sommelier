@@ -12,6 +12,7 @@ import br.com.sommelier.domain.usecase.GetCurrentUserUseCase
 import br.com.sommelier.domain.usecase.GetUserDocumentUseCase
 import br.com.sommelier.domain.usecase.UpdateUserDocumentUseCase
 import br.com.sommelier.presentation.editaccount.action.EditAccountAction
+import br.com.sommelier.presentation.editaccount.model.EditAccountUiModel
 import br.com.sommelier.presentation.editaccount.res.EditAccountStringResource
 import br.com.sommelier.presentation.editaccount.state.EditAccountLoadingCause
 import br.com.sommelier.presentation.editaccount.state.EditAccountUiEffect
@@ -134,10 +135,23 @@ class EditAccountViewModel(
         if (newUiModel.editNameFieldUiState.isError) {
             _uiState.value = EditAccountUiState.Resume(newUiModel)
         } else {
-            emitLoadingState()
+            val uiModelWithoutErrorState = removePossibleRemainingErrorState(newUiModel)
+            emitLoadingState(uiModelWithoutErrorState.copy(isLoading = true))
             emitShowLoadingEffect(EditAccountLoadingCause.SaveAccountData)
         }
     }
+
+    private fun removePossibleRemainingErrorState(newUiModel: EditAccountUiModel) =
+        if (newUiModel.editNameFieldUiState.isError) {
+            newUiModel.copy(
+                editNameFieldUiState = newUiModel.editNameFieldUiState.copy(
+                    errorSupportingMessage = EditAccountStringResource.Empty,
+                    isError = false
+                )
+            )
+        } else {
+            newUiModel
+        }
 
     private fun getErrorSupportingMessage(name: String) =
         if (name.isBlank()) {
@@ -248,9 +262,9 @@ class EditAccountViewModel(
         _uiEffect.emit(EditAccountUiEffect.ShowSnackbarError)
     }
 
-    private fun emitLoadingState() {
+    private fun emitLoadingState(personalizedUiModel: EditAccountUiModel? = null) {
         val state = checkNotNull(_uiState.value)
-        val uiModel = state.uiModel.copy(isLoading = true)
+        val uiModel = personalizedUiModel ?: state.uiModel.copy(isLoading = true)
         _uiState.value = EditAccountUiState.Loading(uiModel)
     }
 
