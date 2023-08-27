@@ -46,462 +46,449 @@ class RegisterViewModelTest {
     }
 
     @Test
-    fun `GIVEN OnTypeNameField action was sent WHEN sendAction was called THEN assert that the emitted ui state is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val name = "Name"
-            val action = RegisterAction.Action.OnTypeNameField(name)
+    fun `GIVEN OnTypeNameField action was sent WHEN sendAction was called THEN assert that the emitted ui state is the expected`() {
+        val name = "Name"
+        val action = RegisterAction.Action.OnTypeNameField(name)
 
-            viewModel.sendAction(action)
+        viewModel.sendAction(action)
 
-            val expectedUiState = RegisterUiState.Resume(
-                uiModel = RegisterUiModel().copy(
-                    nameUiState = RegisterUiModel().nameUiState.copy(
-                        text = name
+        val expectedUiState = RegisterUiState.Resume(
+            uiModel = RegisterUiModel().copy(
+                nameUiState = RegisterUiModel().nameUiState.copy(
+                    text = name
+                )
+            )
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+        assertUiState(expectedUiState, actualUiState)
+    }
+
+    @Test
+    fun `GIVEN OnTypeEmailField action was sent WHEN sendAction was called THEN assert that the emitted ui state is the expected`() {
+        val email = "Email"
+        val action = RegisterAction.Action.OnTypeEmailField(email)
+
+        viewModel.sendAction(action)
+
+        val expectedUiState = RegisterUiState.Resume(
+            uiModel = RegisterUiModel().copy(
+                emailUiState = RegisterUiModel().emailUiState.copy(
+                    text = email
+                )
+            )
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+        assertUiState(expectedUiState, actualUiState)
+    }
+
+    @Test
+    fun `GIVEN OnTypePasswordField action was sent WHEN sendAction was called THEN assert that the emitted ui state is the expected`() {
+        val password = "password"
+        val action = RegisterAction.Action.OnTypePasswordField(password)
+
+        viewModel.sendAction(action)
+
+        val expectedUiState = RegisterUiState.Resume(
+            uiModel = RegisterUiModel().copy(
+                passwordUiState = RegisterUiModel().passwordUiState.copy(
+                    text = password
+                )
+            )
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+        assertUiState(expectedUiState, actualUiState)
+    }
+
+    @Test
+    fun `GIVEN OnTypePasswordConfirmationField action was sent WHEN sendAction was called THEN assert that the emitted ui state is the expected`() {
+        val passwordConfirmation = "password"
+        val action = RegisterAction.Action.OnTypePasswordConfirmationField(passwordConfirmation)
+
+        viewModel.sendAction(action)
+
+        val expectedUiState = RegisterUiState.Resume(
+            uiModel = RegisterUiModel().copy(
+                passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
+                    .copy(
+                        text = passwordConfirmation
                     )
-                )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnTypeEmailField action was sent WHEN sendAction was called THEN assert that the emitted ui state is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val email = "Email"
-            val action = RegisterAction.Action.OnTypeEmailField(email)
+    fun `GIVEN OnOnClickRegisterButton action was the last action sent but name is blank WHEN sendAction was called THEN assert that the emitted ui state is the expected`() {
+        val action = RegisterAction.Action.OnClickRegisterButton
+        val email = "Email@email.com"
+        val password = "password"
+        val passwordConfirmation = "password"
 
-            viewModel.sendAction(action)
+        viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
+        viewModel.sendAction(
+            RegisterAction.Action.OnTypePasswordConfirmationField(
+                passwordConfirmation
+            )
+        )
+        viewModel.sendAction(action)
 
-            val expectedUiState = RegisterUiState.Resume(
-                uiModel = RegisterUiModel().copy(
-                    emailUiState = RegisterUiModel().emailUiState.copy(
-                        text = email
+        val expectedUiState = RegisterUiState.Resume(
+            uiModel = RegisterUiModel().copy(
+                nameUiState = RegisterUiModel().nameUiState.copy(
+                    isError = true,
+                    errorSupportingMessage = RegisterStringResource.BlankName
+                ),
+                emailUiState = RegisterUiModel().emailUiState.copy(
+                    text = email
+                ),
+                passwordUiState = RegisterUiModel().passwordUiState.copy(
+                    text = password
+                ),
+                passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
+                    .copy(
+                        text = passwordConfirmation
                     )
-                )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnTypePasswordField action was sent WHEN sendAction was called THEN assert that the emitted ui state is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val password = "password"
-            val action = RegisterAction.Action.OnTypePasswordField(password)
+    fun `GIVEN OnOnClickRegisterButton action was the last action sent but name is invalid WHEN sendAction was called THEN assert that the emitted ui state is the expected`() {
+        val action = RegisterAction.Action.OnClickRegisterButton
+        val name = "Na"
+        val email = "Email@email.com"
+        val password = "password"
+        val passwordConfirmation = "password"
 
-            viewModel.sendAction(action)
+        viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
+        viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
+        viewModel.sendAction(
+            RegisterAction.Action.OnTypePasswordConfirmationField(
+                passwordConfirmation
+            )
+        )
+        viewModel.sendAction(action)
 
-            val expectedUiState = RegisterUiState.Resume(
-                uiModel = RegisterUiModel().copy(
-                    passwordUiState = RegisterUiModel().passwordUiState.copy(
-                        text = password
+        val expectedUiState = RegisterUiState.Resume(
+            uiModel = RegisterUiModel().copy(
+                nameUiState = RegisterUiModel().nameUiState.copy(
+                    text = name,
+                    isError = true,
+                    errorSupportingMessage = RegisterStringResource.InvalidName
+                ),
+                emailUiState = RegisterUiModel().emailUiState.copy(
+                    text = email
+                ),
+                passwordUiState = RegisterUiModel().passwordUiState.copy(
+                    text = password
+                ),
+                passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
+                    .copy(
+                        text = passwordConfirmation
                     )
-                )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnTypePasswordConfirmationField action was sent WHEN sendAction was called THEN assert that the emitted ui state is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val passwordConfirmation = "password"
-            val action = RegisterAction.Action.OnTypePasswordConfirmationField(passwordConfirmation)
+    fun `GIVEN OnOnClickRegisterButton action was the last action sent but email is blank WHEN sendAction was called THEN assert that the emitted ui state is the expected`() {
+        val action = RegisterAction.Action.OnClickRegisterButton
+        val name = "Name"
+        val password = "password"
+        val passwordConfirmation = "password"
 
-            viewModel.sendAction(action)
-
-            val expectedUiState = RegisterUiState.Resume(
-                uiModel = RegisterUiModel().copy(
-                    passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
-                        .copy(
-                            text = passwordConfirmation
-                        )
-                )
+        viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
+        viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
+        viewModel.sendAction(
+            RegisterAction.Action.OnTypePasswordConfirmationField(
+                passwordConfirmation
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        viewModel.sendAction(action)
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        val expectedUiState = RegisterUiState.Resume(
+            uiModel = RegisterUiModel().copy(
+                nameUiState = RegisterUiModel().nameUiState.copy(
+                    text = name
+                ),
+                emailUiState = RegisterUiModel().emailUiState.copy(
+                    isError = true,
+                    errorSupportingMessage = RegisterStringResource.BlankEmail
+                ),
+                passwordUiState = RegisterUiModel().passwordUiState.copy(
+                    text = password
+                ),
+                passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
+                    .copy(
+                        text = passwordConfirmation
+                    )
+            )
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnOnClickRegisterButton action was the last action sent but name is blank WHEN sendAction was called THEN assert that the emitted ui state is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = RegisterAction.Action.OnClickRegisterButton
-            val email = "Email@email.com"
-            val password = "password"
-            val passwordConfirmation = "password"
+    fun `GIVEN OnOnClickRegisterButton action was the last action sent but email is invalid WHEN sendAction was called THEN assert that the emitted ui state is the expected`() {
+        val action = RegisterAction.Action.OnClickRegisterButton
+        val name = "Name"
+        val email = "Email"
+        val password = "password"
+        val passwordConfirmation = "password"
 
-            viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
-            viewModel.sendAction(
-                RegisterAction.Action.OnTypePasswordConfirmationField(
-                    passwordConfirmation
-                )
+        viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
+        viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
+        viewModel.sendAction(
+            RegisterAction.Action.OnTypePasswordConfirmationField(
+                passwordConfirmation
             )
-            viewModel.sendAction(action)
+        )
+        viewModel.sendAction(action)
 
-            val expectedUiState = RegisterUiState.Resume(
-                uiModel = RegisterUiModel().copy(
-                    nameUiState = RegisterUiModel().nameUiState.copy(
+        val expectedUiState = RegisterUiState.Resume(
+            uiModel = RegisterUiModel().copy(
+                nameUiState = RegisterUiModel().nameUiState.copy(
+                    text = name
+                ),
+                emailUiState = RegisterUiModel().emailUiState.copy(
+                    text = email,
+                    isError = true,
+                    errorSupportingMessage = RegisterStringResource.InvalidEmail
+                ),
+                passwordUiState = RegisterUiModel().passwordUiState.copy(
+                    text = password
+                ),
+                passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
+                    .copy(
+                        text = passwordConfirmation
+                    )
+            )
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+        assertUiState(expectedUiState, actualUiState)
+    }
+
+    @Test
+    fun `GIVEN OnOnClickRegisterButton action was the last action sent but password is blank WHEN sendAction was called THEN assert that the emitted ui state is the expected`() {
+        val action = RegisterAction.Action.OnClickRegisterButton
+        val name = "Name"
+        val email = "Email@email.com"
+        val passwordConfirmation = "password"
+
+        viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
+        viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(
+            RegisterAction.Action.OnTypePasswordConfirmationField(
+                passwordConfirmation
+            )
+        )
+        viewModel.sendAction(action)
+
+        val expectedUiState = RegisterUiState.Resume(
+            uiModel = RegisterUiModel().copy(
+                nameUiState = RegisterUiModel().nameUiState.copy(
+                    text = name
+                ),
+                emailUiState = RegisterUiModel().emailUiState.copy(
+                    text = email
+                ),
+                passwordUiState = RegisterUiModel().passwordUiState.copy(
+                    isError = true,
+                    errorSupportingMessage = RegisterStringResource.BlankPassword
+                ),
+                passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
+                    .copy(
+                        text = passwordConfirmation,
                         isError = true,
-                        errorSupportingMessage = RegisterStringResource.BlankName
-                    ),
-                    emailUiState = RegisterUiModel().emailUiState.copy(
-                        text = email
-                    ),
-                    passwordUiState = RegisterUiModel().passwordUiState.copy(
-                        text = password
-                    ),
-                    passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
-                        .copy(
-                            text = passwordConfirmation
-                        )
-                )
+                        errorSupportingMessage = RegisterStringResource.PasswordConfirmationNotMatch
+                    )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnOnClickRegisterButton action was the last action sent but name is invalid WHEN sendAction was called THEN assert that the emitted ui state is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = RegisterAction.Action.OnClickRegisterButton
-            val name = "Na"
-            val email = "Email@email.com"
-            val password = "password"
-            val passwordConfirmation = "password"
+    fun `GIVEN OnOnClickRegisterButton action was the last action sent but password is invalid WHEN sendAction was called THEN assert that the emitted ui state is the expected`() {
+        val action = RegisterAction.Action.OnClickRegisterButton
+        val name = "Name"
+        val email = "Email@email.com"
+        val password = "pass"
+        val passwordConfirmation = "password"
 
-            viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
-            viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
-            viewModel.sendAction(
-                RegisterAction.Action.OnTypePasswordConfirmationField(
-                    passwordConfirmation
-                )
+        viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
+        viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
+        viewModel.sendAction(
+            RegisterAction.Action.OnTypePasswordConfirmationField(
+                passwordConfirmation
             )
-            viewModel.sendAction(action)
+        )
+        viewModel.sendAction(action)
 
-            val expectedUiState = RegisterUiState.Resume(
-                uiModel = RegisterUiModel().copy(
-                    nameUiState = RegisterUiModel().nameUiState.copy(
-                        text = name,
+        val expectedUiState = RegisterUiState.Resume(
+            uiModel = RegisterUiModel().copy(
+                nameUiState = RegisterUiModel().nameUiState.copy(
+                    text = name
+                ),
+                emailUiState = RegisterUiModel().emailUiState.copy(
+                    text = email
+                ),
+                passwordUiState = RegisterUiModel().passwordUiState.copy(
+                    text = password,
+                    isError = true,
+                    errorSupportingMessage = RegisterStringResource.InvalidPassword
+                ),
+                passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
+                    .copy(
+                        text = passwordConfirmation,
                         isError = true,
-                        errorSupportingMessage = RegisterStringResource.InvalidName
-                    ),
-                    emailUiState = RegisterUiModel().emailUiState.copy(
-                        text = email
-                    ),
-                    passwordUiState = RegisterUiModel().passwordUiState.copy(
-                        text = password
-                    ),
-                    passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
-                        .copy(
-                            text = passwordConfirmation
-                        )
-                )
+                        errorSupportingMessage = RegisterStringResource.PasswordConfirmationNotMatch
+                    )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnOnClickRegisterButton action was the last action sent but email is blank WHEN sendAction was called THEN assert that the emitted ui state is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = RegisterAction.Action.OnClickRegisterButton
-            val name = "Name"
-            val password = "password"
-            val passwordConfirmation = "password"
+    fun `GIVEN OnOnClickRegisterButton action was the last action sent but confirmationPassword is blank WHEN sendAction was called THEN assert that the emitted ui state is the expected`() {
+        val action = RegisterAction.Action.OnClickRegisterButton
+        val name = "Name"
+        val email = "Email@email.com"
+        val password = "password"
 
-            viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
-            viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
-            viewModel.sendAction(
-                RegisterAction.Action.OnTypePasswordConfirmationField(
-                    passwordConfirmation
-                )
-            )
-            viewModel.sendAction(action)
+        viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
+        viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
+        viewModel.sendAction(action)
 
-            val expectedUiState = RegisterUiState.Resume(
-                uiModel = RegisterUiModel().copy(
-                    nameUiState = RegisterUiModel().nameUiState.copy(
-                        text = name
-                    ),
-                    emailUiState = RegisterUiModel().emailUiState.copy(
+        val expectedUiState = RegisterUiState.Resume(
+            uiModel = RegisterUiModel().copy(
+                nameUiState = RegisterUiModel().nameUiState.copy(
+                    text = name
+                ),
+                emailUiState = RegisterUiModel().emailUiState.copy(
+                    text = email
+                ),
+                passwordUiState = RegisterUiModel().passwordUiState.copy(
+                    text = password
+                ),
+                passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
+                    .copy(
                         isError = true,
-                        errorSupportingMessage = RegisterStringResource.BlankEmail
-                    ),
-                    passwordUiState = RegisterUiModel().passwordUiState.copy(
-                        text = password
-                    ),
-                    passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
-                        .copy(
-                            text = passwordConfirmation
-                        )
-                )
+                        errorSupportingMessage = RegisterStringResource.BlankPasswordConfirmation
+                    )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnOnClickRegisterButton action was the last action sent but email is invalid WHEN sendAction was called THEN assert that the emitted ui state is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = RegisterAction.Action.OnClickRegisterButton
-            val name = "Name"
-            val email = "Email"
-            val password = "password"
-            val passwordConfirmation = "password"
+    fun `GIVEN OnOnClickRegisterButton action was the last action sent but passwordConfirmation not match WHEN sendAction was called THEN assert that the emitted ui state is the expected`() {
+        val action = RegisterAction.Action.OnClickRegisterButton
+        val name = "Name"
+        val email = "Email@email.com"
+        val password = "password"
+        val passwordConfirmation = "pass"
 
-            viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
-            viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
-            viewModel.sendAction(
-                RegisterAction.Action.OnTypePasswordConfirmationField(
-                    passwordConfirmation
-                )
+        viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
+        viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
+        viewModel.sendAction(
+            RegisterAction.Action.OnTypePasswordConfirmationField(
+                passwordConfirmation
             )
-            viewModel.sendAction(action)
+        )
+        viewModel.sendAction(action)
 
-            val expectedUiState = RegisterUiState.Resume(
-                uiModel = RegisterUiModel().copy(
-                    nameUiState = RegisterUiModel().nameUiState.copy(
-                        text = name
-                    ),
-                    emailUiState = RegisterUiModel().emailUiState.copy(
-                        text = email,
+        val expectedUiState = RegisterUiState.Resume(
+            uiModel = RegisterUiModel().copy(
+                nameUiState = RegisterUiModel().nameUiState.copy(
+                    text = name
+                ),
+                emailUiState = RegisterUiModel().emailUiState.copy(
+                    text = email
+                ),
+                passwordUiState = RegisterUiModel().passwordUiState.copy(
+                    text = password
+                ),
+                passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
+                    .copy(
+                        text = passwordConfirmation,
                         isError = true,
-                        errorSupportingMessage = RegisterStringResource.InvalidEmail
-                    ),
-                    passwordUiState = RegisterUiModel().passwordUiState.copy(
-                        text = password
-                    ),
-                    passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
-                        .copy(
-                            text = passwordConfirmation
-                        )
-                )
+                        errorSupportingMessage = RegisterStringResource.PasswordConfirmationNotMatch
+                    )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnOnClickRegisterButton action was the last action sent but password is blank WHEN sendAction was called THEN assert that the emitted ui state is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = RegisterAction.Action.OnClickRegisterButton
-            val name = "Name"
-            val email = "Email@email.com"
-            val passwordConfirmation = "password"
+    fun `GIVEN OnOnClickRegisterButton action was the last action sent and all fields are valid WHEN sendAction was called THEN assert that the emitted ui state and ui effect are the expected`() {
+        val action = RegisterAction.Action.OnClickRegisterButton
+        val name = "Name"
+        val email = "Email@email.com"
+        val password = "password"
+        val passwordConfirmation = "password"
 
-            viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
-            viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(
-                RegisterAction.Action.OnTypePasswordConfirmationField(
-                    passwordConfirmation
-                )
+        viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
+        viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
+        viewModel.sendAction(
+            RegisterAction.Action.OnTypePasswordConfirmationField(
+                passwordConfirmation
             )
-            viewModel.sendAction(action)
+        )
+        viewModel.sendAction(action)
 
-            val expectedUiState = RegisterUiState.Resume(
-                uiModel = RegisterUiModel().copy(
-                    nameUiState = RegisterUiModel().nameUiState.copy(
-                        text = name
-                    ),
-                    emailUiState = RegisterUiModel().emailUiState.copy(
-                        text = email
-                    ),
-                    passwordUiState = RegisterUiModel().passwordUiState.copy(
-                        isError = true,
-                        errorSupportingMessage = RegisterStringResource.BlankPassword
-                    ),
-                    passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
-                        .copy(
-                            text = passwordConfirmation,
-                            isError = true,
-                            errorSupportingMessage = RegisterStringResource.PasswordConfirmationNotMatch
-                        )
-                )
+        val expectedUiState = RegisterUiState.Loading(
+            uiModel = RegisterUiModel().copy(
+                nameUiState = RegisterUiModel().nameUiState.copy(
+                    text = name
+                ),
+                emailUiState = RegisterUiModel().emailUiState.copy(
+                    text = email
+                ),
+                passwordUiState = RegisterUiModel().passwordUiState.copy(
+                    text = password
+                ),
+                passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
+                    .copy(
+                        text = passwordConfirmation
+                    )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        val expectedUiEffect = RegisterUiEffect.ShowLoading
+        val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
-    @Test
-    fun `GIVEN OnOnClickRegisterButton action was the last action sent but password is invalid WHEN sendAction was called THEN assert that the emitted ui state is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = RegisterAction.Action.OnClickRegisterButton
-            val name = "Name"
-            val email = "Email@email.com"
-            val password = "pass"
-            val passwordConfirmation = "password"
-
-            viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
-            viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
-            viewModel.sendAction(
-                RegisterAction.Action.OnTypePasswordConfirmationField(
-                    passwordConfirmation
-                )
-            )
-            viewModel.sendAction(action)
-
-            val expectedUiState = RegisterUiState.Resume(
-                uiModel = RegisterUiModel().copy(
-                    nameUiState = RegisterUiModel().nameUiState.copy(
-                        text = name
-                    ),
-                    emailUiState = RegisterUiModel().emailUiState.copy(
-                        text = email
-                    ),
-                    passwordUiState = RegisterUiModel().passwordUiState.copy(
-                        text = password,
-                        isError = true,
-                        errorSupportingMessage = RegisterStringResource.InvalidPassword
-                    ),
-                    passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
-                        .copy(
-                            text = passwordConfirmation,
-                            isError = true,
-                            errorSupportingMessage = RegisterStringResource.PasswordConfirmationNotMatch
-                        )
-                )
-            )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
-
-            assertUiState(expectedUiState, actualUiState)
-        }
-
-    @Test
-    fun `GIVEN OnOnClickRegisterButton action was the last action sent but confirmationPassword is blank WHEN sendAction was called THEN assert that the emitted ui state is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = RegisterAction.Action.OnClickRegisterButton
-            val name = "Name"
-            val email = "Email@email.com"
-            val password = "password"
-
-            viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
-            viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
-            viewModel.sendAction(action)
-
-            val expectedUiState = RegisterUiState.Resume(
-                uiModel = RegisterUiModel().copy(
-                    nameUiState = RegisterUiModel().nameUiState.copy(
-                        text = name
-                    ),
-                    emailUiState = RegisterUiModel().emailUiState.copy(
-                        text = email
-                    ),
-                    passwordUiState = RegisterUiModel().passwordUiState.copy(
-                        text = password
-                    ),
-                    passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
-                        .copy(
-                            isError = true,
-                            errorSupportingMessage = RegisterStringResource.BlankPasswordConfirmation
-                        )
-                )
-            )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
-
-            assertUiState(expectedUiState, actualUiState)
-        }
-
-    @Test
-    fun `GIVEN OnOnClickRegisterButton action was the last action sent but passwordConfirmation not match WHEN sendAction was called THEN assert that the emitted ui state is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = RegisterAction.Action.OnClickRegisterButton
-            val name = "Name"
-            val email = "Email@email.com"
-            val password = "password"
-            val passwordConfirmation = "pass"
-
-            viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
-            viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
-            viewModel.sendAction(
-                RegisterAction.Action.OnTypePasswordConfirmationField(
-                    passwordConfirmation
-                )
-            )
-            viewModel.sendAction(action)
-
-            val expectedUiState = RegisterUiState.Resume(
-                uiModel = RegisterUiModel().copy(
-                    nameUiState = RegisterUiModel().nameUiState.copy(
-                        text = name
-                    ),
-                    emailUiState = RegisterUiModel().emailUiState.copy(
-                        text = email
-                    ),
-                    passwordUiState = RegisterUiModel().passwordUiState.copy(
-                        text = password
-                    ),
-                    passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
-                        .copy(
-                            text = passwordConfirmation,
-                            isError = true,
-                            errorSupportingMessage = RegisterStringResource.PasswordConfirmationNotMatch
-                        )
-                )
-            )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
-
-            assertUiState(expectedUiState, actualUiState)
-        }
-
-    @Test
-    fun `GIVEN OnOnClickRegisterButton action was the last action sent and all fields are valid WHEN sendAction was called THEN assert that the emitted ui state and ui effect are the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = RegisterAction.Action.OnClickRegisterButton
-            val name = "Name"
-            val email = "Email@email.com"
-            val password = "password"
-            val passwordConfirmation = "password"
-
-            viewModel.sendAction(RegisterAction.Action.OnTypeNameField(name))
-            viewModel.sendAction(RegisterAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(RegisterAction.Action.OnTypePasswordField(password))
-            viewModel.sendAction(
-                RegisterAction.Action.OnTypePasswordConfirmationField(
-                    passwordConfirmation
-                )
-            )
-            viewModel.sendAction(action)
-
-            val expectedUiState = RegisterUiState.Loading(
-                uiModel = RegisterUiModel().copy(
-                    nameUiState = RegisterUiModel().nameUiState.copy(
-                        text = name
-                    ),
-                    emailUiState = RegisterUiModel().emailUiState.copy(
-                        text = email
-                    ),
-                    passwordUiState = RegisterUiModel().passwordUiState.copy(
-                        text = password
-                    ),
-                    passwordConfirmationUiState = RegisterUiModel().passwordConfirmationUiState
-                        .copy(
-                            text = passwordConfirmation
-                        )
-                )
-            )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
-
-            val expectedUiEffect = RegisterUiEffect.ShowLoading
-            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
-
-            assertUiState(expectedUiState, actualUiState)
-            assertEquals(expectedUiEffect, actualUiEffect)
-        }
+        assertUiState(expectedUiState, actualUiState)
+        assertEquals(expectedUiEffect, actualUiEffect)
+    }
 
     @Test
     fun `GIVEN OnTryToRegister action was the last action sent and use case as failure WHEN sendAction was called THEN assert that the ui state and ui effect are the expected`() =
@@ -690,17 +677,16 @@ class RegisterViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnClickAlreadyHaveAccountButton was sent WHEN sendAction was called THEN assert that the emitted ui effect is OpenLoginScreen`() =
-        coroutineTestRule.runBlockingTest {
-            val action = RegisterAction.Action.OnClickAlreadyHaveAccountButton
+    fun `GIVEN OnClickAlreadyHaveAccountButton was sent WHEN sendAction was called THEN assert that the emitted ui effect is OpenLoginScreen`() {
+        val action = RegisterAction.Action.OnClickAlreadyHaveAccountButton
 
-            viewModel.sendAction(action)
+        viewModel.sendAction(action)
 
-            val expectedUiEffect = RegisterUiEffect.OpenLoginScreen
-            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+        val expectedUiEffect = RegisterUiEffect.OpenLoginScreen
+        val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
-            assertEquals(expectedUiEffect, actualUiEffect)
-        }
+        assertEquals(expectedUiEffect, actualUiEffect)
+    }
 
     private fun assertUiState(expected: RegisterUiState, actual: RegisterUiState) {
         assertEquals(expected.javaClass, actual.javaClass)

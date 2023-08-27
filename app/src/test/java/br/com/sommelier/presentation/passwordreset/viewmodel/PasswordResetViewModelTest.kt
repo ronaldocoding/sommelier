@@ -51,24 +51,23 @@ class PasswordResetViewModelTest {
     }
 
     @Test
-    fun `GIVEN OnTypeEmailField action was sent WHEN sendAction was called THEN assert that the expected uiState is emitted`() =
-        coroutineTestRule.runBlockingTest {
-            val email = "email"
-            val action = PasswordResetAction.Action.OnTypeEmailField(email)
+    fun `GIVEN OnTypeEmailField action was sent WHEN sendAction was called THEN assert that the expected uiState is emitted`() {
+        val email = "email"
+        val action = PasswordResetAction.Action.OnTypeEmailField(email)
 
-            viewModel.sendAction(action)
+        viewModel.sendAction(action)
 
-            val expectedUiState = PasswordResetUiState.Resume(
-                PasswordResetUiModel(
-                    emailUiState = EmailUiState(
-                        text = "email"
-                    )
+        val expectedUiState = PasswordResetUiState.Resume(
+            PasswordResetUiModel(
+                emailUiState = EmailUiState(
+                    text = "email"
                 )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
     fun `GIVEN OnClickSendButton was sent but email is blank WHEN sendAction was called THEN assert that the expected uiState is emitted`() {
@@ -288,37 +287,36 @@ class PasswordResetViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnClickTryAgainButton was the last action sent, sendPasswordResetEmailUseCase as failure and email with error state WHEN sendAction was called THEN assert that the expected uiState is emitted`() =
-        coroutineTestRule.runBlockingTest {
-            val email = "email"
-            val action = PasswordResetAction.Action.OnClickTryAgainButton
+    fun `GIVEN OnClickTryAgainButton was the last action sent, sendPasswordResetEmailUseCase as failure and email with error state WHEN sendAction was called THEN assert that the expected uiState is emitted`() {
+        val email = "email"
+        val action = PasswordResetAction.Action.OnClickTryAgainButton
 
-            val useCaseResult: Either<Failure, Success<Unit>> = Either.Left(
-                Failure(GenericProblem("error"))
+        val useCaseResult: Either<Failure, Success<Unit>> = Either.Left(
+            Failure(GenericProblem("error"))
+        )
+        coEvery {
+            sendPasswordResetEmailUseCase(
+                SendPasswordResetEmailUseCase.Params(userEmail = email)
             )
-            coEvery {
-                sendPasswordResetEmailUseCase(
-                    SendPasswordResetEmailUseCase.Params(userEmail = email)
-                )
-            } returns useCaseResult
+        } returns useCaseResult
 
-            viewModel.sendAction(PasswordResetAction.Action.OnClickSendButton)
-            viewModel.sendAction(PasswordResetAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(action)
+        viewModel.sendAction(PasswordResetAction.Action.OnClickSendButton)
+        viewModel.sendAction(PasswordResetAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(action)
 
-            val expectedUiState = PasswordResetUiState.Error(
-                PasswordResetUiModel(
-                    emailUiState = EmailUiState(
-                        text = email,
-                        errorSupportingMessage = PasswordResetStringResource.Empty,
-                        isError = false
-                    )
+        val expectedUiState = PasswordResetUiState.Error(
+            PasswordResetUiModel(
+                emailUiState = EmailUiState(
+                    text = email,
+                    errorSupportingMessage = PasswordResetStringResource.Empty,
+                    isError = false
                 )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
     fun `GIVEN OnClickSecondaryBackButton was the last action sent WHEN sendAction was called THEN assert that the expected uiState is emitted`() {

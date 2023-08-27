@@ -1,6 +1,10 @@
 package br.com.sommelier.ui.component
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -24,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.ui.theme.ColorReference
 import br.com.sommelier.ui.theme.Sizing
+import br.com.sommelier.ui.theme.Spacing
 import br.com.sommelier.ui.theme.Typography
 import br.com.sommelier.util.emptyString
 
@@ -34,6 +40,8 @@ fun OutlinedTextInput(
     value: String = emptyString(),
     valueStyle: TextStyle = Typography.bodyLarge,
     onValueChange: (String) -> Unit = {},
+    label: String = emptyString(),
+    labelStyle: TextStyle = Typography.bodyLarge,
     placeholder: String = emptyString(),
     placeholderStyle: TextStyle = Typography.bodyLarge,
     leadingIcon: ImageVector? = null,
@@ -66,54 +74,72 @@ fun OutlinedTextInput(
     } else {
         ColorReference.taupeGray
     }
+    val labelColor = if (isError) {
+        ColorReference.bitterSweet
+    } else {
+        ColorReference.taupeGray
+    }
 
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.Start,
         modifier = modifier
-            .fillMaxWidth()
-            .onFocusChanged {
-                isTextFieldFocused = it.isFocused
-            }
-            .testTag("OutlinedTextField"),
-        textStyle = valueStyle.copy(color = textColor),
-        enabled = isEnabled,
-        isError = isError,
-        singleLine = singleLine,
-        maxLines = maxLines,
-        supportingText = supportingText,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = ColorReference.antiFlashWhite,
-            unfocusedBorderColor = ColorReference.antiFlashWhite,
-            containerColor = containerColor,
-            errorBorderColor = ColorReference.seaShell,
-            errorCursorColor = ColorReference.bitterSweet,
-            errorSupportingTextColor = ColorReference.bitterSweet,
-            errorLeadingIconColor = ColorReference.bitterSweet
-        ),
-        shape = RoundedCornerShape(Sizing.normal),
-        keyboardOptions = keyboardOptions,
-        placeholder = {
-            Text(
-                text = placeholder,
-                style = placeholderStyle,
-                color = placeholderColor,
-                modifier = Modifier.testTag("OutlinedTextFieldPlaceholder")
-            )
-        },
-        leadingIcon = if (leadingIcon != null) {
-            {
-                Icon(
-                    imageVector = leadingIcon,
-                    contentDescription = leadingIconContentDescription,
-                    tint = leadingIconColor,
-                    modifier = Modifier.testTag("OutlinedTextFieldLeadingIcon")
+    ) {
+        Text(
+            text = label,
+            style = labelStyle,
+            color = labelColor,
+            modifier = Modifier.testTag("OutlinedTextFieldLabel")
+        )
+        Spacer(modifier = Modifier.padding(Spacing.smallest))
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged {
+                    isTextFieldFocused = it.isFocused
+                }
+                .testTag("OutlinedTextField"),
+            textStyle = valueStyle.copy(color = textColor),
+            enabled = isEnabled,
+            isError = isError,
+            singleLine = singleLine,
+            maxLines = maxLines,
+            supportingText = supportingText,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = ColorReference.antiFlashWhite,
+                unfocusedBorderColor = ColorReference.antiFlashWhite,
+                containerColor = containerColor,
+                errorBorderColor = ColorReference.seaShell,
+                errorCursorColor = ColorReference.bitterSweet,
+                errorSupportingTextColor = ColorReference.bitterSweet,
+                errorLeadingIconColor = ColorReference.bitterSweet
+            ),
+            shape = RoundedCornerShape(Sizing.normal),
+            keyboardOptions = keyboardOptions,
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    style = placeholderStyle,
+                    color = placeholderColor,
+                    modifier = Modifier.testTag("OutlinedTextFieldPlaceholder")
                 )
+            },
+            leadingIcon = if (leadingIcon != null) {
+                {
+                    Icon(
+                        imageVector = leadingIcon,
+                        contentDescription = leadingIconContentDescription,
+                        tint = leadingIconColor,
+                        modifier = Modifier.testTag("OutlinedTextFieldLeadingIcon")
+                    )
+                }
+            } else {
+                null
             }
-        } else {
-            null
-        }
-    )
+        )
+    }
 }
 
 @Preview(showBackground = true)
@@ -129,6 +155,7 @@ fun OutlinedTextInputPreview() {
     var text by rememberSaveable { mutableStateOf(emptyString()) }
     OutlinedTextInput(
         value = text,
+        label = "Name",
         onValueChange = { text = it },
         placeholder = "Type your name",
         leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_user)
@@ -141,6 +168,7 @@ fun OutlinedTextInputErrorPreview() {
     var text by rememberSaveable { mutableStateOf(emptyString()) }
     OutlinedTextInput(
         value = text,
+        label = "Name",
         onValueChange = { text = it },
         placeholder = "Type your name",
         leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_user),

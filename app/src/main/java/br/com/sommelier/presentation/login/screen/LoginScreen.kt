@@ -147,9 +147,9 @@ private fun Cocktail() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.padding(Spacing.large))
+        Spacer(modifier = Modifier.padding(Spacing.mediumLarge))
         Image(
-            painter = painterResource(id = R.drawable.ic_cocktail),
+            painter = painterResource(id = R.drawable.ic_wine),
             contentDescription = stringResource(id = R.string.cocktail_icon_description)
         )
         Spacer(modifier = Modifier.padding(Spacing.extraSmaller))
@@ -179,6 +179,7 @@ private fun LoginFields(
                 )
             },
             leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_mail),
+            label = stringResource(id = R.string.email_text_field_label),
             placeholder = stringResource(id = R.string.email_text_field_placeholder),
             supportingText = {
                 Text(
@@ -202,6 +203,7 @@ private fun LoginFields(
                     )
                 )
             },
+            label = stringResource(id = R.string.password_text_field_label),
             placeholder = stringResource(id = R.string.password_text_field_placeholder),
             supportingText = {
                 Text(

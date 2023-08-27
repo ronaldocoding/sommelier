@@ -136,7 +136,7 @@ private fun Cocktail() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_cocktail),
+            painter = painterResource(id = R.drawable.ic_wine),
             contentDescription = stringResource(
                 id = R.string.cocktail_icon_description
             )
@@ -167,6 +167,7 @@ private fun RegisterFields(
                 )
             },
             leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_user),
+            label = stringResource(id = R.string.name_text_field_label),
             placeholder = stringResource(id = R.string.name_text_field_placeholder),
             supportingText = {
                 Text(
@@ -188,6 +189,7 @@ private fun RegisterFields(
                 )
             },
             leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_mail),
+            label = stringResource(id = R.string.email_text_field_label),
             placeholder = stringResource(id = R.string.email_text_field_placeholder),
             supportingText = {
                 Text(
@@ -211,6 +213,7 @@ private fun RegisterFields(
                     )
                 )
             },
+            label = stringResource(id = R.string.password_text_field_label),
             placeholder = stringResource(id = R.string.password_text_field_placeholder),
             supportingText = {
                 Text(
@@ -231,6 +234,7 @@ private fun RegisterFields(
                     )
                 )
             },
+            label = stringResource(id = R.string.password_confirmation_text_field_label),
             placeholder = stringResource(
                 id = R.string.password_confirmation_text_field_placeholder
             ),
