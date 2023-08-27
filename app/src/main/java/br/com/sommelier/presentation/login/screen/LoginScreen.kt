@@ -147,9 +147,9 @@ private fun Cocktail() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.padding(Spacing.large))
+        Spacer(modifier = Modifier.padding(Spacing.mediumLarge))
         Image(
-            painter = painterResource(id = R.drawable.ic_cocktail),
+            painter = painterResource(id = R.drawable.ic_wine),
             contentDescription = stringResource(id = R.string.cocktail_icon_description)
         )
         Spacer(modifier = Modifier.padding(Spacing.extraSmaller))

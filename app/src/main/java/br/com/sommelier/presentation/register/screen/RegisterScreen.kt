@@ -136,7 +136,7 @@ private fun Cocktail() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_cocktail),
+            painter = painterResource(id = R.drawable.ic_wine),
             contentDescription = stringResource(
                 id = R.string.cocktail_icon_description
             )
