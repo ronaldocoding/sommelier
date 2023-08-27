@@ -6,9 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.ui.theme.ColorReference
 import br.com.sommelier.ui.theme.Sizing
@@ -18,19 +16,10 @@ import br.com.sommelier.ui.theme.Typography
 fun SommelierDialog(
     modifier: Modifier = Modifier,
     title: String = "Title",
-    titleStyle: TextStyle = Typography.display,
-    titleColor: Color = ColorReference.eerieBlack,
     text: String = "Text",
-    textStyle: TextStyle = Typography.bodyNormal,
-    textColor: Color = ColorReference.eerieBlack,
-    onDismissRequest: () -> Unit = {},
     confirmButtonText: String = "Confirm",
-    confirmButtonStyle: TextStyle = Typography.bodyLarge,
-    confirmButtonColor: Color = ColorReference.taupeGray,
     onConfirmButtonClicked: () -> Unit = {},
     dismissButtonText: String = "Dismiss",
-    dismissButtonStyle: TextStyle = Typography.bodyLarge,
-    dismissButtonColor: Color = ColorReference.royalPurple,
     onDismissButtonClicked: () -> Unit = {}
 ) {
     AlertDialog(
@@ -38,22 +27,22 @@ fun SommelierDialog(
         title = {
             Text(
                 text = title,
-                style = titleStyle,
+                style = Typography.display,
                 modifier = Modifier.testTag("SommelierDialogTitle")
             )
         },
-        titleContentColor = titleColor,
+        titleContentColor = ColorReference.eerieBlack,
         text = {
             Text(
                 text = text,
-                style = textStyle,
+                style = Typography.bodyNormal,
                 modifier = Modifier.testTag("SommelierDialogText")
             )
         },
         shape = RoundedCornerShape(Sizing.medium),
-        textContentColor = textColor,
+        textContentColor = ColorReference.eerieBlack,
         containerColor = ColorReference.white,
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = onDismissButtonClicked,
         confirmButton = {
             TextButton(
                 onClick = onConfirmButtonClicked,
@@ -61,8 +50,8 @@ fun SommelierDialog(
             ) {
                 Text(
                     text = confirmButtonText,
-                    style = confirmButtonStyle,
-                    color = confirmButtonColor,
+                    style = Typography.bodyLarge,
+                    color = ColorReference.taupeGray,
                     modifier = Modifier.testTag("SommelierDialogConfirmButtonText")
                 )
             }
@@ -74,8 +63,8 @@ fun SommelierDialog(
             ) {
                 Text(
                     text = dismissButtonText,
-                    style = dismissButtonStyle,
-                    color = dismissButtonColor,
+                    style = Typography.bodyLarge,
+                    color = ColorReference.royalPurple,
                     modifier = Modifier.testTag("SommelierDialogDismissButtonText")
                 )
             }

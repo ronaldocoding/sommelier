@@ -37,6 +37,7 @@ import br.com.sommelier.presentation.passwordreset.res.PasswordResetStringResour
 import br.com.sommelier.presentation.passwordreset.state.PasswordResetUiEffect
 import br.com.sommelier.presentation.passwordreset.state.PasswordResetUiState
 import br.com.sommelier.presentation.passwordreset.viewmodel.PasswordResetViewModel
+import br.com.sommelier.shared.screen.GenericErrorScreen
 import br.com.sommelier.ui.component.ActionButton
 import br.com.sommelier.ui.component.OutlinedTextInput
 import br.com.sommelier.ui.component.SommelierTopBar
@@ -128,7 +129,7 @@ private fun UiState(
         }
 
         is PasswordResetUiState.Error -> {
-            PasswordResetErrorScreen(innerPadding, viewModel)
+            PasswordResetErrorScreen(viewModel)
         }
     }
 }
@@ -261,40 +262,28 @@ fun PasswordResetSuccessScreen(innerPadding: PaddingValues, viewModel: PasswordR
 }
 
 @Composable
-fun PasswordResetErrorScreen(innerPadding: PaddingValues, viewModel: PasswordResetViewModel) {
-    Column(
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-            .verticalScroll(rememberScrollState())
-    ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(top = Spacing.small)
-        ) {
+fun PasswordResetErrorScreen(viewModel: PasswordResetViewModel) {
+    GenericErrorScreen(
+        image = {
             Image(
                 painter = painterResource(id = R.drawable.ic_drink),
                 contentDescription = stringResource(id = R.string.drink_icon_description)
             )
-            Spacer(modifier = Modifier.padding(Spacing.medium))
+        },
+        text = {
             Text(
                 text = stringResource(id = R.string.password_reset_error_description),
                 style = Typography.bodyLarge.copy(color = ColorReference.quartz),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = Spacing.larger)
             )
+        },
+        buttonText = stringResource(
+            id = R.string.try_again_button_label
+        ), onClickButton = {
+            viewModel.sendAction(PasswordResetAction.Action.OnClickTryAgainButton)
         }
-        ActionButton(
-            text = stringResource(id = R.string.try_again_button_label),
-            modifier = Modifier.padding(Spacing.small),
-            onClick = {
-                viewModel.sendAction(PasswordResetAction.Action.OnClickTryAgainButton)
-            }
-        )
-    }
+    )
 }
 
 @Composable

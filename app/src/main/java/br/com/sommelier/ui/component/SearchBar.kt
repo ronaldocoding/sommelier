@@ -23,12 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
@@ -42,15 +40,9 @@ import br.com.sommelier.util.emptyString
 fun SearchBar(
     modifier: Modifier = Modifier,
     query: String = emptyString(),
-    queryStyle: TextStyle = Typography.bodyLarge,
-    queryColor: Color = ColorReference.eerieBlack,
     hint: String = emptyString(),
-    hintStyle: TextStyle = Typography.bodyLarge,
-    hintColor: Color = ColorReference.taupeGray,
     containerColor: Color = ColorReference.antiFlashWhite,
-    searchIcon: ImageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
     searchIconTint: Color = ColorReference.quartz,
-    shape: Shape = RoundedCornerShape(Sizing.normal),
     onQueryChange: (String) -> Unit = {},
     onSearch: () -> Unit = {}
 ) {
@@ -58,7 +50,7 @@ fun SearchBar(
         singleLine = true,
         value = query,
         onValueChange = onQueryChange,
-        textStyle = queryStyle.copy(color = queryColor),
+        textStyle = Typography.bodyLarge.copy(color = ColorReference.eerieBlack),
         cursorBrush = SolidColor(ColorReference.royalPurple),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(
@@ -71,11 +63,11 @@ fun SearchBar(
             .border(
                 width = Sizing.almostNone,
                 color = containerColor,
-                shape = shape
+                shape = RoundedCornerShape(Sizing.normal)
             )
             .background(
                 color = containerColor,
-                shape = shape
+                shape = RoundedCornerShape(Sizing.normal)
             )
             .fillMaxWidth()
             .testTag("SearchBar")
@@ -91,7 +83,7 @@ fun SearchBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = searchIcon,
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
                 contentDescription = "Search Icon",
                 tint = searchIconTint,
                 modifier = Modifier.testTag("SearchBarIcon")
@@ -101,8 +93,8 @@ fun SearchBar(
                 if (query.isEmpty()) {
                     Text(
                         text = hint,
-                        style = hintStyle,
-                        color = hintColor,
+                        style = Typography.bodyLarge,
+                        color = ColorReference.taupeGray,
                         modifier = Modifier.testTag("SearchBarHint")
                     )
                 }
