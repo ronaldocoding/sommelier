@@ -60,7 +60,8 @@ Overall, Sommelier aims to be a user-friendly platform where individuals can sto
 
 Check out the [design](https://www.figma.com/file/vyypWnsXFdbki8i2ffBs7T/Sommelier?type=design&mode=design&t=KutwnR2b2dCMMYZf-1) in Figma:
 
-![showcase_sommelier](https://github.com/ronaldocoding/sommelier/assets/42837154/8061c149-585a-4b03-a98a-2dba38546719)
+<img width="1679" alt="Sommelier Showcase" src="https://github.com/ronaldocoding/sommelier/assets/42837154/a3382571-313d-421b-a264-f69d77374426">
+
 
 ## Documentation 🗂️
 
