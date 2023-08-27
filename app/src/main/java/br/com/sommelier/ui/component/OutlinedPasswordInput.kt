@@ -42,9 +42,6 @@ fun OutlinedPasswordInput(
     label: String = emptyString(),
     placeholder: String = emptyString(),
     isError: Boolean = false,
-    isEnabled: Boolean = true,
-    singleLine: Boolean = true,
-    maxLines: Int = 1,
     supportingText: (@Composable () -> Unit)? = null
 ) {
     var isTextFieldFocused by rememberSaveable { mutableStateOf(false) }
@@ -109,10 +106,9 @@ fun OutlinedPasswordInput(
                 }
                 .testTag("OutlinedPasswordInput"),
             textStyle = Typography.bodyLarge.copy(color = textColor),
-            enabled = isEnabled,
+            enabled = true,
             isError = isError,
-            singleLine = singleLine,
-            maxLines = maxLines,
+            singleLine = true,
             supportingText = supportingText,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = ColorReference.antiFlashWhite,
