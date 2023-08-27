@@ -111,9 +111,9 @@ class UserRepositoryImplTest {
                 every { isComplete } returns true
                 every { isCanceled } returns false
                 every { exception } returns null
-                every { result.documents.isEmpty() } returns false
+                every { result.toObjects(UserData::class.java).isEmpty() } returns false
                 every {
-                    result.documents.firstOrNull()?.toObject(UserData::class.java)
+                    result.toObjects(UserData::class.java).firstOrNull()
                 } returns dummyUserData
             }
 
@@ -131,14 +131,14 @@ class UserRepositoryImplTest {
         }
 
     @Test
-    fun `GIVEN a successful task but with a empty documents list WHEN call getUser THEN must return the expected Problem`() =
+    fun `GIVEN a successful task but with an empty result list WHEN call getUser THEN must return the expected Problem`() =
         runTest {
             val successfulTask = mockk<Task<QuerySnapshot>>().apply {
                 every { isSuccessful } returns true
                 every { isComplete } returns true
                 every { isCanceled } returns false
                 every { exception } returns null
-                every { result.documents.isEmpty() } returns true
+                every { result.toObjects(UserData::class.java).isEmpty() } returns true
             }
 
             every {
