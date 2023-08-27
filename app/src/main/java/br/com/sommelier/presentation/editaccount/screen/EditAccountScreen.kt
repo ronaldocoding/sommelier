@@ -2,14 +2,12 @@ package br.com.sommelier.presentation.editaccount.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -34,6 +32,7 @@ import br.com.sommelier.presentation.editaccount.state.EditAccountUiEffect
 import br.com.sommelier.presentation.editaccount.state.EditAccountUiState
 import br.com.sommelier.presentation.editaccount.viewmodel.EditAccountViewModel
 import br.com.sommelier.shared.screen.GenericErrorScreen
+import br.com.sommelier.shared.screen.GenericLoadingScreen
 import br.com.sommelier.ui.component.ActionButton
 import br.com.sommelier.ui.component.OutlinedTextInput
 import br.com.sommelier.ui.component.SommelierSnackbar
@@ -177,14 +176,7 @@ private fun EditAccountResumeScreen(
 
 @Composable
 fun EditAccountLoadingScreen() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        CircularProgressIndicator(
-            color = ColorReference.royalPurple
-        )
-    }
+    GenericLoadingScreen()
 }
 
 @Composable

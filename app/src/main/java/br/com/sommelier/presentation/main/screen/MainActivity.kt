@@ -3,13 +3,8 @@ package br.com.sommelier.presentation.main.screen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
@@ -29,7 +24,7 @@ import br.com.sommelier.presentation.main.viewmodel.MainViewModel
 import br.com.sommelier.presentation.passwordreset.screen.PasswordResetScreen
 import br.com.sommelier.presentation.register.screen.RegisterScreen
 import br.com.sommelier.shared.route.SommelierRoute
-import br.com.sommelier.ui.theme.ColorReference
+import br.com.sommelier.shared.screen.GenericLoadingScreen
 import br.com.sommelier.ui.theme.SommelierTheme
 import org.koin.androidx.compose.getViewModel
 
@@ -88,14 +83,7 @@ private fun UiEffect(viewModel: MainViewModel) {
 
 @Composable
 private fun LoadingScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(
-            color = ColorReference.royalPurple
-        )
-    }
+    GenericLoadingScreen()
 }
 
 @Composable
