@@ -1,6 +1,6 @@
 package br.com.sommelier.presentation.register.action
 
-interface RegisterAction {
+fun interface RegisterAction {
     fun sendAction(action: Action)
 
     sealed class Action {

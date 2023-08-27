@@ -1,6 +1,6 @@
 package br.com.sommelier.presentation.login.action
 
-interface LoginAction {
+fun interface LoginAction {
     fun sendAction(action: Action)
 
     sealed class Action {
