@@ -151,6 +151,7 @@ private fun EditAccountResumeScreen(
             onValueChange = { changedValue ->
                 viewModel.sendAction(EditAccountAction.Action.OnTypeNameField(changedValue))
             },
+            label = stringResource(id = R.string.name_text_field_label),
             placeholder = uiModel.editNameFieldUiState.placeholder,
             isError = uiModel.editNameFieldUiState.isError,
             supportingText = {

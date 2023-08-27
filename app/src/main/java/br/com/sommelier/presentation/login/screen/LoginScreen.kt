@@ -179,6 +179,7 @@ private fun LoginFields(
                 )
             },
             leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_mail),
+            label = stringResource(id = R.string.email_text_field_label),
             placeholder = stringResource(id = R.string.email_text_field_placeholder),
             supportingText = {
                 Text(
@@ -202,6 +203,7 @@ private fun LoginFields(
                     )
                 )
             },
+            label = stringResource(id = R.string.password_text_field_label),
             placeholder = stringResource(id = R.string.password_text_field_placeholder),
             supportingText = {
                 Text(

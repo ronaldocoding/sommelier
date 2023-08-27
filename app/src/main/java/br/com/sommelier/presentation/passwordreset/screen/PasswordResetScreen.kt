@@ -188,6 +188,7 @@ private fun PasswordResetInitialScreen(
                 )
             },
             isError = uiModel.emailUiState.isError,
+            label = stringResource(id = R.string.email_text_field_label),
             placeholder = stringResource(id = R.string.email_text_field_placeholder),
             leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_mail),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
