@@ -28,7 +28,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.presentation.register.action.RegisterAction
 import br.com.sommelier.presentation.register.model.RegisterUiModel
@@ -50,9 +49,8 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(navigateToLoginScreen: () -> Unit, navigateToConfirmEmailScreen: () -> Unit) {
     val viewModel = getViewModel<RegisterViewModel>()
     val uiState = checkNotNull(viewModel.uiState.observeAsState())
     val uiModel = checkNotNull(uiState.value?.uiModel)
@@ -75,7 +73,7 @@ fun RegisterScreen() {
             }
         ) {
             UiState(uiState, it, uiModel, viewModel)
-            UiEffect(viewModel, uiModel)
+            UiEffect(viewModel, uiModel, navigateToLoginScreen, navigateToConfirmEmailScreen)
         }
     }
 }
@@ -315,7 +313,9 @@ fun RegisterStringResource.toText(): String {
 @Composable
 private fun UiEffect(
     viewModel: RegisterViewModel,
-    uiModel: RegisterUiModel
+    uiModel: RegisterUiModel,
+    navigateToLoginScreen: () -> Unit = {},
+    navigateToConfirmEmailScreen: () -> Unit = {}
 ) {
     val localLifecycleOwner = LocalLifecycleOwner.current
     val coroutineScope = rememberCoroutineScope()
@@ -327,11 +327,11 @@ private fun UiEffect(
             }
 
             is RegisterUiEffect.OpenLoginScreen -> {
-                // TODO: Navigate to Login Screen
+                navigateToLoginScreen()
             }
 
             is RegisterUiEffect.OpenConfirmEmailScreen -> {
-                // TODO: Navigate to Confirm Email Screen
+                navigateToConfirmEmailScreen()
             }
 
             is RegisterUiEffect.ShowSnackbarError -> {

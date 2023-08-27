@@ -54,7 +54,7 @@
     <string name="delete_account_dialog_title">Deletar conta</string>
     <string name="delete_account_dialog_description">Tem certeza que deseja deletar a sua conta? Saiba que essa ação não pode ser desfeita.</string>
     <string name="logout_dialog_title">Sair</string>
-    <string name="logout_dialog_description">Tem certeza que deseja sair? Se sair, precisará se autenticar novamente para entrar.</string>
+    <string name="logout_dialog_description">Tem certeza que deseja sair? Se sair, precisará se autenticar novamente para re-entrar no aplicativo.</string>
     <string name="password_reset_snackbar_error_message">Ocorreu um erro ao tentar redirecionar você para a tela de redefinição de senha. Por favor, tente novamente.</string>
     <string name="delete_account_snackbar_error_message">Ocorreu um erro ao tentar deletar a sua conta. Por favor, tente novamente.</string>
     <string name="logout_snackbar_error_message">Ocorreu um erro ao tentar sair. Por favor, tente novamente.</string>
@@ -64,4 +64,7 @@
     <string name="save_button_label">Salvar</string>
     <string name="edit_account_snackbar_error_message">Ocorreu um erro ao tentar atualizar a sua conta. Por favor, tente novamente.</string>
     <string name="edit_account_success_snackbar_message">Conta atualizada com sucesso</string>
+    <string name="hamburger_icon_description">Ícone de hambúrguer</string>
+    <string name="confirm_email_top_bar_title">Confirmar email</string>
+    <string name="confirm_email_description">Você já está cadastrado. Agora precisamos que confirme seu email, enviamos um link para você.</string>
 </resources>

@@ -49,9 +49,8 @@ import br.com.sommelier.util.emptyString
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PasswordResetScreen() {
+fun PasswordResetScreen(popBackStack: () -> Unit) {
     val viewModel = getViewModel<PasswordResetViewModel>()
     val uiState = checkNotNull(viewModel.uiState.observeAsState())
     val uiModel = checkNotNull(uiState.value?.uiModel)
@@ -66,7 +65,7 @@ fun PasswordResetScreen() {
             }
         ) { innerPadding ->
             UiState(innerPadding, uiModel, viewModel)
-            UiEffect(viewModel)
+            UiEffect(viewModel, popBackStack)
         }
     }
 }
@@ -135,7 +134,7 @@ private fun UiState(
 }
 
 @Composable
-private fun UiEffect(viewModel: PasswordResetViewModel) {
+private fun UiEffect(viewModel: PasswordResetViewModel, popBackStack: () -> Unit = {}) {
     val localLifecycleOwner = LocalLifecycleOwner.current
     viewModel.uiEffect.observe(localLifecycleOwner) { effect ->
         when (effect) {
@@ -144,7 +143,7 @@ private fun UiEffect(viewModel: PasswordResetViewModel) {
             }
 
             is PasswordResetUiEffect.PopBackStack -> {
-                // TODO: pop back stack
+                popBackStack()
             }
         }
     }

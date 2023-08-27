@@ -18,6 +18,10 @@ class HomeViewModel : ViewModel(), HomeAction {
 
     override fun sendAction(action: HomeAction.Action) {
         when (action) {
+            is HomeAction.Action.OnClickBackButton -> {
+                _uiEffect.value = HomeUiEffect.PopBackStack
+            }
+
             is HomeAction.Action.OnTypeSearchField -> {
                 handleOnTypeSearchField(action)
             }

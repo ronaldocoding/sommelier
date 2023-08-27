@@ -52,9 +52,13 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun AccountScreen() {
+fun AccountScreen(
+    navigateToEditAccountScreen: () -> Unit,
+    navigateToLoginScreen: () -> Unit,
+    navigateToPasswordResetScreen: () -> Unit,
+    popBackStack: () -> Unit
+) {
     val viewModel = getViewModel<AccountViewModel>()
     val uiState = checkNotNull(viewModel.uiState.observeAsState().value)
     val uiModel = checkNotNull(uiState.uiModel)
@@ -81,10 +85,16 @@ fun AccountScreen() {
                 }
             }
         ) { innerPadding ->
-            viewModel.sendAction(AccountAction.Action.OnTryToFetchAccountData)
             UiState(innerPadding, viewModel, uiState, uiModel)
             AccountDialog(viewModel, uiModel)
-            UiEffect(viewModel, uiModel)
+            UiEffect(
+                viewModel,
+                uiModel,
+                navigateToEditAccountScreen,
+                navigateToLoginScreen,
+                navigateToPasswordResetScreen,
+                popBackStack
+            )
         }
     }
 }
@@ -119,8 +129,12 @@ private fun UiState(
     uiModel: AccountUiModel
 ) {
     when (uiState) {
-        is AccountUiState.Initial, is AccountUiState.Resume -> {
-            AccountInitialAndResumeScreen(innerPadding, uiModel, viewModel)
+        is AccountUiState.Initial -> {
+            viewModel.sendAction(AccountAction.Action.OnInitial)
+        }
+
+        is AccountUiState.Resume -> {
+            AccountResumeScreen(innerPadding, uiModel, viewModel)
         }
 
         is AccountUiState.Error -> {
@@ -189,7 +203,7 @@ private fun AccountDialog(viewModel: AccountViewModel, uiModel: AccountUiModel) 
 }
 
 @Composable
-private fun AccountInitialAndResumeScreen(
+private fun AccountResumeScreen(
     innerPadding: PaddingValues,
     uiModel: AccountUiModel,
     viewModel: AccountViewModel
@@ -312,26 +326,33 @@ private fun AccountErrorScreen(viewModel: AccountViewModel) {
 }
 
 @Composable
-private fun UiEffect(viewModel: AccountViewModel, uiModel: AccountUiModel) {
+private fun UiEffect(
+    viewModel: AccountViewModel,
+    uiModel: AccountUiModel,
+    navigateToEditAccountScreen: () -> Unit = {},
+    navigateToLoginScreen: () -> Unit = {},
+    navigateToPasswordResetScreen: () -> Unit = {},
+    popBackStack: () -> Unit = {}
+) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val coroutineScope = rememberCoroutineScope()
     val snackbarMessage = uiModel.snackbarUiState.message.toText()
     viewModel.uiEffect.observe(lifecycleOwner) { uiEffect ->
         when (uiEffect) {
             is AccountUiEffect.OpenEditAccountScreen -> {
-                // TODO: Navigate to EditAccountScreen
+                navigateToEditAccountScreen()
             }
 
             is AccountUiEffect.OpenLoginScreen -> {
-                // TODO: Navigate to LoginScreen
+                navigateToLoginScreen()
             }
 
             is AccountUiEffect.OpenPasswordResetScreen -> {
-                // TODO: Navigate to ResetPasswordScreen
+                navigateToPasswordResetScreen()
             }
 
             is AccountUiEffect.PopBackStack -> {
-                // TODO: Pop back stack
+                popBackStack()
             }
 
             is AccountUiEffect.ShowLoading -> {

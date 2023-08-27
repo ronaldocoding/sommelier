@@ -29,7 +29,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.presentation.login.action.LoginAction
 import br.com.sommelier.presentation.login.model.LoginUiModel
@@ -51,9 +50,13 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    navigateToHomeScreen: () -> Unit = {},
+    navigateToRegisterScreen: () -> Unit = {},
+    navigateToPasswordResetScreen: () -> Unit = {},
+    navigateToConfirmEmailScreen: () -> Unit = {}
+) {
     val viewModel = getViewModel<LoginViewModel>()
     val uiState = checkNotNull(viewModel.uiState.observeAsState())
     val uiModel = checkNotNull(uiState.value?.uiModel)
@@ -76,7 +79,13 @@ fun LoginScreen() {
             }
         ) {
             UiState(uiState, it, uiModel, viewModel)
-            UiEffect(viewModel = viewModel)
+            UiEffect(
+                viewModel = viewModel,
+                navigateToHomeScreen,
+                navigateToRegisterScreen,
+                navigateToPasswordResetScreen,
+                navigateToConfirmEmailScreen
+            )
         }
     }
 }
@@ -243,7 +252,13 @@ private fun LoginClickableTexts(viewModel: LoginViewModel) {
 }
 
 @Composable
-private fun UiEffect(viewModel: LoginViewModel) {
+private fun UiEffect(
+    viewModel: LoginViewModel,
+    navigateToHomeScreen: () -> Unit = {},
+    navigateToRegisterScreen: () -> Unit = {},
+    navigateToPasswordResetScreen: () -> Unit = {},
+    navigateToConfirmEmailScreen: () -> Unit = {}
+) {
     val localLifecycleOwner = LocalLifecycleOwner.current
     val coroutineScope = rememberCoroutineScope()
     val snackbarErrorMessage = stringResource(id = R.string.login_error_message)
@@ -254,11 +269,11 @@ private fun UiEffect(viewModel: LoginViewModel) {
             }
 
             is LoginUiEffect.OpenHomeScreen -> {
-                // TODO: Open Home Screen
+                navigateToHomeScreen()
             }
 
             is LoginUiEffect.OpenRegisterScreen -> {
-                // TODO: Open Sign Up Screen
+                navigateToRegisterScreen()
             }
 
             is LoginUiEffect.ShowSnackbarError -> {
@@ -270,11 +285,11 @@ private fun UiEffect(viewModel: LoginViewModel) {
             }
 
             is LoginUiEffect.OpenForgotPasswordScreen -> {
-                // TODO: Open Forgot Password Screen
+                navigateToPasswordResetScreen()
             }
 
             is LoginUiEffect.OpenConfirmEmailScreen -> {
-                // TODO: Open Confirm Email Screen
+                navigateToConfirmEmailScreen()
             }
         }
     }

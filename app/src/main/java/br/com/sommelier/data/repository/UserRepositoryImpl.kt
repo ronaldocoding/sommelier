@@ -42,7 +42,7 @@ class UserRepositoryImpl(private val usersCollection: CollectionReference) : Use
         return try {
             task.await()
             if (task.isSuccessful) {
-                val userData = task.result.documents.firstOrNull()?.toObject(UserData::class.java)
+                val userData = task.result.toObjects(UserData::class.java).firstOrNull()
                 userData?.toDomain()?.right() ?: NotFoundDocumentProblem("User not found").left()
             } else {
                 GetDocumentProblem(

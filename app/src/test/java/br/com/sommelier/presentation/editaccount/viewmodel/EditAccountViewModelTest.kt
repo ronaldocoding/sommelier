@@ -12,12 +12,14 @@ import br.com.sommelier.domain.usecase.GetUserDocumentUseCase
 import br.com.sommelier.domain.usecase.UpdateUserDocumentUseCase
 import br.com.sommelier.presentation.editaccount.action.EditAccountAction
 import br.com.sommelier.presentation.editaccount.model.EditAccountUiModel
+import br.com.sommelier.presentation.editaccount.model.EditNameFieldUiState
 import br.com.sommelier.presentation.editaccount.res.EditAccountStringResource
 import br.com.sommelier.presentation.editaccount.state.EditAccountLoadingCause
 import br.com.sommelier.presentation.editaccount.state.EditAccountUiEffect
 import br.com.sommelier.presentation.editaccount.state.EditAccountUiState
 import br.com.sommelier.testrule.CoroutineTestRule
 import br.com.sommelier.ui.component.SommelierSnackbarType
+import br.com.sommelier.util.emptyString
 import br.com.sommelier.util.ext.getOrAwaitValue
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -104,7 +106,7 @@ class EditAccountViewModelTest {
             val expectedUiState = EditAccountUiState.Resume(
                 EditAccountUiModel().copy(
                     editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
-                        name = dummyUserDomain.name
+                        placeholder = dummyUserDomain.name
                     )
                 )
             )
@@ -215,6 +217,35 @@ class EditAccountViewModelTest {
     }
 
     @Test
+    fun `GIVEN OnClickSaveButton was the last action sent and name field was valid but had error status WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() {
+        val action = EditAccountAction.Action.OnClickSaveButton
+        val name = "Ronaldo"
+
+        viewModel.sendAction(EditAccountAction.Action.OnClickSaveButton)
+        viewModel.sendAction(EditAccountAction.Action.OnTypeNameField(name))
+        viewModel.sendAction(action)
+
+        val expectedUiState = EditAccountUiState.Loading(
+            EditAccountUiModel().copy(
+                editNameFieldUiState = EditNameFieldUiState(
+                    name = name,
+                    errorSupportingMessage = EditAccountStringResource.Empty,
+                    isError = false
+                ),
+                isLoading = true
+            )
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+        val expectedUiEffect =
+            EditAccountUiEffect.ShowLoading(EditAccountLoadingCause.SaveAccountData)
+        val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+        assertUiState(expectedUiState, actualUiState)
+        assertEquals(expectedUiEffect, actualUiEffect)
+    }
+
+    @Test
     fun `GIVEN OnClickSaveButton action was sent but name field was blank WHEN sendAction was called THEN assert that the emitted uiState was the expected`() {
         val action = EditAccountAction.Action.OnClickSaveButton
 
@@ -256,7 +287,7 @@ class EditAccountViewModelTest {
     }
 
     @Test
-    fun `GIVEN OnTryToSave action was sent and all use cases as success WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
+    fun `GIVEN OnTryToSave was the last action sent and all use cases as success WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
         coroutineTestRule.runBlockingTest {
             val action = EditAccountAction.Action.OnTryToSave
 
@@ -279,17 +310,21 @@ class EditAccountViewModelTest {
                 updateUserDocumentUseCase(dummyUserDomain)
             } returns updateUserDocumentUseCaseResult
 
+            viewModel.sendAction(EditAccountAction.Action.OnTypeNameField(dummyUserDomain.name))
+            viewModel.sendAction(EditAccountAction.Action.OnClickSaveButton)
             viewModel.sendAction(action)
 
             val expectedUiState = EditAccountUiState.Resume(
                 EditAccountUiModel().copy(
                     editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
-                        name = dummyUserDomain.name
+                        name = emptyString(),
+                        placeholder = dummyUserDomain.name
                     ),
                     snackbarUiState = EditAccountUiModel().snackbarUiState.copy(
                         message = EditAccountStringResource.SuccessSnackbar,
                         type = SommelierSnackbarType.Success
-                    )
+                    ),
+                    isLoading = false
                 )
             )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
@@ -302,7 +337,7 @@ class EditAccountViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnTryToSave action was sent and getCurrentUserUseCase as failure WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
+    fun `GIVEN OnTryToSave was the last action sent and getCurrentUserUseCase as failure WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
         coroutineTestRule.runBlockingTest {
             val action = EditAccountAction.Action.OnTryToSave
 
@@ -311,9 +346,22 @@ class EditAccountViewModelTest {
             )
             coEvery { getCurrentUserUseCase(any()) } returns getCurrentUserUseCaseResult
 
+            viewModel.sendAction(EditAccountAction.Action.OnTypeNameField(dummyUserDomain.name))
+            viewModel.sendAction(EditAccountAction.Action.OnClickSaveButton)
             viewModel.sendAction(action)
 
-            val expectedUiState = EditAccountUiState.Resume(EditAccountUiModel())
+            val expectedUiState = EditAccountUiState.Resume(
+                EditAccountUiModel().copy(
+                    editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
+                        name = dummyUserDomain.name
+                    ),
+                    snackbarUiState = EditAccountUiModel().snackbarUiState.copy(
+                        message = EditAccountStringResource.ErrorSnackbar,
+                        type = SommelierSnackbarType.Error
+                    ),
+                    isLoading = false
+                )
+            )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
 
             val expectedUiEffect = EditAccountUiEffect.ShowSnackbarError
@@ -324,7 +372,7 @@ class EditAccountViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnTryToSave action was sent and getCurrentUserUseCase as success but getUserDocument as failure WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
+    fun `GIVEN OnTryToSave was the last action sent and getCurrentUserUseCase as success but getUserDocument as failure WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
         coroutineTestRule.runBlockingTest {
             val action = EditAccountAction.Action.OnTryToSave
 
@@ -340,9 +388,22 @@ class EditAccountViewModelTest {
                 getUserDocumentUseCase(GetUserDocumentUseCase.Params(userUid = dummyUserDomain.uid))
             } returns getUserDocumentUseCaseResult
 
+            viewModel.sendAction(EditAccountAction.Action.OnTypeNameField(dummyUserDomain.name))
+            viewModel.sendAction(EditAccountAction.Action.OnClickSaveButton)
             viewModel.sendAction(action)
 
-            val expectedUiState = EditAccountUiState.Resume(EditAccountUiModel())
+            val expectedUiState = EditAccountUiState.Resume(
+                EditAccountUiModel().copy(
+                    editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
+                        name = dummyUserDomain.name
+                    ),
+                    snackbarUiState = EditAccountUiModel().snackbarUiState.copy(
+                        message = EditAccountStringResource.ErrorSnackbar,
+                        type = SommelierSnackbarType.Error
+                    ),
+                    isLoading = false
+                )
+            )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
 
             val expectedUiEffect = EditAccountUiEffect.ShowSnackbarError
@@ -353,7 +414,7 @@ class EditAccountViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnTryToSave action was sent and all use cases as success except updateUserDocument WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
+    fun `GIVEN OnTryToSave was the last action sent and all use cases as success except updateUserDocument WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() =
         coroutineTestRule.runBlockingTest {
             val action = EditAccountAction.Action.OnTryToSave
 
@@ -376,9 +437,22 @@ class EditAccountViewModelTest {
                 updateUserDocumentUseCase(dummyUserDomain)
             } returns updateUserDocumentUseCaseResult
 
+            viewModel.sendAction(EditAccountAction.Action.OnTypeNameField(dummyUserDomain.name))
+            viewModel.sendAction(EditAccountAction.Action.OnClickSaveButton)
             viewModel.sendAction(action)
 
-            val expectedUiState = EditAccountUiState.Resume(EditAccountUiModel())
+            val expectedUiState = EditAccountUiState.Resume(
+                EditAccountUiModel().copy(
+                    editNameFieldUiState = EditAccountUiModel().editNameFieldUiState.copy(
+                        name = dummyUserDomain.name
+                    ),
+                    snackbarUiState = EditAccountUiModel().snackbarUiState.copy(
+                        message = EditAccountStringResource.ErrorSnackbar,
+                        type = SommelierSnackbarType.Error
+                    ),
+                    isLoading = false
+                )
+            )
             val actualUiState = viewModel.uiState.getOrAwaitValue()
 
             val expectedUiEffect = EditAccountUiEffect.ShowSnackbarError
@@ -412,6 +486,10 @@ class EditAccountViewModelTest {
         assertEquals(
             expected.uiModel.editNameFieldUiState.name,
             actual.uiModel.editNameFieldUiState.name
+        )
+        assertEquals(
+            expected.uiModel.editNameFieldUiState.placeholder,
+            actual.uiModel.editNameFieldUiState.placeholder
         )
         assertEquals(
             expected.uiModel.editNameFieldUiState.errorSupportingMessage,

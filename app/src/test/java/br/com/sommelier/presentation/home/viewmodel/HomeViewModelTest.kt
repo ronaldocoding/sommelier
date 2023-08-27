@@ -28,7 +28,19 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `GIVEN OnTypeSearchField action sent WHEN sendAction was called THEN assert that the uiState is the expected`() =
+    fun `GIVEN OnClickBackButton action sent WHEN sendAction was called THEN assert that the uiEffect was PopBackStack`() {
+        val action = HomeAction.Action.OnClickBackButton
+
+        viewModel.sendAction(action)
+
+        val expectedUiEffect = HomeUiEffect.PopBackStack
+        val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+        assertEquals(expectedUiEffect, actualUiEffect)
+    }
+
+    @Test
+    fun `GIVEN OnTypeSearchField action sent WHEN sendAction was called THEN assert that the uiState was the expected`() =
         coroutineTestRule.runBlockingTest {
             val query = "query"
             val action = HomeAction.Action.OnTypeSearchField(query)
@@ -54,7 +66,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `GIVEN OnSearch action sent WHEN sendAction was called THEN assert that the uiEffect is the expected`() =
+    fun `GIVEN OnSearch action sent WHEN sendAction was called THEN assert that the uiEffect was the expected`() =
         coroutineTestRule.runBlockingTest {
             val action = HomeAction.Action.OnSearch
 
@@ -67,7 +79,7 @@ class HomeViewModelTest {
         }
 
     @Test
-    fun `OnClickManageAccountButton action sent WHEN sendAction was called THEN assert that the uiEffect is the expected`() =
+    fun `OnClickManageAccountButton action sent WHEN sendAction was called THEN assert that the uiEffect was the expected`() =
         coroutineTestRule.runBlockingTest {
             val action = HomeAction.Action.OnClickManageAccountButton
 
@@ -80,7 +92,7 @@ class HomeViewModelTest {
         }
 
     @Test
-    fun `OnClickAddRestaurantButton action sent WHEN sendAction was called THEN assert that the uiEffect is the expected`() =
+    fun `OnClickAddRestaurantButton action sent WHEN sendAction was called THEN assert that the uiEffect was the expected`() =
         coroutineTestRule.runBlockingTest {
             val action = HomeAction.Action.OnClickAddRestaurantButton
 

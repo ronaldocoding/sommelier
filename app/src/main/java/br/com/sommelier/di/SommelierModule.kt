@@ -19,9 +19,11 @@ import br.com.sommelier.domain.usecase.UpdateUserDocumentUseCase
 import br.com.sommelier.domain.usecase.UpdateUserEmailUseCase
 import br.com.sommelier.domain.usecase.UpdateUserPasswordUseCase
 import br.com.sommelier.presentation.account.viewmodel.AccountViewModel
+import br.com.sommelier.presentation.confirmemail.viewmodel.ConfirmEmailViewModel
 import br.com.sommelier.presentation.editaccount.viewmodel.EditAccountViewModel
 import br.com.sommelier.presentation.home.viewmodel.HomeViewModel
 import br.com.sommelier.presentation.login.viewmodel.LoginViewModel
+import br.com.sommelier.presentation.main.viewmodel.MainViewModel
 import br.com.sommelier.presentation.passwordreset.viewmodel.PasswordResetViewModel
 import br.com.sommelier.presentation.register.viewmodel.RegisterViewModel
 import br.com.sommelier.util.FirestoreCollections.USERS
@@ -121,6 +123,13 @@ object SommelierModule {
                 getCurrentUserUseCase = get(),
                 getUserDocumentUseCase = get(),
                 updateUserDocumentUseCase = get()
+            )
+        }
+        factory { ConfirmEmailViewModel() }
+        factory {
+            MainViewModel(
+                isUserSignedInUseCase = get(),
+                isUserEmailVerifiedUseCase = get()
             )
         }
     }

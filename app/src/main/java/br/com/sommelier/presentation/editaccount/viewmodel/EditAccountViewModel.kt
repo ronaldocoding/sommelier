@@ -12,11 +12,13 @@ import br.com.sommelier.domain.usecase.GetCurrentUserUseCase
 import br.com.sommelier.domain.usecase.GetUserDocumentUseCase
 import br.com.sommelier.domain.usecase.UpdateUserDocumentUseCase
 import br.com.sommelier.presentation.editaccount.action.EditAccountAction
+import br.com.sommelier.presentation.editaccount.model.EditAccountUiModel
 import br.com.sommelier.presentation.editaccount.res.EditAccountStringResource
 import br.com.sommelier.presentation.editaccount.state.EditAccountLoadingCause
 import br.com.sommelier.presentation.editaccount.state.EditAccountUiEffect
 import br.com.sommelier.presentation.editaccount.state.EditAccountUiState
 import br.com.sommelier.ui.component.SommelierSnackbarType
+import br.com.sommelier.util.emptyString
 import br.com.sommelier.util.ext.asLiveData
 import br.com.sommelier.util.validator.isValidName
 import kotlinx.coroutines.launch
@@ -98,8 +100,9 @@ class EditAccountViewModel(
                 val uiModel = state.uiModel
                 val newUiModel = uiModel.copy(
                     editNameFieldUiState = uiModel.editNameFieldUiState.copy(
-                        name = successResult.data.name
-                    )
+                        placeholder = successResult.data.name
+                    ),
+                    isLoading = false
                 )
                 _uiState.value = EditAccountUiState.Resume(newUiModel)
             }
@@ -116,7 +119,7 @@ class EditAccountViewModel(
     }
 
     private fun handleOnClickBackButton() {
-        _uiEffect.value = EditAccountUiEffect.PopBackStack
+        _uiEffect.emit(EditAccountUiEffect.PopBackStack)
     }
 
     private fun handleOnClickSaveButton() {
@@ -132,10 +135,23 @@ class EditAccountViewModel(
         if (newUiModel.editNameFieldUiState.isError) {
             _uiState.value = EditAccountUiState.Resume(newUiModel)
         } else {
-            emitLoadingState()
+            val uiModelWithoutErrorState = removePossibleRemainingErrorState(newUiModel)
+            emitLoadingState(uiModelWithoutErrorState.copy(isLoading = true))
             emitShowLoadingEffect(EditAccountLoadingCause.SaveAccountData)
         }
     }
+
+    private fun removePossibleRemainingErrorState(newUiModel: EditAccountUiModel) =
+        if (newUiModel.editNameFieldUiState.isError) {
+            newUiModel.copy(
+                editNameFieldUiState = newUiModel.editNameFieldUiState.copy(
+                    errorSupportingMessage = EditAccountStringResource.Empty,
+                    isError = false
+                )
+            )
+        } else {
+            newUiModel
+        }
 
     private fun getErrorSupportingMessage(name: String) =
         if (name.isBlank()) {
@@ -169,37 +185,42 @@ class EditAccountViewModel(
                 handleErrorWhenTryingToSave()
             },
             ifRight = { userDocumentResult ->
-                tryToSave(userDocumentResult)
+                val newUserDomain = userDocumentResult.data.copy(
+                    name = checkNotNull(_uiState.value).uiModel.editNameFieldUiState.name
+                )
+                tryToSave(newUserDomain)
             }
         )
     }
 
-    private suspend fun tryToSave(userDocumentResult: Success<UserDomain>) {
-        updateUserDocumentUseCase(userDocumentResult.data).fold(
+    private suspend fun tryToSave(userDomain: UserDomain) {
+        updateUserDocumentUseCase(userDomain).fold(
             ifLeft = {
                 handleErrorWhenTryingToSave()
             },
             ifRight = {
-                handleSuccessWhenTryingToSave(userDocumentResult)
+                handleSuccessWhenTryingToSave(userDomain)
             }
         )
     }
 
     private fun emitShowLoadingEffect(loadingCause: EditAccountLoadingCause) {
-        _uiEffect.value = EditAccountUiEffect.ShowLoading(loadingCause)
+        _uiEffect.emit(EditAccountUiEffect.ShowLoading(loadingCause))
     }
 
-    private fun handleSuccessWhenTryingToSave(userDocumentResult: Success<UserDomain>) {
+    private fun handleSuccessWhenTryingToSave(userDomain: UserDomain) {
         val state = checkNotNull(_uiState.value)
         val uiModel = state.uiModel
         val newUiModel = uiModel.copy(
             editNameFieldUiState = uiModel.editNameFieldUiState.copy(
-                name = userDocumentResult.data.name
+                name = emptyString(),
+                placeholder = userDomain.name
             ),
             snackbarUiState = uiModel.snackbarUiState.copy(
                 message = EditAccountStringResource.SuccessSnackbar,
                 type = SommelierSnackbarType.Success
-            )
+            ),
+            isLoading = false
         )
         _uiState.value = EditAccountUiState.Resume(newUiModel)
         _uiEffect.value = EditAccountUiEffect.ShowSnackbarSuccess
@@ -228,12 +249,22 @@ class EditAccountViewModel(
     }
 
     private fun emitSnackbarErrorEffect() {
-        _uiEffect.value = EditAccountUiEffect.ShowSnackbarError
+        val state = checkNotNull(_uiState.value)
+        val uiModel = state.uiModel
+        val newUiModel = uiModel.copy(
+            snackbarUiState = uiModel.snackbarUiState.copy(
+                message = EditAccountStringResource.ErrorSnackbar,
+                type = SommelierSnackbarType.Error
+            ),
+            isLoading = false
+        )
+        _uiState.value = EditAccountUiState.Resume(newUiModel)
+        _uiEffect.emit(EditAccountUiEffect.ShowSnackbarError)
     }
 
-    private fun emitLoadingState() {
+    private fun emitLoadingState(personalizedUiModel: EditAccountUiModel? = null) {
         val state = checkNotNull(_uiState.value)
-        val uiModel = state.uiModel.copy(isLoading = true)
+        val uiModel = personalizedUiModel ?: state.uiModel.copy(isLoading = true)
         _uiState.value = EditAccountUiState.Loading(uiModel)
     }
 

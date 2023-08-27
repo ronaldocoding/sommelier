@@ -66,6 +66,26 @@ class AccountViewModelTest {
     }
 
     @Test
+    fun `GIVEN OnInitial action was sent WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() {
+        val action = AccountAction.Action.OnInitial
+
+        viewModel.sendAction(action)
+
+        val expectedUiState = AccountUiState.Loading(AccountUiModel().copy(isLoading = true))
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
+
+        val expectedUiEffect = AccountUiEffect.ShowLoading(AccountLoadingCause.FetchAccountData)
+        val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+        assertUiState(expectedUiState, actualUiState)
+        assertEquals(expectedUiEffect, actualUiEffect)
+        assertEquals(
+            expectedUiEffect.loadingCause,
+            (actualUiEffect as AccountUiEffect.ShowLoading).loadingCause
+        )
+    }
+
+    @Test
     fun `GIVEN OnFetchAccountData action was sent and both use cases as success WHEN sendAction was called THEN assert that the emitted uiState was Resume`() =
         coroutineTestRule.runBlockingTest {
             val action = AccountAction.Action.OnTryToFetchAccountData
@@ -199,12 +219,18 @@ class AccountViewModelTest {
     }
 
     @Test
-    fun `GIVEN OnClickPasswordResetConfirmationButton action was sent WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() {
+    fun `GIVEN OnClickPasswordResetConfirmationButton was the last action sent WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() {
         val action = AccountAction.Action.OnClickPasswordResetConfirmationButton
 
+        viewModel.sendAction(AccountAction.Action.OnClickPasswordResetButton)
         viewModel.sendAction(action)
 
-        val expectedUiState = AccountUiState.Loading(AccountUiModel().copy(isLoading = true))
+        val expectedUiState = AccountUiState.Loading(
+            AccountUiModel().copy(
+                isLoading = true,
+                isPasswordResetDialogVisible = false
+            )
+        )
         val actualUiState = viewModel.uiState.getOrAwaitValue()
 
         val expectedUiEffect = AccountUiEffect.ShowLoading(AccountLoadingCause.PasswordReset)
@@ -242,9 +268,13 @@ class AccountViewModelTest {
 
             viewModel.sendAction(action)
 
+            val expectedUiState = AccountUiState.Loading(AccountUiModel().copy(isLoading = true))
+            val actualUiState = viewModel.uiState.getOrAwaitValue()
+
             val expectedUiEffect = AccountUiEffect.OpenPasswordResetScreen
             val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
+            assertUiState(expectedUiState, actualUiState)
             assertEquals(expectedUiEffect, actualUiEffect)
         }
 
@@ -293,12 +323,18 @@ class AccountViewModelTest {
     }
 
     @Test
-    fun `GIVEN OnClickDeleteAccountConfirmationButton action was sent WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() {
+    fun `GIVEN OnClickDeleteAccountConfirmationButton was the last action sent WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() {
         val action = AccountAction.Action.OnClickDeleteAccountConfirmationButton
 
+        viewModel.sendAction(AccountAction.Action.OnClickDeleteAccountButton)
         viewModel.sendAction(action)
 
-        val expectedUiState = AccountUiState.Loading(AccountUiModel().copy(isLoading = true))
+        val expectedUiState = AccountUiState.Loading(
+            AccountUiModel().copy(
+                isLoading = true,
+                isDeleteAccountDialogVisible = false
+            )
+        )
         val actualUiState = viewModel.uiState.getOrAwaitValue()
 
         val expectedUiEffect = AccountUiEffect.ShowLoading(AccountLoadingCause.DeleteAccount)
@@ -347,9 +383,13 @@ class AccountViewModelTest {
 
             viewModel.sendAction(action)
 
+            val expectedUiState = AccountUiState.Loading(AccountUiModel().copy(isLoading = true))
+            val actualUiState = viewModel.uiState.getOrAwaitValue()
+
             val expectedUiEffect = AccountUiEffect.OpenLoginScreen
             val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
+            assertUiState(expectedUiState, actualUiState)
             assertEquals(expectedUiEffect, actualUiEffect)
         }
 
@@ -433,12 +473,18 @@ class AccountViewModelTest {
     }
 
     @Test
-    fun `GIVEN OnClickLogoutConfirmationButton action was sent WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() {
+    fun `GIVEN OnClickLogoutConfirmationButton was the last action sent WHEN sendAction was called THEN assert that the emitted uiState and uiEffect were the expected`() {
         val action = AccountAction.Action.OnClickLogoutConfirmationButton
 
+        viewModel.sendAction(AccountAction.Action.OnClickLogoutButton)
         viewModel.sendAction(action)
 
-        val expectedUiState = AccountUiState.Loading(AccountUiModel().copy(isLoading = true))
+        val expectedUiState = AccountUiState.Loading(
+            AccountUiModel().copy(
+                isLoading = true,
+                isLogoutDialogVisible = false
+            )
+        )
         val actualUiState = viewModel.uiState.getOrAwaitValue()
 
         val expectedUiEffect = AccountUiEffect.ShowLoading(AccountLoadingCause.Logout)
@@ -480,9 +526,13 @@ class AccountViewModelTest {
 
             viewModel.sendAction(action)
 
+            val expectedUiState = AccountUiState.Loading(AccountUiModel().copy(isLoading = true))
+            val actualUiState = viewModel.uiState.getOrAwaitValue()
+
             val expectedUiEffect = AccountUiEffect.OpenLoginScreen
             val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
+            assertUiState(expectedUiState, actualUiState)
             assertEquals(expectedUiEffect, actualUiEffect)
         }
 
