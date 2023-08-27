@@ -156,7 +156,7 @@ private fun PasswordResetInitialScreen(
     viewModel: PasswordResetViewModel
 ) {
     Column(
-        verticalArrangement = Arrangement.SpaceAround,
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
@@ -165,7 +165,8 @@ private fun PasswordResetInitialScreen(
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(top = Spacing.small)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_repair),
@@ -200,7 +201,7 @@ private fun PasswordResetInitialScreen(
         )
         ActionButton(
             text = stringResource(id = R.string.send_button_label),
-            modifier = Modifier.padding(horizontal = Spacing.small),
+            modifier = Modifier.padding(Spacing.small),
             onClick = {
                 viewModel.sendAction(PasswordResetAction.Action.OnClickSendButton)
             }
@@ -224,7 +225,7 @@ fun PasswordResetLoadingScreen() {
 @Composable
 fun PasswordResetSuccessScreen(innerPadding: PaddingValues, viewModel: PasswordResetViewModel) {
     Column(
-        verticalArrangement = Arrangement.SpaceAround,
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
@@ -233,7 +234,8 @@ fun PasswordResetSuccessScreen(innerPadding: PaddingValues, viewModel: PasswordR
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(top = Spacing.small)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_coffee),
@@ -249,7 +251,7 @@ fun PasswordResetSuccessScreen(innerPadding: PaddingValues, viewModel: PasswordR
         }
         ActionButton(
             text = stringResource(id = R.string.ok_button_label),
-            modifier = Modifier.padding(horizontal = Spacing.small),
+            modifier = Modifier.padding(Spacing.small),
             onClick = {
                 viewModel.sendAction(PasswordResetAction.Action.OnClickOkButton)
             }
@@ -260,7 +262,7 @@ fun PasswordResetSuccessScreen(innerPadding: PaddingValues, viewModel: PasswordR
 @Composable
 fun PasswordResetErrorScreen(innerPadding: PaddingValues, viewModel: PasswordResetViewModel) {
     Column(
-        verticalArrangement = Arrangement.SpaceAround,
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
@@ -269,7 +271,8 @@ fun PasswordResetErrorScreen(innerPadding: PaddingValues, viewModel: PasswordRes
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(top = Spacing.small)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_drink),
@@ -285,7 +288,7 @@ fun PasswordResetErrorScreen(innerPadding: PaddingValues, viewModel: PasswordRes
         }
         ActionButton(
             text = stringResource(id = R.string.try_again_button_label),
-            modifier = Modifier.padding(horizontal = Spacing.small),
+            modifier = Modifier.padding(Spacing.small),
             onClick = {
                 viewModel.sendAction(PasswordResetAction.Action.OnClickTryAgainButton)
             }
