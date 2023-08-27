@@ -50,15 +50,12 @@ fun ClickableText(
         TextButton(
             onClick = onClick,
             contentPadding = PaddingValues(Sizing.none),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = ColorReference.white
-            ),
             modifier = Modifier.getModifier(clickableText.length)
         ) {
             Text(
                 text = clickableText,
                 style = clickableTextStyle,
-                color = textColor
+                color = ColorReference.royalPurple
             )
         }
     }
