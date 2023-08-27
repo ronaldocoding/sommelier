@@ -55,206 +55,198 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `GIVEN OnTypeEmailField action was sent WHEN sendAction was called THEN assert that emitted uiState is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val email = "Email"
-            val action = LoginAction.Action.OnTypeEmailField(email)
+    fun `GIVEN OnTypeEmailField action was sent WHEN sendAction was called THEN assert that emitted uiState is the expected`() {
+        val email = "Email"
+        val action = LoginAction.Action.OnTypeEmailField(email)
 
-            viewModel.sendAction(action)
+        viewModel.sendAction(action)
 
-            val expectedUiState = LoginUiState.Resume(
-                LoginUiModel().copy(
-                    emailUiState = LoginUiModel().emailUiState.copy(text = email)
-                )
+        val expectedUiState = LoginUiState.Resume(
+            LoginUiModel().copy(
+                emailUiState = LoginUiModel().emailUiState.copy(text = email)
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnTypePasswordField action was sent WHEN sendAction was called THEN assert that emitted uiState is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val password = "Password"
-            val action = LoginAction.Action.OnTypePasswordField(password)
+    fun `GIVEN OnTypePasswordField action was sent WHEN sendAction was called THEN assert that emitted uiState is the expected`() {
+        val password = "Password"
+        val action = LoginAction.Action.OnTypePasswordField(password)
 
-            viewModel.sendAction(action)
+        viewModel.sendAction(action)
 
-            val expectedUiState = LoginUiState.Resume(
-                LoginUiModel().copy(
-                    passwordUiState = LoginUiModel().passwordUiState.copy(text = password)
-                )
+        val expectedUiState = LoginUiState.Resume(
+            LoginUiModel().copy(
+                passwordUiState = LoginUiModel().passwordUiState.copy(text = password)
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnClickLoginButton action was sent but email and password are empty WHEN sendAction was called THEN assert that emitted uiState is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = LoginAction.Action.OnClickLoginButton
-            val emailErrorSupportingMessage = LoginStringResource.BlankEmail
-            val passwordErrorSupportingMessage = LoginStringResource.BlankPassword
+    fun `GIVEN OnClickLoginButton action was sent but email and password are empty WHEN sendAction was called THEN assert that emitted uiState is the expected`() {
+        val action = LoginAction.Action.OnClickLoginButton
+        val emailErrorSupportingMessage = LoginStringResource.BlankEmail
+        val passwordErrorSupportingMessage = LoginStringResource.BlankPassword
 
-            viewModel.sendAction(action)
+        viewModel.sendAction(action)
 
-            val expectedUiState = LoginUiState.Resume(
-                LoginUiModel().copy(
-                    emailUiState = LoginUiModel().emailUiState.copy(
-                        errorSupportingMessage = emailErrorSupportingMessage,
-                        isError = true
-                    ),
-                    passwordUiState = LoginUiModel().passwordUiState.copy(
-                        errorSupportingMessage = passwordErrorSupportingMessage,
-                        isError = true
-                    )
+        val expectedUiState = LoginUiState.Resume(
+            LoginUiModel().copy(
+                emailUiState = LoginUiModel().emailUiState.copy(
+                    errorSupportingMessage = emailErrorSupportingMessage,
+                    isError = true
+                ),
+                passwordUiState = LoginUiModel().passwordUiState.copy(
+                    errorSupportingMessage = passwordErrorSupportingMessage,
+                    isError = true
                 )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnClickLoginButton was the last action sent but email is invalid and password is blank WHEN sendAction was called THEN assert that emitted uiState is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = LoginAction.Action.OnClickLoginButton
-            val email = "Email"
-            val errorSupportingMessage = LoginStringResource.InvalidEmail
-            val passwordErrorSupportingMessage = LoginStringResource.BlankPassword
+    fun `GIVEN OnClickLoginButton was the last action sent but email is invalid and password is blank WHEN sendAction was called THEN assert that emitted uiState is the expected`() {
+        val action = LoginAction.Action.OnClickLoginButton
+        val email = "Email"
+        val errorSupportingMessage = LoginStringResource.InvalidEmail
+        val passwordErrorSupportingMessage = LoginStringResource.BlankPassword
 
-            viewModel.sendAction(LoginAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(action)
+        viewModel.sendAction(LoginAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(action)
 
-            val expectedUiState = LoginUiState.Resume(
-                LoginUiModel().copy(
-                    emailUiState = LoginUiModel().emailUiState.copy(
-                        text = email,
-                        errorSupportingMessage = errorSupportingMessage,
-                        isError = true
-                    ),
-                    passwordUiState = LoginUiModel().passwordUiState.copy(
-                        errorSupportingMessage = passwordErrorSupportingMessage,
-                        isError = true
-                    )
+        val expectedUiState = LoginUiState.Resume(
+            LoginUiModel().copy(
+                emailUiState = LoginUiModel().emailUiState.copy(
+                    text = email,
+                    errorSupportingMessage = errorSupportingMessage,
+                    isError = true
+                ),
+                passwordUiState = LoginUiModel().passwordUiState.copy(
+                    errorSupportingMessage = passwordErrorSupportingMessage,
+                    isError = true
                 )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnClickLoginButton was the last action sent but password is blank WHEN sendAction was called THEN assert that emitted uiState is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = LoginAction.Action.OnClickLoginButton
-            val email = "email@email.com"
-            val passwordErrorSupportingMessage = LoginStringResource.BlankPassword
+    fun `GIVEN OnClickLoginButton was the last action sent but password is blank WHEN sendAction was called THEN assert that emitted uiState is the expected`() {
+        val action = LoginAction.Action.OnClickLoginButton
+        val email = "email@email.com"
+        val passwordErrorSupportingMessage = LoginStringResource.BlankPassword
 
-            viewModel.sendAction(LoginAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(action)
+        viewModel.sendAction(LoginAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(action)
 
-            val expectedUiState = LoginUiState.Resume(
-                LoginUiModel().copy(
-                    emailUiState = LoginUiModel().emailUiState.copy(
-                        text = email
-                    ),
-                    passwordUiState = LoginUiModel().passwordUiState.copy(
-                        errorSupportingMessage = passwordErrorSupportingMessage,
-                        isError = true
-                    )
+        val expectedUiState = LoginUiState.Resume(
+            LoginUiModel().copy(
+                emailUiState = LoginUiModel().emailUiState.copy(
+                    text = email
+                ),
+                passwordUiState = LoginUiModel().passwordUiState.copy(
+                    errorSupportingMessage = passwordErrorSupportingMessage,
+                    isError = true
                 )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnClickLoginButton was the last action sent but email is blank invalid WHEN sendAction was called THEN assert that emitted uiState is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = LoginAction.Action.OnClickLoginButton
-            val emailErrorSupportingMessage = LoginStringResource.BlankEmail
-            val password = "password"
+    fun `GIVEN OnClickLoginButton was the last action sent but email is blank invalid WHEN sendAction was called THEN assert that emitted uiState is the expected`() {
+        val action = LoginAction.Action.OnClickLoginButton
+        val emailErrorSupportingMessage = LoginStringResource.BlankEmail
+        val password = "password"
 
-            viewModel.sendAction(LoginAction.Action.OnTypePasswordField(password))
-            viewModel.sendAction(action)
+        viewModel.sendAction(LoginAction.Action.OnTypePasswordField(password))
+        viewModel.sendAction(action)
 
-            val expectedUiState = LoginUiState.Resume(
-                LoginUiModel().copy(
-                    emailUiState = LoginUiModel().emailUiState.copy(
-                        errorSupportingMessage = emailErrorSupportingMessage,
-                        isError = true
-                    ),
-                    passwordUiState = LoginUiModel().passwordUiState.copy(
-                        text = password
-                    )
+        val expectedUiState = LoginUiState.Resume(
+            LoginUiModel().copy(
+                emailUiState = LoginUiModel().emailUiState.copy(
+                    errorSupportingMessage = emailErrorSupportingMessage,
+                    isError = true
+                ),
+                passwordUiState = LoginUiModel().passwordUiState.copy(
+                    text = password
                 )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnClickLoginButton was the last action sent but email is invalid WHEN sendAction was called THEN assert that emitted uiState is the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = LoginAction.Action.OnClickLoginButton
-            val email = "email"
-            val emailErrorSupportingMessage = LoginStringResource.InvalidEmail
-            val password = "password"
+    fun `GIVEN OnClickLoginButton was the last action sent but email is invalid WHEN sendAction was called THEN assert that emitted uiState is the expected`() {
+        val action = LoginAction.Action.OnClickLoginButton
+        val email = "email"
+        val emailErrorSupportingMessage = LoginStringResource.InvalidEmail
+        val password = "password"
 
-            viewModel.sendAction(LoginAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(LoginAction.Action.OnTypePasswordField(password))
-            viewModel.sendAction(action)
+        viewModel.sendAction(LoginAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(LoginAction.Action.OnTypePasswordField(password))
+        viewModel.sendAction(action)
 
-            val expectedUiState = LoginUiState.Resume(
-                LoginUiModel().copy(
-                    emailUiState = LoginUiModel().emailUiState.copy(
-                        text = email,
-                        errorSupportingMessage = emailErrorSupportingMessage,
-                        isError = true
-                    ),
-                    passwordUiState = LoginUiModel().passwordUiState.copy(
-                        text = password
-                    )
+        val expectedUiState = LoginUiState.Resume(
+            LoginUiModel().copy(
+                emailUiState = LoginUiModel().emailUiState.copy(
+                    text = email,
+                    errorSupportingMessage = emailErrorSupportingMessage,
+                    isError = true
+                ),
+                passwordUiState = LoginUiModel().passwordUiState.copy(
+                    text = password
                 )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-        }
+        assertUiState(expectedUiState, actualUiState)
+    }
 
     @Test
-    fun `GIVEN OnClickLoginButton was the last action sent and all fields are valid WHEN sendAction was called THEN assert that emitted uiState and uiEffect are the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = LoginAction.Action.OnClickLoginButton
-            val email = "email@email.com"
-            val password = "password"
+    fun `GIVEN OnClickLoginButton was the last action sent and all fields are valid WHEN sendAction was called THEN assert that emitted uiState and uiEffect are the expected`() {
+        val action = LoginAction.Action.OnClickLoginButton
+        val email = "email@email.com"
+        val password = "password"
 
-            viewModel.sendAction(LoginAction.Action.OnTypeEmailField(email))
-            viewModel.sendAction(LoginAction.Action.OnTypePasswordField(password))
-            viewModel.sendAction(action)
+        viewModel.sendAction(LoginAction.Action.OnTypeEmailField(email))
+        viewModel.sendAction(LoginAction.Action.OnTypePasswordField(password))
+        viewModel.sendAction(action)
 
-            val expectedUiState = LoginUiState.Loading(
-                LoginUiModel().copy(
-                    emailUiState = LoginUiModel().emailUiState.copy(
-                        text = email
-                    ),
-                    passwordUiState = LoginUiModel().passwordUiState.copy(
-                        text = password
-                    )
+        val expectedUiState = LoginUiState.Loading(
+            LoginUiModel().copy(
+                emailUiState = LoginUiModel().emailUiState.copy(
+                    text = email
+                ),
+                passwordUiState = LoginUiModel().passwordUiState.copy(
+                    text = password
                 )
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            val expectedUiEffect = LoginUiEffect.ShowLoading
-            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+        val expectedUiEffect = LoginUiEffect.ShowLoading
+        val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
 
-            assertUiState(expectedUiState, actualUiState)
-            assertEquals(expectedUiEffect, actualUiEffect)
-        }
+        assertUiState(expectedUiState, actualUiState)
+        assertEquals(expectedUiEffect, actualUiEffect)
+    }
 
     @Test
     fun `GIVEN OnTryToLogin was the last action sent and signIn use case as failure WHEN sendAction was called THEN assert that the emitted uiState and uiEffect are the expected`() =
@@ -663,28 +655,26 @@ class LoginViewModelTest {
         }
 
     @Test
-    fun `GIVEN OnClickSignUpButton action was sent WHEN sendAction was called THEN assert that emitted uiEffect must be OpenSignUpScreen`() =
-        coroutineTestRule.runBlockingTest {
-            val action = LoginAction.Action.OnClickSignUpButton
+    fun `GIVEN OnClickSignUpButton action was sent WHEN sendAction was called THEN assert that emitted uiEffect must be OpenSignUpScreen`() {
+        val action = LoginAction.Action.OnClickSignUpButton
 
-            viewModel.sendAction(action)
+        viewModel.sendAction(action)
 
-            val uiEffect = viewModel.uiEffect.getOrAwaitValue()
+        val uiEffect = viewModel.uiEffect.getOrAwaitValue()
 
-            assertTrue(uiEffect is LoginUiEffect.OpenRegisterScreen)
-        }
+        assertTrue(uiEffect is LoginUiEffect.OpenRegisterScreen)
+    }
 
     @Test
-    fun `GIVEN OnClickForgotPasswordButton action was sent WHEN sendAction was called THEN assert that emitted uiEffect must be OpenForgotPasswordScreen`() =
-        coroutineTestRule.runBlockingTest {
-            val action = LoginAction.Action.OnClickForgotPasswordButton
+    fun `GIVEN OnClickForgotPasswordButton action was sent WHEN sendAction was called THEN assert that emitted uiEffect must be OpenForgotPasswordScreen`() {
+        val action = LoginAction.Action.OnClickForgotPasswordButton
 
-            viewModel.sendAction(action)
+        viewModel.sendAction(action)
 
-            val uiEffect = viewModel.uiEffect.getOrAwaitValue()
+        val uiEffect = viewModel.uiEffect.getOrAwaitValue()
 
-            assertTrue(uiEffect is LoginUiEffect.OpenForgotPasswordScreen)
-        }
+        assertTrue(uiEffect is LoginUiEffect.OpenForgotPasswordScreen)
+    }
 
     private fun assertUiState(expected: LoginUiState, actual: LoginUiState) {
         assertEquals(expected.javaClass, actual.javaClass)

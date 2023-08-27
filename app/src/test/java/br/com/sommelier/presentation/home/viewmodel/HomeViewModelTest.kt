@@ -40,22 +40,57 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `GIVEN OnTypeSearchField action sent WHEN sendAction was called THEN assert that the uiState was the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val query = "query"
-            val action = HomeAction.Action.OnTypeSearchField(query)
+    fun `GIVEN OnTypeSearchField action sent WHEN sendAction was called THEN assert that the uiState was the expected`() {
+        val query = "query"
+        val action = HomeAction.Action.OnTypeSearchField(query)
 
-            viewModel.sendAction(action)
+        viewModel.sendAction(action)
 
-            val expectedUiState = HomeUiState.Resume(
-                HomeUiModel().copy(
-                    searchFieldUiState = HomeUiModel().searchFieldUiState.copy(query = query)
-                )
+        val expectedUiState = HomeUiState.Resume(
+            HomeUiModel().copy(
+                searchFieldUiState = HomeUiModel().searchFieldUiState.copy(query = query)
             )
-            val actualUiState = viewModel.uiState.getOrAwaitValue()
+        )
+        val actualUiState = viewModel.uiState.getOrAwaitValue()
 
-            assertUiState(actualUiState, expectedUiState)
-        }
+        assertUiState(actualUiState, expectedUiState)
+    }
+
+    @Test
+    fun `GIVEN OnSearch action sent WHEN sendAction was called THEN assert that the uiEffect was the expected`() {
+        val action = HomeAction.Action.OnSearch
+
+        viewModel.sendAction(action)
+
+        val expectedUiEffect = HomeUiEffect.GetRestaurants
+        val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+        assertEquals(expectedUiEffect, actualUiEffect)
+    }
+
+    @Test
+    fun `OnClickManageAccountButton action sent WHEN sendAction was called THEN assert that the uiEffect was the expected`() {
+        val action = HomeAction.Action.OnClickManageAccountButton
+
+        viewModel.sendAction(action)
+
+        val expectedUiEffect = HomeUiEffect.OpenManageAccount
+        val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+        assertEquals(expectedUiEffect, actualUiEffect)
+    }
+
+    @Test
+    fun `OnClickAddRestaurantButton action sent WHEN sendAction was called THEN assert that the uiEffect was the expected`() {
+        val action = HomeAction.Action.OnClickAddRestaurantButton
+
+        viewModel.sendAction(action)
+
+        val expectedUiEffect = HomeUiEffect.OpenAddRestaurant
+        val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
+
+        assertEquals(expectedUiEffect, actualUiEffect)
+    }
 
     private fun assertUiState(expected: HomeUiState, actual: HomeUiState) {
         assertEquals(expected.javaClass, actual.javaClass)
@@ -64,43 +99,4 @@ class HomeViewModelTest {
             actual.uiModel.searchFieldUiState.query
         )
     }
-
-    @Test
-    fun `GIVEN OnSearch action sent WHEN sendAction was called THEN assert that the uiEffect was the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = HomeAction.Action.OnSearch
-
-            viewModel.sendAction(action)
-
-            val expectedUiEffect = HomeUiEffect.GetRestaurants
-            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
-
-            assertEquals(expectedUiEffect, actualUiEffect)
-        }
-
-    @Test
-    fun `OnClickManageAccountButton action sent WHEN sendAction was called THEN assert that the uiEffect was the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = HomeAction.Action.OnClickManageAccountButton
-
-            viewModel.sendAction(action)
-
-            val expectedUiEffect = HomeUiEffect.OpenManageAccount
-            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
-
-            assertEquals(expectedUiEffect, actualUiEffect)
-        }
-
-    @Test
-    fun `OnClickAddRestaurantButton action sent WHEN sendAction was called THEN assert that the uiEffect was the expected`() =
-        coroutineTestRule.runBlockingTest {
-            val action = HomeAction.Action.OnClickAddRestaurantButton
-
-            viewModel.sendAction(action)
-
-            val expectedUiEffect = HomeUiEffect.OpenAddRestaurant
-            val actualUiEffect = viewModel.uiEffect.getOrAwaitValue()
-
-            assertEquals(expectedUiEffect, actualUiEffect)
-        }
 }
