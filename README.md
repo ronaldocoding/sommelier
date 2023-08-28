@@ -80,10 +80,10 @@ Check out the [design](https://www.figma.com/file/vyypWnsXFdbki8i2ffBs7T/Sommeli
 ## Development status 📈
 The project is still in progress, you can find below the percentages completed for each section of issues:
 
-1. User CRUD and authentication: `66%`
+1. User CRUD and authentication: `100%`
     - Data layer: ![Static Badge](https://img.shields.io/badge/done-green)
     - Domain layer: ![Static Badge](https://img.shields.io/badge/done-green)
-    - Presentation layer: ![Static Badge](https://img.shields.io/badge/doing-blue)
+    - Presentation layer: ![Static Badge](https://img.shields.io/badge/done-green)
   
 2. Restaurant CRUD: `0%`
     - Data layer: ![Static Badge](https://img.shields.io/badge/todo-red)
