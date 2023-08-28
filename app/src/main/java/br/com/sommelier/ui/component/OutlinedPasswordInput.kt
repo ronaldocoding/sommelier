@@ -23,7 +23,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,17 +38,10 @@ import br.com.sommelier.util.emptyString
 fun OutlinedPasswordInput(
     modifier: Modifier = Modifier,
     value: String = emptyString(),
-    valueStyle: TextStyle = Typography.bodyLarge,
     onValueChange: (String) -> Unit = {},
     label: String = emptyString(),
-    labelStyle: TextStyle = Typography.bodyLarge,
     placeholder: String = emptyString(),
-    placeholderStyle: TextStyle = Typography.bodyLarge,
-    leadingIconContentDescription: String? = null,
     isError: Boolean = false,
-    isEnabled: Boolean = true,
-    singleLine: Boolean = true,
-    maxLines: Int = 1,
     supportingText: (@Composable () -> Unit)? = null
 ) {
     var isTextFieldFocused by rememberSaveable { mutableStateOf(false) }
@@ -94,7 +86,7 @@ fun OutlinedPasswordInput(
     ) {
         Text(
             text = label,
-            style = labelStyle,
+            style = Typography.bodyLarge,
             color = labelColor,
             modifier = Modifier.testTag("OutlinedPasswordInputLabel")
         )
@@ -113,11 +105,10 @@ fun OutlinedPasswordInput(
                     isTextFieldFocused = it.isFocused
                 }
                 .testTag("OutlinedPasswordInput"),
-            textStyle = valueStyle.copy(color = textColor),
-            enabled = isEnabled,
+            textStyle = Typography.bodyLarge.copy(color = textColor),
+            enabled = true,
             isError = isError,
-            singleLine = singleLine,
-            maxLines = maxLines,
+            singleLine = true,
             supportingText = supportingText,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = ColorReference.antiFlashWhite,
@@ -132,7 +123,7 @@ fun OutlinedPasswordInput(
             placeholder = {
                 Text(
                     text = placeholder,
-                    style = placeholderStyle,
+                    style = Typography.bodyLarge,
                     color = placeholderColor,
                     modifier = Modifier.testTag("OutlinedPasswordInputPlaceholder")
                 )
@@ -140,7 +131,7 @@ fun OutlinedPasswordInput(
             leadingIcon = {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_lock),
-                    contentDescription = leadingIconContentDescription,
+                    contentDescription = null,
                     tint = lockIconColor,
                     modifier = Modifier.testTag("OutlinedPasswordInputLeadingIcon")
                 )
@@ -180,8 +171,7 @@ fun OutlinedPasswordInputPreview() {
     OutlinedPasswordInput(
         value = text,
         onValueChange = { text = it },
-        placeholder = "Type your password",
-        leadingIconContentDescription = "Password"
+        placeholder = "Type your password"
     )
 }
 
@@ -193,7 +183,6 @@ fun OutlinedPasswordInputErrorPreview() {
         value = text,
         onValueChange = { text = it },
         placeholder = "Type your password",
-        leadingIconContentDescription = "Password",
         isError = true,
         supportingText = {
             Text(text = "Error message", style = Typography.label)

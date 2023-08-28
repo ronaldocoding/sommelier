@@ -9,11 +9,9 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusProperties
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
 import br.com.sommelier.ui.theme.ColorReference
@@ -25,11 +23,7 @@ import br.com.sommelier.util.emptyString
 fun TextView(
     modifier: Modifier = Modifier,
     value: String = emptyString(),
-    valueStyle: TextStyle = Typography.bodyLarge,
-    valueColor: Color = ColorReference.eerieBlack,
     label: String = emptyString(),
-    labelStyle: TextStyle = Typography.label,
-    labelColor: Color = ColorReference.taupeGray,
     leadingIcon: ImageVector? = null,
     leadingIconContentDescription: String? = null
 ) {
@@ -41,9 +35,9 @@ fun TextView(
             .focusProperties { canFocus = false }
             .testTag("TextView"),
         readOnly = true,
-        textStyle = valueStyle.copy(color = valueColor),
+        textStyle = Typography.bodyLarge.copy(color = ColorReference.eerieBlack),
         singleLine = true,
-        label = { Text(label, color = labelColor, style = labelStyle) },
+        label = { Text(label, color = ColorReference.taupeGray, style = Typography.label) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             unfocusedBorderColor = ColorReference.brightGray
         ),

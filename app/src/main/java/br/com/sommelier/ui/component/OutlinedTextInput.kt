@@ -23,7 +23,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
@@ -38,16 +37,11 @@ import br.com.sommelier.util.emptyString
 fun OutlinedTextInput(
     modifier: Modifier = Modifier,
     value: String = emptyString(),
-    valueStyle: TextStyle = Typography.bodyLarge,
     onValueChange: (String) -> Unit = {},
     label: String = emptyString(),
-    labelStyle: TextStyle = Typography.bodyLarge,
     placeholder: String = emptyString(),
-    placeholderStyle: TextStyle = Typography.bodyLarge,
     leadingIcon: ImageVector? = null,
-    leadingIconContentDescription: String? = null,
     isError: Boolean = false,
-    isEnabled: Boolean = true,
     singleLine: Boolean = true,
     maxLines: Int = 1,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -87,7 +81,7 @@ fun OutlinedTextInput(
     ) {
         Text(
             text = label,
-            style = labelStyle,
+            style = Typography.bodyLarge,
             color = labelColor,
             modifier = Modifier.testTag("OutlinedTextFieldLabel")
         )
@@ -101,8 +95,8 @@ fun OutlinedTextInput(
                     isTextFieldFocused = it.isFocused
                 }
                 .testTag("OutlinedTextField"),
-            textStyle = valueStyle.copy(color = textColor),
-            enabled = isEnabled,
+            textStyle = Typography.bodyLarge.copy(color = textColor),
+            enabled = true,
             isError = isError,
             singleLine = singleLine,
             maxLines = maxLines,
@@ -121,7 +115,7 @@ fun OutlinedTextInput(
             placeholder = {
                 Text(
                     text = placeholder,
-                    style = placeholderStyle,
+                    style = Typography.bodyLarge,
                     color = placeholderColor,
                     modifier = Modifier.testTag("OutlinedTextFieldPlaceholder")
                 )
@@ -130,7 +124,7 @@ fun OutlinedTextInput(
                 {
                     Icon(
                         imageVector = leadingIcon,
-                        contentDescription = leadingIconContentDescription,
+                        contentDescription = null,
                         tint = leadingIconColor,
                         modifier = Modifier.testTag("OutlinedTextFieldLeadingIcon")
                     )

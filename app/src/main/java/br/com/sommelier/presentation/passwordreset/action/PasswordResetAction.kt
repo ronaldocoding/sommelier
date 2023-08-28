@@ -1,6 +1,6 @@
 package br.com.sommelier.presentation.passwordreset.action
 
-interface PasswordResetAction {
+fun interface PasswordResetAction {
     fun sendAction(action: Action)
 
     sealed class Action {

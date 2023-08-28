@@ -1,6 +1,6 @@
 package br.com.sommelier.presentation.confirmemail.action
 
-interface ConfirmEmailAction {
+fun interface ConfirmEmailAction {
     fun sendAction(action: Action)
 
     sealed class Action {
