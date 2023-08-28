@@ -272,7 +272,8 @@ fun PasswordResetErrorScreen(viewModel: PasswordResetViewModel) {
         },
         buttonText = stringResource(
             id = R.string.try_again_button_label
-        ), onClickButton = {
+        ),
+        onClickButton = {
             viewModel.sendAction(PasswordResetAction.Action.OnClickTryAgainButton)
         }
     )
