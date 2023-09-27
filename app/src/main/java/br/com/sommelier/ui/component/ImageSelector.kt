@@ -103,7 +103,7 @@ fun ImagePickerWithImagePreview() {
 
 @Composable
 @Preview(showBackground = true)
-fun TwoImagePickerPreview() {
+fun TwoImagePickersPreview() {
     SommelierTheme {
         Box(modifier = Modifier.padding(horizontal = Sizing.mediumLarge)) {
             ImagePicker()
@@ -111,6 +111,30 @@ fun TwoImagePickerPreview() {
                 modifier = Modifier.padding(top = Sizing.largest),
                 width = Sizing.extraLarger,
                 height = Sizing.extraLarger,
+                shape = CircleShape,
+                backgroundColor = ColorReference.frenchFuchsia,
+                pickerIcon = ImageVector.vectorResource(id = R.drawable.camera_plus_small)
+            )
+
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun TwoImagePickersWithImagesPreview() {
+    SommelierTheme {
+        Box(modifier = Modifier.padding(horizontal = Sizing.mediumLarge)) {
+            ImagePicker(
+                image = painterResource(id = R.drawable.porteira_picanharia),
+                imageContentDescription = "Restaurant header"
+            )
+            ImagePicker(
+                modifier = Modifier.padding(top = Sizing.largest),
+                width = Sizing.extraLarger,
+                height = Sizing.extraLarger,
+                image = painterResource(id = R.drawable.porteira_picanharia_profile),
+                imageContentDescription = "Restaurant profile",
                 shape = CircleShape,
                 backgroundColor = ColorReference.frenchFuchsia,
                 pickerIcon = ImageVector.vectorResource(id = R.drawable.camera_plus_small)
