@@ -23,4 +23,5 @@ object Sizing {
     val largest = 80.dp
     val huge = 100.dp
     val extraHuge = 120.dp
+    val massive = 128.dp
 }

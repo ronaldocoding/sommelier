@@ -21,4 +21,5 @@ object Spacing {
     val largest = Sizing.largest
     val huge = Sizing.huge
     val extraHuge = Sizing.extraHuge
+    val massive = Sizing.massive
 }

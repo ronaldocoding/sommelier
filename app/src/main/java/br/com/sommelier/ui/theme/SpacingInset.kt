@@ -21,4 +21,5 @@ object SpacingInset {
     val largest = Spacing.largest
     val huge = Spacing.huge
     val extraHuge = Spacing.extraHuge
+    val massive = Spacing.massive
 }

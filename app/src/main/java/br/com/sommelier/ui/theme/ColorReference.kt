@@ -26,4 +26,5 @@ object ColorReference {
     val lightSilver = Color(0xffd6d6d6)
     val seaShell = Color(0xfffef0ed)
     val bitterSweet = Color(0xfff56a50)
+    val blackAlpha50 = Color(0x80000000)
 }
