@@ -138,7 +138,6 @@ fun TwoImagePickersWithImagesPreview() {
                 backgroundColor = ColorReference.frenchFuchsia,
                 pickerIcon = ImageVector.vectorResource(id = R.drawable.camera_plus_small)
             )
-
         }
     }
 }
