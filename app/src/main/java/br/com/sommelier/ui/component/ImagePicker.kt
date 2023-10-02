@@ -46,7 +46,7 @@ fun ImagePicker(
     onClick: () -> Unit = {}
 ) {
     Card(
-        modifier = modifier.getModifier(width, height),
+        modifier = modifier.getModifierWithCorrectWidthHeight(width, height),
         shape = shape,
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
         onClick = onClick
@@ -70,7 +70,7 @@ fun ImagePicker(
     }
 }
 
-private fun Modifier.getModifier(width: Dp?, height: Dp): Modifier {
+private fun Modifier.getModifierWithCorrectWidthHeight(width: Dp?, height: Dp): Modifier {
     return if (width != null) {
         then(
             Modifier
@@ -115,7 +115,6 @@ fun TwoImagePickersPreview() {
                 backgroundColor = ColorReference.frenchFuchsia,
                 pickerIcon = ImageVector.vectorResource(id = R.drawable.camera_plus_small)
             )
-
         }
     }
 }
