@@ -32,6 +32,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.debug
         }
     }
 
@@ -75,7 +76,7 @@ def retrofitVersion = "2.9.0"
 def coroutinesVersion = "1.3.0"
 def lifeCycleViewModelKtxVersion = "2.6.1"
 def lifeCycleLiveDataKtxVersion = "2.3.1"
-def coilVersion = "2.2.2"
+def coilVersion = "2.4.0"
 def koinVersion = "3.2.2"
 def firebaseBomVersion = "32.2.0"
 def arrowVersion = "1.2.0"
@@ -127,7 +128,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifeCycleLiveDataKtxVersion"
 
     // Coil
-    implementation "io.coil-kt:coil:$coilVersion"
+    implementation "io.coil-kt:coil-compose:$coilVersion"
 
     // Koin
     implementation "io.insert-koin:koin-android:$koinVersion"
