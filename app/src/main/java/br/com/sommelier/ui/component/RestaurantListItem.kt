@@ -49,7 +49,7 @@ fun RestaurantListItem(
     restaurant: RestaurantDomain,
     borderColor: Color = ColorReference.chineseSilver,
     backgroundColor: Color = ColorReference.white,
-    onClick: () -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     val showShimmer = rememberSaveable { mutableStateOf(true) }
 
@@ -138,4 +138,3 @@ fun RestaurantListItemPreview() {
         )
     }
 }
-
