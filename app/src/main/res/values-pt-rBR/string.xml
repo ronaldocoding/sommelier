@@ -67,4 +67,5 @@
     <string name="hamburger_icon_description">Ícone de hambúrguer</string>
     <string name="confirm_email_top_bar_title">Confirmar email</string>
     <string name="confirm_email_description">Você já está cadastrado. Agora precisamos que confirme seu email, enviamos um link para você.</string>
+    <string name="star_icon_description">Ícone de estrela</string>
 </resources>

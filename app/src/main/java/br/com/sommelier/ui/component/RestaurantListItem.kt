@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.sommelier.R
@@ -75,7 +77,12 @@ fun RestaurantListItem(
             ) {
                 AsyncImage(
                     modifier = Modifier
-                        .background(shimmerBrush(targetValue = 1300f, showShimmer = showShimmer.value))
+                        .background(
+                            shimmerBrush(
+                                targetValue = 1300f,
+                                showShimmer = showShimmer.value
+                            )
+                        )
                         .size(Sizing.extraLarger)
                         .clip(CircleShape),
                     model = restaurant.profileImageUrl,
@@ -100,7 +107,7 @@ fun RestaurantListItem(
                 ) {
                     Image(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_star),
-                        contentDescription = null // Create string resource to this image
+                        contentDescription = stringResource(id = R.string.star_icon_description)
                     )
                     Spacer(modifier = Modifier.padding(Sizing.extraSmaller))
                     Text(
@@ -116,17 +123,19 @@ fun RestaurantListItem(
 @Composable
 @Preview(showBackground = true)
 fun RestaurantListItemPreview() {
-    RestaurantListItem(
-        modifier = Modifier.padding(horizontal = Sizing.mediumLarge),
-        restaurant = RestaurantDomain(
-            name = "Porteira Picanharia",
-            description = "Melhor picanharia de Manaus",
-            address = "Av. Efigênio Salles, 3050",
-            averageRating = 5.0f,
-            profileImageUrl = "https://s3-sa-east-1.amazonaws.com/clientefielsp/dados_aplicativos/picanharia_porteira/img_selo/20220505151642_img_selo.png",
-            headerImageUrl = emptyString(),
-            uid = UUID.randomUUID().toString()
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+        RestaurantListItem(
+            modifier = Modifier.padding(horizontal = Sizing.mediumLarge),
+            restaurant = RestaurantDomain(
+                name = "Porteira Picanharia",
+                description = "Melhor picanharia de Manaus",
+                address = "Av. Efigênio Salles, 3050",
+                averageRating = 5.0f,
+                profileImageUrl = "https://s3-sa-east-1.amazonaws.com/clientefielsp/dados_aplicativos/picanharia_porteira/img_selo/20220505151642_img_selo.png",
+                headerImageUrl = emptyString(),
+                uid = UUID.randomUUID().toString()
+            )
         )
-    )
+    }
 }
 
