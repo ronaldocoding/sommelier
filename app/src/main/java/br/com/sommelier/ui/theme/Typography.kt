@@ -43,7 +43,7 @@ object Typography {
         fontFamily = FontStyle.openSansMedium,
         fontSize = FontSize.large,
         lineHeight = LineHeight.normal,
-        letterSpacing = LetterSpacing.largest
+        letterSpacing = LetterSpacing.smallest
     )
 
     val headerNormal = TextStyle(
@@ -57,7 +57,14 @@ object Typography {
         fontFamily = FontStyle.openSansMedium,
         fontSize = FontSize.small,
         lineHeight = LineHeight.normal,
-        letterSpacing = LetterSpacing.largest
+        letterSpacing = LetterSpacing.smallest
+    )
+
+    val headerSmallest = TextStyle(
+        fontFamily = FontStyle.openSansMedium,
+        fontSize = FontSize.smallest,
+        lineHeight = LineHeight.normal,
+        letterSpacing = LetterSpacing.smallest
     )
 
     val bodyLarge = TextStyle(
@@ -93,6 +100,13 @@ object Typography {
         fontSize = FontSize.extraSmall,
         lineHeight = LineHeight.medium,
         letterSpacing = LetterSpacing.normal
+    )
+
+    val bodySmallest = TextStyle(
+        fontFamily = FontStyle.openSansRegular,
+        fontSize = FontSize.smallest,
+        lineHeight = LineHeight.medium,
+        letterSpacing = LetterSpacing.smallest
     )
 
     val caption = TextStyle(
